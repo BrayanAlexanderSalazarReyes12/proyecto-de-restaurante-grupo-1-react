@@ -1,0 +1,15 @@
+header nav{
+    background: var(--color-5);
+}
+header nav .navbar-brand{
+    font-family: var(--fuente);
+    font-weight: var(--weight-subtitulos);
+    color: white;
+}
+
+.nav-link{
+    color: white;
+}
+.nav-link:hover{
+    color: black;
+}

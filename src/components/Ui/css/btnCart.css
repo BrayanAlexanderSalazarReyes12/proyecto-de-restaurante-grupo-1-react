@@ -1,0 +1,24 @@
+.icon-carrito{
+    background: var(--color-5);
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    border: 1px solid white;
+    cursor: pointer;
+    text-decoration: none;
+}
+.icon-carrito i{
+    font-size:18px;
+    color:white;
+    transition: all 0.5s;
+}
+.icon-carrito:hover i{
+    font-size:20px;
+}
