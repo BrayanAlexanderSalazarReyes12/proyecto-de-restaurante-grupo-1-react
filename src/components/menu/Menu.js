@@ -215,12 +215,6 @@ export const Menu = () => {
     },[visible])
     
     useEffect(()=>{
-        if(visible1)
-        {
-            var top = document.getElementById("ensalada");
-            //let d_nested = document.getElementById("prueba1");
-            top.removeChild(top.firstChild);
-        }
         console.log(visible1);
         setvisible1(false);
     },[visible1])
