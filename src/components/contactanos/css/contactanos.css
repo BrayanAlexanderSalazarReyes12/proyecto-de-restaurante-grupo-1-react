@@ -1,0 +1,77 @@
+@media screen and (max-width: 576px){
+    .formulario form{
+        padding: 0 !important;
+    }
+}
+
+.contactanos{
+    width: 100%;
+    height: 100vh;
+}
+.contactanos .texto{
+    padding: 16px;
+}
+.contactanos .texto h1{
+    color: var(--color-5);
+    font-family: var(--fuente);
+    font-weight: var(--weight-titulos);
+    position: relative;
+    z-index: 1;
+}
+.contactanos .texto h1::before{
+    content:"";
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    top: -3px;
+    background: var(--color-3);
+    z-index: -1;
+}
+.contactanos .texto p{
+    font-family: var(--fuente);
+    font-weight: var(--weight-parrafos);
+}
+.contactanos .formulario{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--color-3);
+}
+    .formulario form{
+        display: flex;
+        flex-direction: column;
+        padding: 50px;
+        position: relative;
+    }
+    .formulario form textarea{
+        background: transparent;
+        border: 1px solid var(--color-5);
+        color: white;
+    }
+    .formulario form textarea:focus{
+        color: white;
+        background: transparent;
+        border-color: var(--color-5);
+        box-shadow: 0 0 0 0.25rem rgb(166 17 3 / 11%);
+    }
+    .formulario form input{
+        background: transparent;
+        filter: blur(2);
+        border: 1px solid var(--color-5);
+    }
+    .formulario form input::placeholder{
+        color: white;
+    }
+    .formulario form input:focus{
+        background: transparent;
+        border-color: var(--color-5);
+        box-shadow: 0 0 0 0.25rem rgb(166 17 3 / 11%);
+    }
+    .formulario form button{
+        background: var(--color-5);
+        color: white;
+    }
+    .formulario form button:hover{
+        color: var(--color-3);
+    }

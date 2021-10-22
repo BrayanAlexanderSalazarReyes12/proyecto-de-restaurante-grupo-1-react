@@ -7,8 +7,13 @@ header nav .navbar-brand{
     color: white;
 }
 
+.nav-item{
+    cursor:pointer !important;
+}
+
 .nav-link{
     color: white;
+    cursor: pointer !important;
 }
 .nav-link:hover{
     color: black;
