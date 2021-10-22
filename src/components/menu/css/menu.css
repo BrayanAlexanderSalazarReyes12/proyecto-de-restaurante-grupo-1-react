@@ -1,0 +1,107 @@
+:root{
+    --color-1: #467302;
+    --color-2: #83A603;
+    --color-3: linear-gradient(90deg, rgba(176,124,28,1) 32%, rgba(220,145,5,1) 69%, rgba(220,145,5,1) 87%);;
+    --color-4: #D95204;
+    --color-5: #A61103;
+    --fuente : 'Roboto', sans-serif;
+    --weight-titulos   : 500;
+    --weight-subtitulos: 400;
+    --weight-parrafos  : 100;
+}
+
+#menu{
+    background-color: var(--color-4);
+}
+
+.head2{
+    text-align: center;
+    color: white;
+    font-family: var(--fuente);
+    font-weight: var(--weight-titulos);
+}
+
+#nav-tab{
+    padding-left: 3rem;
+}
+
+.nav-link{
+    font-family: var(--fuente);
+    font-weight: var(--weight-subtitulos);
+}
+
+h3.head2 {
+	text-align: center;
+	padding-top: 96px;
+	margin-bottom: 47px;
+    color: white;
+}
+
+/* ----------botones---------- */
+.cbn{
+	display: flex;
+	background-color: #fff;
+	box-shadow: 0 20px 30px rgba(0,0,0,0,15);
+	border-radius: 45px;
+}
+input[type="number"]{
+	-moz-appearance: textfield;
+	text-align: center;
+	font-size: 20px;
+	border: none;
+	background-color: rgb(0, 81, 202);
+	color: #ffffff;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button{
+	-webkit-appearance: none;
+	margin: 0;
+}
+button{
+	color: #fff;
+	background-color: rgb(0, 81, 202);
+	border: none;
+	font-size: 20px !important;
+	cursor: pointer;
+}
+#decrement{
+	padding: 4px 3px 4px 8px;
+	border-radius: 45px 0 0 45px;
+}
+#increment{
+	padding: 4px 8px 4px 3px;
+	border-radius: 0 45px 45px 0;
+}
+
+.modal-content{
+	border-radius: 15px 0 15px 0 !important;
+}
+
+.cantidad_producto{
+	width: 80px;
+    height: 30px;
+    border: 2px solid var(--color-4) !important;
+    align-items: center;
+    padding-left: 5px;
+    padding-right: 5px;
+    border-radius: 5px;
+}
+
+.cantidad_producto i,small{
+	cursor: pointer;
+	color: var(--color-4);
+}
+
+.btn-general{
+    height: 40px;
+    border: 1px solid transparent;
+    margin-bottom: 10px;
+    background: var(--color-4);
+    color: white;
+    border-radius: 20px;
+    box-shadow: 6px 6px 12px #ebebeb, -6px -6px 12px #ebebeb;
+    padding: 7px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
