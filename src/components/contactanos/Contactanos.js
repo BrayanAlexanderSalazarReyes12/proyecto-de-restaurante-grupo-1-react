@@ -20,15 +20,15 @@ export const Contactanos = () => {
                     {/* <input type="hidden" name="_captcha" value="false"> */}
                     <input type="hidden" name="_autoresponse" value="Reserva Confirmada" />
                     <div className="mb-3 row">
-                        <label for="inputName" className="col-sm-1-12 col-form-label"></label>
+                        <label htmlFor="inputName" className="col-sm-1-12 col-form-label"></label>
                         <div className="col-sm-1-12">
-                            <input type="text" minlength="4" maxlength="9" className="form-control" name="nombre"
+                            <input type="text" minLength="4" maxLength="9" className="form-control" name="nombre"
                                 id="nombres" placeholder="Nombre" required />
                         </div>
                     </div>
 
                     <div className="mb-3 row">
-                        <label for="inputName" className="col-sm-1-12 col-form-label"></label>
+                        <label htmlFor="inputName" className="col-sm-1-12 col-form-label"></label>
                         <div className="col-sm-1-12">
                             <input type="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" className="form-control"
                                 name="email" id="correo" placeholder="Correo" required />
@@ -36,21 +36,21 @@ export const Contactanos = () => {
                     </div>
 
                     <div className="mb-3 row">
-                        <label for="inputName" className="col-sm-1-12 col-form-label"></label>
+                        <label htmlFor="inputName" className="col-sm-1-12 col-form-label"></label>
                         <div className="col-sm-1-12">
                             <input type="text" className="form-control" name="telefono" id="telefono" placeholder="Telefono"
                                 required />
                         </div>
                     </div>
 
-                    <div class="mb-3">
-                        <label for="" className="form-label"></label>
+                    <div className="mb-3">
+                        <label htmlFor="" className="form-label"></label>
                         <textarea className="form-control" name="" id="" rows="3">Mensaje</textarea>
                     </div>
 
                     <div className="form-check pb-3">
                         <input className="form-check-input" type="checkbox" value="" id="terminos" required />
-                        <label className="form-check-label text-white" for="flexCheckDefault">
+                        <label className="form-check-label text-white" htmlFor="flexCheckDefault">
                             Acepto Terminos y condiciones
                         </label>
                     </div>
