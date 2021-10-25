@@ -3,35 +3,51 @@ import { Link } from "react-router-dom";
 
 import { UseLocalStorage } from '../../hooks/UseLocalStorage'
 import { CartProd } from './CartProd'
-import './css/carrito.css'
 import { ModalForm } from './ModalForm'
 
+import './css/carrito.css'
+//import { productos } from '../../data/productos';
 const sty = {
     position: 'absolute'
 }
 
 const init = () => {
+    
     const storage = JSON.parse(localStorage.getItem('productos')) || []
     let sumaTotal = 0;
-
-    storage.forEach(p => {
-        sumaTotal = sumaTotal + p.cantidad * p.precio
-    });
-
+    if(storage.length > 0){
+        storage.forEach(p => {
+            sumaTotal = sumaTotal + p.count * p.precio
+        });
+    }
+    
     return sumaTotal;
 }
 
-const productosS = ( ) => {
+const productosS = () => {
+    //return productos
     return JSON.parse(localStorage.getItem('productos')) || []
 }
 
 export const Carrito = () => {
+
+    const { actualizar,
+            storage,
+            setStorage,
+            deleteStorage} = UseLocalStorage()
+
+    let pagar = true;
+    if(init() === 0){
+        pagar = false
+    }
     
     let productos;
 
     const [ storageTotal, setTotal ] = useState(init())
     
     const [state, setState] = useState(productosS())
+
+    
 
     const [open, setOpen] = useState(false); // Modal
     const handleOpen = () => setOpen(true);
@@ -41,20 +57,29 @@ export const Carrito = () => {
 
 
     const handleAction = (event) => {
-        setTotal(storageTotal + event)
+        setStorage({
+            data: [...storage.data],
+            total: storage.total + event
+        })
+        //setTotal(storage.total + event)
     }
 
     const handleDelete = (event,cantidad) => {
-        let newProducts = state
+        let newProducts = storage.data
         let aux = newProducts.filter(p => p.id === event)
         let resta = cantidad * aux[0].precio
-        setTotal(storageTotal - resta)
         let newArr = newProducts.filter(p => p.id !== event)
-        setState(newArr)
+        setStorage({
+            data: [...newArr],
+            total: storage.total - resta
+        })
+        //deleteStorage(event)
+        console.log(newArr)
+        window.localStorage.setItem("productos", JSON.stringify(newArr))
     }
 
-    if(state.length > 0){
-        productos = state.map((p) =>
+    if(storage.data.length > 0){
+        productos = storage.data.map((p) =>
                 <CartProd onDelt={handleDelete} onAction={handleAction} key={p.id} {...p} /> 
         );
     }else{
@@ -71,16 +96,19 @@ export const Carrito = () => {
                 <div id="total_cuenta" className="btn-pagar d-flex flex-column justify-content-around">
                     <div className="d-flex justify-content-around">
                         <strong className="display-6">Total</strong> 
-                        <strong id="total" className="display-6">${storageTotal}</strong>
+                        <strong id="total" className="display-6">${storage.total}</strong>
                     </div>
                     <div className="text-center d-flex flex-column">
                         
                         <button type="button" 
+                                id="pg"
+                                style={{display: pagar ? 'inline' : 'none' }}
                                 onClick={handleOpen}
                                 className="btn-general"
                                 data-bs-toggle="modal" 
                                 data-bs-target="#exampleModal" 
                                 data-bs-whatever="@mdo">Pagar Ahora</button>
+
                         <Link className="link-menu btn-general text-decoration-none" to="/menu">
                             Continuar Comprando
                         </Link>

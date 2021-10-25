@@ -12,6 +12,7 @@ import { Contactanos } from '../components/contactanos/Contactanos';
 import { Reservas } from '../components/reservas/Reservas';
 import { Mapa } from '../components/mapa/Mapa';
 import { Carrito } from '../components/carrito/Carrito';
+import { Redes } from '../components/Ui/Redes';
 
 
 export const RouterApp = () => {
@@ -49,6 +50,8 @@ export const RouterApp = () => {
                     <Redirect to="/"/> 
                 
                 </Switch>
+
+                <Redes /> 
 
                 <BtnCart /> {/*  */}
                 

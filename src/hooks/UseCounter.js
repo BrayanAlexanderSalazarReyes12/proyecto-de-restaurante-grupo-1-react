@@ -6,7 +6,7 @@ export const UseCounter = (initialState = 1) => {
     
     const [state, setState] = useState(initialState);
 
-    const { actualizar, stateTotal, deleteStorage } = UseLocalStorage()
+    const { actualizar, deleteStorage } = UseLocalStorage()
 
     const increment = (id) => {
         setState(state + 1)
@@ -20,15 +20,14 @@ export const UseCounter = (initialState = 1) => {
         }
     }
     
-    const deleteS = (id) => {
-        deleteStorage(id)
+    const deleteS = (id,cantidad) => {
+        deleteStorage(id,cantidad)
     }
 
     return {
         state,
         increment,
         decrement,
-        stateTotal,
         deleteS
     }
 }

@@ -2,11 +2,11 @@ import React from 'react'
 import { UseCounter } from '../../hooks/UseCounter'
 
 export const CartProd = ({
-    id, titulo, descripcion, precio, cantidad, onAction, onDelt
+    id, titulo, img, descripcion, precio, count, onAction, onDelt
 }) => {
 
     
-    const { state, increment, decrement, deleteS } = UseCounter(cantidad);
+    const { state, increment, decrement, deleteS } = UseCounter(count);
     
 
     const handleincrement = (id, precio) => {
@@ -23,14 +23,14 @@ export const CartProd = ({
     }
 
     const handleDelete = (id,cantidad) => {
-        deleteS(id) // Eliminar del storage
+        //deleteS(id, cantidad) // Eliminar del storage
         onDelt(id,cantidad)
     }
     
     return (
         
         <div className="producto" id="producto">
-            <img className="col-5" src="" alt="" />
+            <img className="col-5" src={img} alt={titulo} />
             <div className="descripcion col-7 position-relative">
                 <div className="d-flex">
                     <strong id="cambiar_tamaño" className="col-6 titulo col-4">{titulo}</strong>

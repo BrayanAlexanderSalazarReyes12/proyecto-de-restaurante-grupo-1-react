@@ -1,0 +1,41 @@
+.redes{
+    width: 30px;
+    border-radius: 10px;
+    top: 100px;
+    left: 7px;
+    background: black;
+    background: transparent;
+    z-index: 1000;
+}
+.redes ul{
+    padding: 0;
+    margin: 0;
+}
+.redes ul li{
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+}
+
+.redes ul li:nth-of-type(1){
+    background: #051e60;
+    border-radius: 5px 5px 0px 0px;
+}
+.redes ul li:nth-of-type(2){
+    background: #1686c5;
+}
+.redes ul li:nth-of-type(3){
+    background: red;
+    border-radius: 0px 0px 5px 5px;
+}
+.redes ul li a{
+    color: white !important;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+.redes ul li a i{
+    font-size: 26px;
+}

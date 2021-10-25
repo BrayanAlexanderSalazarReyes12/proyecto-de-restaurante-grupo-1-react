@@ -1,0 +1,13 @@
+import React from 'react'
+
+import './css/loading.css'
+
+export const Loading = () => {
+    return (
+        <>
+            <div className="carga spinner-border text-success" role="status">
+                <span className="visually-hidden">Loading...</span>
+            </div>
+        </>
+    )
+}
