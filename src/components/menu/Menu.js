@@ -4,6 +4,7 @@ import ensal from './img/ensaladas';
 import sop from './img/sopas';
 import ap from './img/aperitivos'
 import bed from './img/bebidas'
+import pos from './img/postres'
 import carta from './carta/menu.pdf'
 //base de datos
 import {
@@ -19,6 +20,7 @@ export const Menu = () => {
     var [visible1,setvisible1] = useState(false);
     var [visible2,setvisible2] = useState(false);
     var [visible3,setvisible3] = useState(false);
+    var [visible4,setvisible4] = useState(false);
     const firebase = useFirebaseApp();
     
     console.log(firebase);
@@ -108,10 +110,10 @@ export const Menu = () => {
                                     id         : id_prod
                                 }
 
-                                let localS = localStorage.getItem("cart")
+                                let localS = localStorage.getItem("productos")
                                 if(localS === null){
                                     productos.push(producto)
-                                    localStorage.setItem("cart",JSON.stringify(productos))
+                                    localStorage.setItem("productos",JSON.stringify(productos))
                                     location.reload(true);
                                 }else{
                                     /* Verificar si el producto existe en el localstorage para evitar guardar duplicas*/
@@ -123,17 +125,17 @@ export const Menu = () => {
                                         existe_[0].count = existe_[0].count + producto.count // sumo la cantidad de productos que tenia con la nueva que quiere ingresar
                                         add_storag.push(...existe_) // Agregamos el producto actualizado
                                         productos.push(...add_storag) // Agrego al arreglo todos los datos menos el producto duplicado
-                                        localStorage.setItem("cart",JSON.stringify(productos))
+                                        localStorage.setItem("productos",JSON.stringify(productos))
                                         location.reload(true);
                                     }else{
                                         // Si no encuentra ningun producto duplicado Lo agrego al arreglo y actualizo el storage
                                         productos.push(...cart_localstorage)
                                         productos.push(producto)
-                                        localStorage.setItem("cart",JSON.stringify(productos))
+                                        localStorage.setItem("productos",JSON.stringify(productos))
                                         location.reload(true);
                                     }
                                     
-                                    let cart = JSON.parse(localStorage.getItem("cart"))
+                                    let cart = JSON.parse(localStorage.getItem("productos"))
                                     //aumentar_icon_carrito(cart)
                                 }
                             })
@@ -174,10 +176,10 @@ export const Menu = () => {
                                     id         : id_prod
                                 }
 
-                                let localS = localStorage.getItem("cart")
+                                let localS = localStorage.getItem("productos")
                                 if(localS === null){
                                     productos.push(producto)
-                                    localStorage.setItem("cart",JSON.stringify(productos))
+                                    localStorage.setItem("productos",JSON.stringify(productos))
                                     location.reload(true);
                                 }else{
                                     /* Verificar si el producto existe en el localstorage para evitar guardar duplicas*/
@@ -189,17 +191,17 @@ export const Menu = () => {
                                         existe_[0].count = existe_[0].count + producto.count // sumo la cantidad de productos que tenia con la nueva que quiere ingresar
                                         add_storag.push(...existe_) // Agregamos el producto actualizado
                                         productos.push(...add_storag) // Agrego al arreglo todos los datos menos el producto duplicado
-                                        localStorage.setItem("cart",JSON.stringify(productos))
+                                        localStorage.setItem("productos",JSON.stringify(productos))
                                         location.reload(true);
                                     }else{
                                         // Si no encuentra ningun producto duplicado Lo agrego al arreglo y actualizo el storage
                                         productos.push(...cart_localstorage)
                                         productos.push(producto)
-                                        localStorage.setItem("cart",JSON.stringify(productos))
+                                        localStorage.setItem("productos",JSON.stringify(productos))
                                         location.reload(true);
                                     }
                                     
-                                    let cart = JSON.parse(localStorage.getItem("cart"))
+                                    let cart = JSON.parse(localStorage.getItem("productos"))
                                     //aumentar_icon_carrito(cart)
                                 }
                             })
@@ -301,6 +303,52 @@ export const Menu = () => {
                                 }
                                 
                             })
+
+                            /* AGREGAR PRODUCTOS A LOCALSTORAGE */
+
+                            const add_cart = document.querySelector("#add_cart")
+
+                            add_cart.addEventListener("click", () =>{
+                                
+                                let productos = []
+                                let producto = {
+                                    titulo     : modal_titulo.innerHTML,
+                                    descripcion: modal_descripcion.innerHTML,
+                                    img        : modal_img.src,
+                                    precio     : parseInt(modal_precio.innerHTML,10),
+                                    count      : parseInt(count_prod.innerHTML,10),
+                                    id         : id_prod
+                                }
+
+                                let localS = localStorage.getItem("productos")
+                                if(localS === null){
+                                    productos.push(producto)
+                                    localStorage.setItem("productos",JSON.stringify(productos))
+                                    location.reload(true);
+                                }else{
+                                    /* Verificar si el producto existe en el localstorage para evitar guardar duplicas*/
+                                    const cart_localstorage = JSON.parse(localS); // Convierto de string a JSON
+                                    let existe_ = cart_localstorage.filter(p => p.id === producto.id); // Verifico si el producto existe en localstorage
+                                    if(existe_.length > 0){ // verifico si encontro un producto repetido
+                                        //Si encuentra un producto repetido aumento el numero de productos que quiere
+                                        let add_storag = cart_localstorage.filter(p => p.id !== producto.id); // Obtengo todos los datos menos el producto repetido para agregar el actualizado
+                                        existe_[0].count = existe_[0].count + producto.count // sumo la cantidad de productos que tenia con la nueva que quiere ingresar
+                                        add_storag.push(...existe_) // Agregamos el producto actualizado
+                                        productos.push(...add_storag) // Agrego al arreglo todos los datos menos el producto duplicado
+                                        localStorage.setItem("productos",JSON.stringify(productos))
+                                        location.reload(true);
+                                    }else{
+                                        // Si no encuentra ningun producto duplicado Lo agrego al arreglo y actualizo el storage
+                                        productos.push(...cart_localstorage)
+                                        productos.push(producto)
+                                        localStorage.setItem("productos",JSON.stringify(productos))
+                                        location.reload(true);
+                                    }
+                                    
+                                    let cart = JSON.parse(localStorage.getItem("productos"))
+                                    //aumentar_icon_carrito(cart)
+                                }
+                            })
                         }else{
                             /* Modificar cantidad de productos a comprar  */
         
@@ -320,52 +368,54 @@ export const Menu = () => {
                                 }
                                 
                             })
-                        }
-                        /* AGREGAR PRODUCTOS A LOCALSTORAGE */
 
-                        const add_cart = document.querySelector("#add_cart")
-
-                        add_cart.addEventListener("click", () =>{
                             
-                            let productos = []
-                            let producto = {
-                                titulo     : modal_titulo.innerHTML,
-                                descripcion: modal_descripcion.innerHTML,
-                                img        : modal_img.src,
-                                precio     : parseInt(modal_precio.innerHTML,10),
-                                count      : parseInt(count_prod.innerHTML,10),
-                                id         : id_prod
-                            }
+                            /* AGREGAR PRODUCTOS A LOCALSTORAGE */
 
-                            let localS = localStorage.getItem("cart")
-                            if(localS === null){
-                                productos.push(producto)
-                                localStorage.setItem("cart",JSON.stringify(productos))
-                                location.reload(true);
-                            }else{
-                                /* Verificar si el producto existe en el localstorage para evitar guardar duplicas*/
-                                const cart_localstorage = JSON.parse(localS); // Convierto de string a JSON
-                                let existe_ = cart_localstorage.filter(p => p.id === producto.id); // Verifico si el producto existe en localstorage
-                                if(existe_.length > 0){ // verifico si encontro un producto repetido
-                                    //Si encuentra un producto repetido aumento el numero de productos que quiere
-                                    let add_storag = cart_localstorage.filter(p => p.id !== producto.id); // Obtengo todos los datos menos el producto repetido para agregar el actualizado
-                                    existe_[0].count = existe_[0].count + producto.count // sumo la cantidad de productos que tenia con la nueva que quiere ingresar
-                                    add_storag.push(...existe_) // Agregamos el producto actualizado
-                                    productos.push(...add_storag) // Agrego al arreglo todos los datos menos el producto duplicado
-                                    localStorage.setItem("cart",JSON.stringify(productos))
+                            const add_cart = document.querySelector("#add_cart")
+
+                            add_cart.addEventListener("click", () =>{
+                                
+                                let productos = []
+                                let producto = {
+                                    titulo     : modal_titulo.innerHTML,
+                                    descripcion: modal_descripcion.innerHTML,
+                                    img        : modal_img.src,
+                                    precio     : parseInt(modal_precio.innerHTML,10),
+                                    count      : parseInt(count_prod.innerHTML,10),
+                                    id         : id_prod
+                                }
+
+                                let localS = localStorage.getItem("productos")
+                                if(localS === null){
+                                    productos.push(producto)
+                                    localStorage.setItem("productos",JSON.stringify(productos))
                                     location.reload(true);
                                 }else{
-                                    // Si no encuentra ningun producto duplicado Lo agrego al arreglo y actualizo el storage
-                                    productos.push(...cart_localstorage)
-                                    productos.push(producto)
-                                    localStorage.setItem("cart",JSON.stringify(productos))
-                                    location.reload(true);
+                                    /* Verificar si el producto existe en el localstorage para evitar guardar duplicas*/
+                                    const cart_localstorage = JSON.parse(localS); // Convierto de string a JSON
+                                    let existe_ = cart_localstorage.filter(p => p.id === producto.id); // Verifico si el producto existe en localstorage
+                                    if(existe_.length > 0){ // verifico si encontro un producto repetido
+                                        //Si encuentra un producto repetido aumento el numero de productos que quiere
+                                        let add_storag = cart_localstorage.filter(p => p.id !== producto.id); // Obtengo todos los datos menos el producto repetido para agregar el actualizado
+                                        existe_[0].count = existe_[0].count + producto.count // sumo la cantidad de productos que tenia con la nueva que quiere ingresar
+                                        add_storag.push(...existe_) // Agregamos el producto actualizado
+                                        productos.push(...add_storag) // Agrego al arreglo todos los datos menos el producto duplicado
+                                        localStorage.setItem("productos",JSON.stringify(productos))
+                                        location.reload(true);
+                                    }else{
+                                        // Si no encuentra ningun producto duplicado Lo agrego al arreglo y actualizo el storage
+                                        productos.push(...cart_localstorage)
+                                        productos.push(producto)
+                                        localStorage.setItem("productos",JSON.stringify(productos))
+                                        location.reload(true);
+                                    }
+                                    
+                                    let cart = JSON.parse(localStorage.getItem("productos"))
+                                    //aumentar_icon_carrito(cart)
                                 }
-                                
-                                let cart = JSON.parse(localStorage.getItem("cart"))
-                                //aumentar_icon_carrito(cart)
-                            }
-                        })`;
+                            })
+                        }`;
                         script.id="ensalada";
                         
                         document.head.appendChild(script);
@@ -562,6 +612,53 @@ export const Menu = () => {
                             }
                             
                         })
+
+                                
+                        /* AGREGAR PRODUCTOS A LOCALSTORAGE */
+
+                        const add_cart = document.querySelector("#add_cart")
+
+                        add_cart.addEventListener("click", () =>{
+                            
+                            let productos = []
+                            let producto = {
+                                titulo     : modal_titulo.innerHTML,
+                                descripcion: modal_descripcion.innerHTML,
+                                img        : modal_img.src,
+                                precio     : parseInt(modal_precio.innerHTML,10),
+                                count      : parseInt(count_prod.innerHTML,10),
+                                id         : id_prod
+                            }
+
+                            let localS = localStorage.getItem("productos")
+                            if(localS === null){
+                                productos.push(producto)
+                                localStorage.setItem("productos",JSON.stringify(productos))
+                                location.reload(true);
+                            }else{
+                                /* Verificar si el producto existe en el localstorage para evitar guardar duplicas*/
+                                const cart_localstorage = JSON.parse(localS); // Convierto de string a JSON
+                                let existe_ = cart_localstorage.filter(p => p.id === producto.id); // Verifico si el producto existe en localstorage
+                                if(existe_.length > 0){ // verifico si encontro un producto repetido
+                                    //Si encuentra un producto repetido aumento el numero de productos que quiere
+                                    let add_storag = cart_localstorage.filter(p => p.id !== producto.id); // Obtengo todos los datos menos el producto repetido para agregar el actualizado
+                                    existe_[0].count = existe_[0].count + producto.count // sumo la cantidad de productos que tenia con la nueva que quiere ingresar
+                                    add_storag.push(...existe_) // Agregamos el producto actualizado
+                                    productos.push(...add_storag) // Agrego al arreglo todos los datos menos el producto duplicado
+                                    localStorage.setItem("productos",JSON.stringify(productos))
+                                    location.reload(true);
+                                }else{
+                                    // Si no encuentra ningun producto duplicado Lo agrego al arreglo y actualizo el storage
+                                    productos.push(...cart_localstorage)
+                                    productos.push(producto)
+                                    localStorage.setItem("productos",JSON.stringify(productos))
+                                    location.reload(true);
+                                }
+                                
+                                let cart = JSON.parse(localStorage.getItem("productos"))
+                                //aumentar_icon_carrito(cart)
+                            }
+                        })
                     }else{
                         /* Modificar cantidad de productos a comprar  */
 
@@ -581,52 +678,54 @@ export const Menu = () => {
                             }
                             
                         })
-                    }
-                    /* AGREGAR PRODUCTOS A LOCALSTORAGE */
 
-                    const add_cart = document.querySelector("#add_cart")
+                            
+                        /* AGREGAR PRODUCTOS A LOCALSTORAGE */
 
-                    add_cart.addEventListener("click", () =>{
-                        
-                        let productos = []
-                        let producto = {
-                            titulo     : modal_titulo.innerHTML,
-                            descripcion: modal_descripcion.innerHTML,
-                            img        : modal_img.src,
-                            precio     : parseInt(modal_precio.innerHTML,10),
-                            count      : parseInt(count_prod.innerHTML,10),
-                            id         : id_prod
-                        }
+                        const add_cart = document.querySelector("#add_cart")
 
-                        let localS = localStorage.getItem("cart")
-                        if(localS === null){
-                            productos.push(producto)
-                            localStorage.setItem("cart",JSON.stringify(productos))
-                            location.reload(true);
-                        }else{
-                            /* Verificar si el producto existe en el localstorage para evitar guardar duplicas*/
-                            const cart_localstorage = JSON.parse(localS); // Convierto de string a JSON
-                            let existe_ = cart_localstorage.filter(p => p.id === producto.id); // Verifico si el producto existe en localstorage
-                            if(existe_.length > 0){ // verifico si encontro un producto repetido
-                                //Si encuentra un producto repetido aumento el numero de productos que quiere
-                                let add_storag = cart_localstorage.filter(p => p.id !== producto.id); // Obtengo todos los datos menos el producto repetido para agregar el actualizado
-                                existe_[0].count = existe_[0].count + producto.count // sumo la cantidad de productos que tenia con la nueva que quiere ingresar
-                                add_storag.push(...existe_) // Agregamos el producto actualizado
-                                productos.push(...add_storag) // Agrego al arreglo todos los datos menos el producto duplicado
-                                localStorage.setItem("cart",JSON.stringify(productos))
+                        add_cart.addEventListener("click", () =>{
+                            
+                            let productos = []
+                            let producto = {
+                                titulo     : modal_titulo.innerHTML,
+                                descripcion: modal_descripcion.innerHTML,
+                                img        : modal_img.src,
+                                precio     : parseInt(modal_precio.innerHTML,10),
+                                count      : parseInt(count_prod.innerHTML,10),
+                                id         : id_prod
+                            }
+
+                            let localS = localStorage.getItem("productos")
+                            if(localS === null){
+                                productos.push(producto)
+                                localStorage.setItem("productos",JSON.stringify(productos))
                                 location.reload(true);
                             }else{
-                                // Si no encuentra ningun producto duplicado Lo agrego al arreglo y actualizo el storage
-                                productos.push(...cart_localstorage)
-                                productos.push(producto)
-                                localStorage.setItem("cart",JSON.stringify(productos))
-                                location.reload(true);
+                                /* Verificar si el producto existe en el localstorage para evitar guardar duplicas*/
+                                const cart_localstorage = JSON.parse(localS); // Convierto de string a JSON
+                                let existe_ = cart_localstorage.filter(p => p.id === producto.id); // Verifico si el producto existe en localstorage
+                                if(existe_.length > 0){ // verifico si encontro un producto repetido
+                                    //Si encuentra un producto repetido aumento el numero de productos que quiere
+                                    let add_storag = cart_localstorage.filter(p => p.id !== producto.id); // Obtengo todos los datos menos el producto repetido para agregar el actualizado
+                                    existe_[0].count = existe_[0].count + producto.count // sumo la cantidad de productos que tenia con la nueva que quiere ingresar
+                                    add_storag.push(...existe_) // Agregamos el producto actualizado
+                                    productos.push(...add_storag) // Agrego al arreglo todos los datos menos el producto duplicado
+                                    localStorage.setItem("productos",JSON.stringify(productos))
+                                    location.reload(true);
+                                }else{
+                                    // Si no encuentra ningun producto duplicado Lo agrego al arreglo y actualizo el storage
+                                    productos.push(...cart_localstorage)
+                                    productos.push(producto)
+                                    localStorage.setItem("productos",JSON.stringify(productos))
+                                    location.reload(true);
+                                }
+                                
+                                let cart = JSON.parse(localStorage.getItem("productos"))
+                                //aumentar_icon_carrito(cart)
                             }
-                            
-                            let cart = JSON.parse(localStorage.getItem("cart"))
-                            //aumentar_icon_carrito(cart)
-                        }
-                    })`;
+                        })
+                    }`;
                     script.id="sopas_1";
                     var sopas_1 = document.querySelector("#sopas");
                     document.head.appendChild(script);
@@ -724,6 +823,7 @@ export const Menu = () => {
                             
                         })
 
+                                
                         /* AGREGAR PRODUCTOS A LOCALSTORAGE */
 
                         const add_cart = document.querySelector("#add_cart")
@@ -740,10 +840,10 @@ export const Menu = () => {
                                 id         : id_prod
                             }
 
-                            let localS = localStorage.getItem("cart")
+                            let localS = localStorage.getItem("productos")
                             if(localS === null){
                                 productos.push(producto)
-                                localStorage.setItem("cart",JSON.stringify(productos))
+                                localStorage.setItem("productos",JSON.stringify(productos))
                                 location.reload(true);
                             }else{
                                 /* Verificar si el producto existe en el localstorage para evitar guardar duplicas*/
@@ -755,17 +855,17 @@ export const Menu = () => {
                                     existe_[0].count = existe_[0].count + producto.count // sumo la cantidad de productos que tenia con la nueva que quiere ingresar
                                     add_storag.push(...existe_) // Agregamos el producto actualizado
                                     productos.push(...add_storag) // Agrego al arreglo todos los datos menos el producto duplicado
-                                    localStorage.setItem("cart",JSON.stringify(productos))
+                                    localStorage.setItem("productos",JSON.stringify(productos))
                                     location.reload(true);
                                 }else{
                                     // Si no encuentra ningun producto duplicado Lo agrego al arreglo y actualizo el storage
                                     productos.push(...cart_localstorage)
                                     productos.push(producto)
-                                    localStorage.setItem("cart",JSON.stringify(productos))
+                                    localStorage.setItem("productos",JSON.stringify(productos))
                                     location.reload(true);
                                 }
                                 
-                                let cart = JSON.parse(localStorage.getItem("cart"))
+                                let cart = JSON.parse(localStorage.getItem("productos"))
                                 //aumentar_icon_carrito(cart)
                             }
                         })
@@ -790,6 +890,7 @@ export const Menu = () => {
                         })
 
                         
+                                
                         /* AGREGAR PRODUCTOS A LOCALSTORAGE */
 
                         const add_cart = document.querySelector("#add_cart")
@@ -806,10 +907,10 @@ export const Menu = () => {
                                 id         : id_prod
                             }
 
-                            let localS = localStorage.getItem("cart")
+                            let localS = localStorage.getItem("productos")
                             if(localS === null){
                                 productos.push(producto)
-                                localStorage.setItem("cart",JSON.stringify(productos))
+                                localStorage.setItem("productos",JSON.stringify(productos))
                                 location.reload(true);
                             }else{
                                 /* Verificar si el producto existe en el localstorage para evitar guardar duplicas*/
@@ -821,17 +922,17 @@ export const Menu = () => {
                                     existe_[0].count = existe_[0].count + producto.count // sumo la cantidad de productos que tenia con la nueva que quiere ingresar
                                     add_storag.push(...existe_) // Agregamos el producto actualizado
                                     productos.push(...add_storag) // Agrego al arreglo todos los datos menos el producto duplicado
-                                    localStorage.setItem("cart",JSON.stringify(productos))
+                                    localStorage.setItem("productos",JSON.stringify(productos))
                                     location.reload(true);
                                 }else{
                                     // Si no encuentra ningun producto duplicado Lo agrego al arreglo y actualizo el storage
                                     productos.push(...cart_localstorage)
                                     productos.push(producto)
-                                    localStorage.setItem("cart",JSON.stringify(productos))
+                                    localStorage.setItem("productos",JSON.stringify(productos))
                                     location.reload(true);
                                 }
                                 
-                                let cart = JSON.parse(localStorage.getItem("cart"))
+                                let cart = JSON.parse(localStorage.getItem("productos"))
                                 //aumentar_icon_carrito(cart)
                             }
                         })
@@ -1047,10 +1148,10 @@ export const Menu = () => {
                                 id         : id_prod
                             }
     
-                            let localS = localStorage.getItem("cart")
+                            let localS = localStorage.getItem("productos")
                             if(localS === null){
                                 productos.push(producto)
-                                localStorage.setItem("cart",JSON.stringify(productos))
+                                localStorage.setItem("productos",JSON.stringify(productos))
                                 location.reload(true);
                             }else{
                                 /* Verificar si el producto existe en el localstorage para evitar guardar duplicas*/
@@ -1062,17 +1163,17 @@ export const Menu = () => {
                                     existe_[0].count = existe_[0].count + producto.count // sumo la cantidad de productos que tenia con la nueva que quiere ingresar
                                     add_storag.push(...existe_) // Agregamos el producto actualizado
                                     productos.push(...add_storag) // Agrego al arreglo todos los datos menos el producto duplicado
-                                    localStorage.setItem("cart",JSON.stringify(productos))
+                                    localStorage.setItem("productos",JSON.stringify(productos))
                                     location.reload(true);
                                 }else{
                                     // Si no encuentra ningun producto duplicado Lo agrego al arreglo y actualizo el storage
                                     productos.push(...cart_localstorage)
                                     productos.push(producto)
-                                    localStorage.setItem("cart",JSON.stringify(productos))
+                                    localStorage.setItem("productos",JSON.stringify(productos))
                                     location.reload(true);
                                 }
                                 
-                                let cart = JSON.parse(localStorage.getItem("cart"))
+                                let cart = JSON.parse(localStorage.getItem("productos"))
                                 //aumentar_icon_carrito(cart)
                             }
                         })
@@ -1113,10 +1214,10 @@ export const Menu = () => {
                                 id         : id_prod
                             }
     
-                            let localS = localStorage.getItem("cart")
+                            let localS = localStorage.getItem("productos")
                             if(localS === null){
                                 productos.push(producto)
-                                localStorage.setItem("cart",JSON.stringify(productos))
+                                localStorage.setItem("productos",JSON.stringify(productos))
                                 location.reload(true);
                             }else{
                                 /* Verificar si el producto existe en el localstorage para evitar guardar duplicas*/
@@ -1128,17 +1229,17 @@ export const Menu = () => {
                                     existe_[0].count = existe_[0].count + producto.count // sumo la cantidad de productos que tenia con la nueva que quiere ingresar
                                     add_storag.push(...existe_) // Agregamos el producto actualizado
                                     productos.push(...add_storag) // Agrego al arreglo todos los datos menos el producto duplicado
-                                    localStorage.setItem("cart",JSON.stringify(productos))
+                                    localStorage.setItem("productos",JSON.stringify(productos))
                                     location.reload(true);
                                 }else{
                                     // Si no encuentra ningun producto duplicado Lo agrego al arreglo y actualizo el storage
                                     productos.push(...cart_localstorage)
                                     productos.push(producto)
-                                    localStorage.setItem("cart",JSON.stringify(productos))
+                                    localStorage.setItem("productos",JSON.stringify(productos))
                                     location.reload(true);
                                 }
                                 
-                                let cart = JSON.parse(localStorage.getItem("cart"))
+                                let cart = JSON.parse(localStorage.getItem("productos"))
                                 //aumentar_icon_carrito(cart)
                             }
                         })
@@ -1253,10 +1354,10 @@ export const Menu = () => {
                                 id         : id_prod
                             }
     
-                            let localS = localStorage.getItem("cart")
+                            let localS = localStorage.getItem("productos")
                             if(localS === null){
                                 productos.push(producto)
-                                localStorage.setItem("cart",JSON.stringify(productos))
+                                localStorage.setItem("productos",JSON.stringify(productos))
                                 location.reload(true);
                             }else{
                                 /* Verificar si el producto existe en el localstorage para evitar guardar duplicas*/
@@ -1268,17 +1369,17 @@ export const Menu = () => {
                                     existe_[0].count = existe_[0].count + producto.count // sumo la cantidad de productos que tenia con la nueva que quiere ingresar
                                     add_storag.push(...existe_) // Agregamos el producto actualizado
                                     productos.push(...add_storag) // Agrego al arreglo todos los datos menos el producto duplicado
-                                    localStorage.setItem("cart",JSON.stringify(productos))
+                                    localStorage.setItem("productos",JSON.stringify(productos))
                                     location.reload(true);
                                 }else{
                                     // Si no encuentra ningun producto duplicado Lo agrego al arreglo y actualizo el storage
                                     productos.push(...cart_localstorage)
                                     productos.push(producto)
-                                    localStorage.setItem("cart",JSON.stringify(productos))
+                                    localStorage.setItem("productos",JSON.stringify(productos))
                                     location.reload(true);
                                 }
                                 
-                                let cart = JSON.parse(localStorage.getItem("cart"))
+                                let cart = JSON.parse(localStorage.getItem("productos"))
                                 //aumentar_icon_carrito(cart)
                             }
                         })
@@ -1319,10 +1420,10 @@ export const Menu = () => {
                                 id         : id_prod
                             }
     
-                            let localS = localStorage.getItem("cart")
+                            let localS = localStorage.getItem("productos")
                             if(localS === null){
                                 productos.push(producto)
-                                localStorage.setItem("cart",JSON.stringify(productos))
+                                localStorage.setItem("productos",JSON.stringify(productos))
                                 location.reload(true);
                             }else{
                                 /* Verificar si el producto existe en el localstorage para evitar guardar duplicas*/
@@ -1334,17 +1435,17 @@ export const Menu = () => {
                                     existe_[0].count = existe_[0].count + producto.count // sumo la cantidad de productos que tenia con la nueva que quiere ingresar
                                     add_storag.push(...existe_) // Agregamos el producto actualizado
                                     productos.push(...add_storag) // Agrego al arreglo todos los datos menos el producto duplicado
-                                    localStorage.setItem("cart",JSON.stringify(productos))
+                                    localStorage.setItem("productos",JSON.stringify(productos))
                                     location.reload(true);
                                 }else{
                                     // Si no encuentra ningun producto duplicado Lo agrego al arreglo y actualizo el storage
                                     productos.push(...cart_localstorage)
                                     productos.push(producto)
-                                    localStorage.setItem("cart",JSON.stringify(productos))
+                                    localStorage.setItem("productos",JSON.stringify(productos))
                                     location.reload(true);
                                 }
                                 
-                                let cart = JSON.parse(localStorage.getItem("cart"))
+                                let cart = JSON.parse(localStorage.getItem("productos"))
                                 //aumentar_icon_carrito(cart)
                             }
                         })
@@ -1474,122 +1575,1031 @@ export const Menu = () => {
 
     useEffect(()=>{
         var bebidas = document.getElementById("bebidas");
-        //var cantidad = 0;
+        var cantidad = 0;
         if(visible3){
-            var list_bebidas = '';
-            const data_bebidas = [
-                {
-                    titulo     : 'Ensalada poke de atún y algas con aguacate',
-                    descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus unde facere dolore sit blanditiis quia dignissimos officia sed dicta amet doloribus tempore reiciendis inventore quaerat odit, fugiat minus ipsa suscipit.',
-                    precio     : 30000,
-                    img        : ''+bed.bed_1+'',
-                    id         : 'bebida_1'
-                },
-                {
-                    titulo     : 'Ensalada poke de atún y algas con aguacate',
-                    descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus unde facere dolore sit blanditiis quia dignissimos officia sed dicta amet doloribus tempore reiciendis inventore quaerat odit, fugiat minus ipsa suscipit.',
-                    precio     : 30000,
-                    img        : ''+bed.bed_2+'',
-                    id         : 'bebida_2'
-                },
-                {
-                    titulo     : 'Ensalada poke de atún y algas con aguacate',
-                    descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus unde facere dolore sit blanditiis quia dignissimos officia sed dicta amet doloribus tempore reiciendis inventore quaerat odit, fugiat minus ipsa suscipit.',
-                    precio     : 30000,
-                    img        : ''+bed.bed_3+'',
-                    id         : 'bebida_3'
-                },
-                {
-                    titulo     : 'Ensalada poke de atún y algas con aguacate',
-                    descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus unde facere dolore sit blanditiis quia dignissimos officia sed dicta amet doloribus tempore reiciendis inventore quaerat odit, fugiat minus ipsa suscipit.',
-                    precio     : 30000,
-                    img        : ''+bed.bed_4+'',
-                    id         : 'bebida_4'
-                },
-                {
-                    titulo     : 'Ensalada poke de atún y algas con aguacate',
-                    descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus unde facere dolore sit blanditiis quia dignissimos officia sed dicta amet doloribus tempore reiciendis inventore quaerat odit, fugiat minus ipsa suscipit.',
-                    precio     : 30000,
-                    img        : ''+bed.bed_5+'',
-                    id         : 'bebida_5'
-                },
-                {
-                    titulo     : 'Ensalada poke de atún y algas con aguacate',
-                    descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus unde facere dolore sit blanditiis quia dignissimos officia sed dicta amet doloribus tempore reiciendis inventore quaerat odit, fugiat minus ipsa suscipit.',
-                    precio     : 30000,
-                    img        : ''+bed.bed_6+'',
-                    id         : 'bebida_6'
-                },
-                {
-                    titulo     : 'Ensalada poke de atún y algas con aguacate',
-                    descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus unde facere dolore sit blanditiis quia dignissimos officia sed dicta amet doloribus tempore reiciendis inventore quaerat odit, fugiat minus ipsa suscipit.',
-                    precio     : 30000,
-                    img        : ''+bed.bed_7+'',
-                    id         : 'bebida_7'
-                },
-                {
-                    titulo     : 'Ensalada poke de atún y algas con aguacate',
-                    descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus unde facere dolore sit blanditiis quia dignissimos officia sed dicta amet doloribus tempore reiciendis inventore quaerat odit, fugiat minus ipsa suscipit.',
-                    precio     : 30000,
-                    img        : ''+bed.bed_8+'',
-                    id         : 'bebida_8'
-                },
-                {
-                    titulo     : 'Ensalada poke de atún y algas con aguacate',
-                    descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus unde facere dolore sit blanditiis quia dignissimos officia sed dicta amet doloribus tempore reiciendis inventore quaerat odit, fugiat minus ipsa suscipit.',
-                    precio     : 30000,
-                    img        : ''+bed.bed_9+'',
-                    id         : 'bebida_9'
-                },
-                {
-                    titulo     : 'Ensalada poke de atún y algas con aguacate',
-                    descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus unde facere dolore sit blanditiis quia dignissimos officia sed dicta amet doloribus tempore reiciendis inventore quaerat odit, fugiat minus ipsa suscipit.',
-                    precio     : 30000,
-                    img        : ''+bed.bed_10+'',
-                    id         : 'bebida_10'
-                },
-                {
-                    titulo     : 'Ensalada poke de atún y algas con aguacate',
-                    descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus unde facere dolore sit blanditiis quia dignissimos officia sed dicta amet doloribus tempore reiciendis inventore quaerat odit, fugiat minus ipsa suscipit.',
-                    precio     : 30000,
-                    img        : ''+bed.bed_11+'',
-                    id         : 'bebida_11'
-                },
-                {
-                    titulo     : 'Ensalada poke de atún y algas con aguacate',
-                    descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus unde facere dolore sit blanditiis quia dignissimos officia sed dicta amet doloribus tempore reiciendis inventore quaerat odit, fugiat minus ipsa suscipit.',
-                    precio     : 30000,
-                    img        : ''+bed.bed_12+'',
-                    id         : 'bebida_12'
-                }
-                
-            ];
-            /* Bebidas */
+            var top = document.getElementById("bebidas_1");
+            get(child(dbRef, `productos/bebidas_cantidad/`)).then((snapshot) => {
+                if (snapshot.exists()) {
+                    cantidad = snapshot.val().cantidad;
+                    console.log(cantidad);
+                    
+                    if(top){
+                        top.removeChild(top.firstChild);
+                        top.remove();
+                    }
 
-            const menu_bebidas = (data) => {
-                for (let index = 0; index < data.length; index++) {
-                    const item = data[index];
-                    list_bebidas += 
-                    `
-                    <div class='col'>
-                        <div class='card h-100 card-radius'>
-                            <img src=${item.img} alt='...' class='card-img-top card-imf-radius'>
-                                <div class='card-body'>
-                                    <h5 class='card-title text-capitalize'>${item.titulo}</h5>
-                                    <p class='card-text'>${item.descripcion}</p>
-                                    <p class='card-text'>$ ${item.precio}</p>
-                                    <button onclick="modal_data(${index},4)" class='btn-general' data-bs-toggle='modal' data-bs-target='#exampleModalProducto'>Mas informacion</button>
+                    if(bebidas){
+                        var script = document.createElement("script");
+                        script.text = `/* ABRIR MODAL A PRODUCTO ESPECIFICO */
+                        var modal_titulo      = document.querySelector("#modal_titulo");
+                        var modal_descripcion = document.querySelector("#modal_descripcion");
+                        var modal_precio      = document.querySelector("#modal_precio");
+                        var modal_img         = document.querySelector("#modal_img");
+                        var id_prod           = document.querySelector("#id_prod")
+                        //indice: Es la posicion en el arreglo donde se encuentra el producto
+                        //lista: Tenemos 4 categorias en nuestro menu, cada una tiene un numero que identifica a cada una
+                        // Esta funcion extrae el producto en la categoria especifica
+                        function modal_data(indice,lista,nombre,descrip,img,precio,id){
+                                            
+                            let data = {
+                                titulo     : '',
+                                descripcion: '',
+                                img        : '',
+                                precio     : 0,
+                                id         : ''
+                            };
+            
+                            modal_titulo.innerHTML      = nombre
+                            modal_descripcion.innerHTML = descrip
+                            modal_img.src               = img
+                            modal_precio.innerHTML      = precio
+                            count_prod.innerHTML        = 1
+                            id_prod                     = id
+                            console.log(id_prod.value)
+                            console.log(indice);
+                            console.log(lista);
+                            console.log(nombre);
+                            console.log(descrip);
+                            console.log(img);
+                            console.log(precio);
+                            console.log(id);
+                        }
+                        if(parseInt(localStorage.getItem("cargar_informacion_bebidas"))!=1){
+                            /* Modificar cantidad de productos a comprar  */
+            
+                            const mas   = document.querySelector("#mas")
+                            const menos = document.querySelector("#menos")
+                            const count_prod = document.querySelector("#count_prod")
+            
+                            mas.addEventListener("click",() => {
+                                let count_ = parseInt(count_prod.innerHTML,10)
+                                count_prod.innerHTML = count_ = count_ + 1
+                            })
+            
+                            menos.addEventListener("click",() => {
+                                let count_ = parseInt(count_prod.innerHTML,10)
+                                if(count_ > 0){
+                                    count_prod.innerHTML = count_ = count_ - 1
+                                }
+                                
+                            })
+                                
+                            /* AGREGAR PRODUCTOS A LOCALSTORAGE */
+            
+                            const add_cart = document.querySelector("#add_cart")
+            
+                            add_cart.addEventListener("click", () =>{
+                                
+                                let productos = []
+                                let producto = {
+                                    titulo     : modal_titulo.innerHTML,
+                                    descripcion: modal_descripcion.innerHTML,
+                                    img        : modal_img.src,
+                                    precio     : parseInt(modal_precio.innerHTML,10),
+                                    count      : parseInt(count_prod.innerHTML,10),
+                                    id         : id_prod
+                                }
+            
+                                let localS = localStorage.getItem("productos")
+                                if(localS === null){
+                                    productos.push(producto)
+                                    localStorage.setItem("productos",JSON.stringify(productos))
+                                    location.reload(true);
+                                }else{
+                                    /* Verificar si el producto existe en el localstorage para evitar guardar duplicas*/
+                                    const cart_localstorage = JSON.parse(localS); // Convierto de string a JSON
+                                    let existe_ = cart_localstorage.filter(p => p.id === producto.id); // Verifico si el producto existe en localstorage
+                                    if(existe_.length > 0){ // verifico si encontro un producto repetido
+                                        //Si encuentra un producto repetido aumento el numero de productos que quiere
+                                        let add_storag = cart_localstorage.filter(p => p.id !== producto.id); // Obtengo todos los datos menos el producto repetido para agregar el actualizado
+                                        existe_[0].count = existe_[0].count + producto.count // sumo la cantidad de productos que tenia con la nueva que quiere ingresar
+                                        add_storag.push(...existe_) // Agregamos el producto actualizado
+                                        productos.push(...add_storag) // Agrego al arreglo todos los datos menos el producto duplicado
+                                        localStorage.setItem("productos",JSON.stringify(productos))
+                                        location.reload(true);
+                                    }else{
+                                        // Si no encuentra ningun producto duplicado Lo agrego al arreglo y actualizo el storage
+                                        productos.push(...cart_localstorage)
+                                        productos.push(producto)
+                                        localStorage.setItem("productos",JSON.stringify(productos))
+                                        location.reload(true);
+                                    }
+                                    
+                                    let cart = JSON.parse(localStorage.getItem("productos"))
+                                    //aumentar_icon_carrito(cart)
+                                }
+                            })
+                        }else{
+                            /* Modificar cantidad de productos a comprar  */
+            
+                            const mas   = document.querySelector("#mas")
+                            const menos = document.querySelector("#menos")
+                            const count_prod = document.querySelector("#count_prod")
+            
+                            mas.addEventListener("click",() => {
+                                let count_ = parseInt(count_prod.innerHTML,10)
+                                count_prod.innerHTML = count_ = count_ + 1
+                            })
+            
+                            menos.addEventListener("click",() => {
+                                let count_ = parseInt(count_prod.innerHTML,10)
+                                if(count_ > 0){
+                                    count_prod.innerHTML = count_ = count_ - 1
+                                }
+                                
+                            })
+            
+                                    
+                            /* AGREGAR PRODUCTOS A LOCALSTORAGE */
+            
+                            const add_cart = document.querySelector("#add_cart")
+            
+                            add_cart.addEventListener("click", () =>{
+                                
+                                let productos = []
+                                let producto = {
+                                    titulo     : modal_titulo.innerHTML,
+                                    descripcion: modal_descripcion.innerHTML,
+                                    img        : modal_img.src,
+                                    precio     : parseInt(modal_precio.innerHTML,10),
+                                    count      : parseInt(count_prod.innerHTML,10),
+                                    id         : id_prod
+                                }
+            
+                                let localS = localStorage.getItem("productos")
+                                if(localS === null){
+                                    productos.push(producto)
+                                    localStorage.setItem("productos",JSON.stringify(productos))
+                                    location.reload(true);
+                                }else{
+                                    /* Verificar si el producto existe en el localstorage para evitar guardar duplicas*/
+                                    const cart_localstorage = JSON.parse(localS); // Convierto de string a JSON
+                                    let existe_ = cart_localstorage.filter(p => p.id === producto.id); // Verifico si el producto existe en localstorage
+                                    if(existe_.length > 0){ // verifico si encontro un producto repetido
+                                        //Si encuentra un producto repetido aumento el numero de productos que quiere
+                                        let add_storag = cart_localstorage.filter(p => p.id !== producto.id); // Obtengo todos los datos menos el producto repetido para agregar el actualizado
+                                        existe_[0].count = existe_[0].count + producto.count // sumo la cantidad de productos que tenia con la nueva que quiere ingresar
+                                        add_storag.push(...existe_) // Agregamos el producto actualizado
+                                        productos.push(...add_storag) // Agrego al arreglo todos los datos menos el producto duplicado
+                                        localStorage.setItem("productos",JSON.stringify(productos))
+                                        location.reload(true);
+                                    }else{
+                                        // Si no encuentra ningun producto duplicado Lo agrego al arreglo y actualizo el storage
+                                        productos.push(...cart_localstorage)
+                                        productos.push(producto)
+                                        localStorage.setItem("productos",JSON.stringify(productos))
+                                        location.reload(true);
+                                    }
+                                    
+                                    let cart = JSON.parse(localStorage.getItem("productos"))
+                                    //aumentar_icon_carrito(cart)
+                                }
+                            })
+                        }`;
+                        script.id="bebidas_1";
+                        var bebidas_1 = document.querySelector("#bebidas");
+                        document.head.appendChild(script);
+                        localStorage.setItem("cargar_informacion_bebidas",1);
+                        var list_bebidas = '';
+                        for(var i=0; i<cantidad;i++){
+                            const id_cantidad = i +1;
+                            get(child(dbRef, `productos/bebidas/${id_cantidad}`)).then((snapshot) => {
+                                if (snapshot.exists()) {           
+                                        list_bebidas += 
+                                        `
+                                        <div class='col'>
+                                            <div class='card h-100 card-radius'>
+                                                <img src=${snapshot.val().imagen} alt='...' class='card-img-top card-imf-radius'>
+                                                    <div class='card-body'>
+                                                        <h5 class='card-title text-capitalize'>${snapshot.val().nombre}</h5>
+                                                        <p class='card-text'>${snapshot.val().descripcion}</p>
+                                                        <p class='card-text'>$ ${snapshot.val().precio}</p>
+                                                        <button onclick="modal_data(${snapshot.val().id-1},3,'${snapshot.val().nombre}','${snapshot.val().descripcion}','${snapshot.val().imagen}','${snapshot.val().precio}','bebidas_'+${snapshot.val().id})" class='btn-general' data-bs-toggle='modal' data-bs-target='#exampleModalProducto'>Mas informacion</button>
+                                                    </div>
+                                                </img>
+                                            </div>
+                                        </div>
+                                        `;
+                                        bebidas.innerHTML = list_bebidas;
+                                    
+                                } else {
+                                console.log("No data available");
+                                }
+                            }).catch((error) => {
+                                console.error(error);
+                            });
+                        }
+                    }
+                } else {
+                    if(top){
+                        top.removeChild(top.firstChild);
+                        top.remove();
+                    }
+                    if(bebidas){
+                        var script = document.createElement("script");
+                        script.text = `/* ABRIR MODAL A PRODUCTO ESPECIFICO */
+                        var modal_titulo      = document.querySelector("#modal_titulo");
+                        var modal_descripcion = document.querySelector("#modal_descripcion");
+                        var modal_precio      = document.querySelector("#modal_precio");
+                        var modal_img         = document.querySelector("#modal_img");
+                        var id_prod           = document.querySelector("#id_prod")
+                        //indice: Es la posicion en el arreglo donde se encuentra el producto
+                        //lista: Tenemos 4 categorias en nuestro menu, cada una tiene un numero que identifica a cada una
+                        // Esta funcion extrae el producto en la categoria especifica
+                        function modal_data(indice,lista,nombre,descrip,img,precio,id){
+                                            
+                            let data = {
+                                titulo     : '',
+                                descripcion: '',
+                                img        : '',
+                                precio     : 0,
+                                id         : ''
+                            };
+            
+                            modal_titulo.innerHTML      = nombre
+                            modal_descripcion.innerHTML = descrip
+                            modal_img.src               = img
+                            modal_precio.innerHTML      = precio
+                            count_prod.innerHTML        = 1
+                            id_prod                     = id
+                            console.log(id_prod.value)
+                            console.log(indice);
+                            console.log(lista);
+                            console.log(nombre);
+                            console.log(descrip);
+                            console.log(img);
+                            console.log(precio);
+                            console.log(id);
+                        }
+                        if(parseInt(localStorage.getItem("cargar_informacion_bebidas"))!=1){
+                            /* Modificar cantidad de productos a comprar  */
+            
+                            const mas   = document.querySelector("#mas")
+                            const menos = document.querySelector("#menos")
+                            const count_prod = document.querySelector("#count_prod")
+            
+                            mas.addEventListener("click",() => {
+                                let count_ = parseInt(count_prod.innerHTML,10)
+                                count_prod.innerHTML = count_ = count_ + 1
+                            })
+            
+                            menos.addEventListener("click",() => {
+                                let count_ = parseInt(count_prod.innerHTML,10)
+                                if(count_ > 0){
+                                    count_prod.innerHTML = count_ = count_ - 1
+                                }
+                                
+                            })
+                                
+                            /* AGREGAR PRODUCTOS A LOCALSTORAGE */
+            
+                            const add_cart = document.querySelector("#add_cart")
+            
+                            add_cart.addEventListener("click", () =>{
+                                
+                                let productos = []
+                                let producto = {
+                                    titulo     : modal_titulo.innerHTML,
+                                    descripcion: modal_descripcion.innerHTML,
+                                    img        : modal_img.src,
+                                    precio     : parseInt(modal_precio.innerHTML,10),
+                                    count      : parseInt(count_prod.innerHTML,10),
+                                    id         : id_prod
+                                }
+            
+                                let localS = localStorage.getItem("productos")
+                                if(localS === null){
+                                    productos.push(producto)
+                                    localStorage.setItem("productos",JSON.stringify(productos))
+                                    location.reload(true);
+                                }else{
+                                    /* Verificar si el producto existe en el localstorage para evitar guardar duplicas*/
+                                    const cart_localstorage = JSON.parse(localS); // Convierto de string a JSON
+                                    let existe_ = cart_localstorage.filter(p => p.id === producto.id); // Verifico si el producto existe en localstorage
+                                    if(existe_.length > 0){ // verifico si encontro un producto repetido
+                                        //Si encuentra un producto repetido aumento el numero de productos que quiere
+                                        let add_storag = cart_localstorage.filter(p => p.id !== producto.id); // Obtengo todos los datos menos el producto repetido para agregar el actualizado
+                                        existe_[0].count = existe_[0].count + producto.count // sumo la cantidad de productos que tenia con la nueva que quiere ingresar
+                                        add_storag.push(...existe_) // Agregamos el producto actualizado
+                                        productos.push(...add_storag) // Agrego al arreglo todos los datos menos el producto duplicado
+                                        localStorage.setItem("productos",JSON.stringify(productos))
+                                        location.reload(true);
+                                    }else{
+                                        // Si no encuentra ningun producto duplicado Lo agrego al arreglo y actualizo el storage
+                                        productos.push(...cart_localstorage)
+                                        productos.push(producto)
+                                        localStorage.setItem("productos",JSON.stringify(productos))
+                                        location.reload(true);
+                                    }
+                                    
+                                    let cart = JSON.parse(localStorage.getItem("productos"))
+                                    //aumentar_icon_carrito(cart)
+                                }
+                            })
+                        }else{
+                            /* Modificar cantidad de productos a comprar  */
+            
+                            const mas   = document.querySelector("#mas")
+                            const menos = document.querySelector("#menos")
+                            const count_prod = document.querySelector("#count_prod")
+            
+                            mas.addEventListener("click",() => {
+                                let count_ = parseInt(count_prod.innerHTML,10)
+                                count_prod.innerHTML = count_ = count_ + 1
+                            })
+            
+                            menos.addEventListener("click",() => {
+                                let count_ = parseInt(count_prod.innerHTML,10)
+                                if(count_ > 0){
+                                    count_prod.innerHTML = count_ = count_ - 1
+                                }
+                                
+                            })
+            
+                                    
+                            /* AGREGAR PRODUCTOS A LOCALSTORAGE */
+            
+                            const add_cart = document.querySelector("#add_cart")
+            
+                            add_cart.addEventListener("click", () =>{
+                                
+                                let productos = []
+                                let producto = {
+                                    titulo     : modal_titulo.innerHTML,
+                                    descripcion: modal_descripcion.innerHTML,
+                                    img        : modal_img.src,
+                                    precio     : parseInt(modal_precio.innerHTML,10),
+                                    count      : parseInt(count_prod.innerHTML,10),
+                                    id         : id_prod
+                                }
+            
+                                let localS = localStorage.getItem("productos")
+                                if(localS === null){
+                                    productos.push(producto)
+                                    localStorage.setItem("productos",JSON.stringify(productos))
+                                    location.reload(true);
+                                }else{
+                                    /* Verificar si el producto existe en el localstorage para evitar guardar duplicas*/
+                                    const cart_localstorage = JSON.parse(localS); // Convierto de string a JSON
+                                    let existe_ = cart_localstorage.filter(p => p.id === producto.id); // Verifico si el producto existe en localstorage
+                                    if(existe_.length > 0){ // verifico si encontro un producto repetido
+                                        //Si encuentra un producto repetido aumento el numero de productos que quiere
+                                        let add_storag = cart_localstorage.filter(p => p.id !== producto.id); // Obtengo todos los datos menos el producto repetido para agregar el actualizado
+                                        existe_[0].count = existe_[0].count + producto.count // sumo la cantidad de productos que tenia con la nueva que quiere ingresar
+                                        add_storag.push(...existe_) // Agregamos el producto actualizado
+                                        productos.push(...add_storag) // Agrego al arreglo todos los datos menos el producto duplicado
+                                        localStorage.setItem("productos",JSON.stringify(productos))
+                                        location.reload(true);
+                                    }else{
+                                        // Si no encuentra ningun producto duplicado Lo agrego al arreglo y actualizo el storage
+                                        productos.push(...cart_localstorage)
+                                        productos.push(producto)
+                                        localStorage.setItem("productos",JSON.stringify(productos))
+                                        location.reload(true);
+                                    }
+                                    
+                                    let cart = JSON.parse(localStorage.getItem("productos"))
+                                    //aumentar_icon_carrito(cart)
+                                }
+                            })
+                        }`;
+                        script.id="bebidas_1";
+                        var bebidas_1 = document.querySelector("#bebidas");
+                        document.head.appendChild(script);
+                        localStorage.setItem("cargar_informacion_bebidas",1);
+                        var list_bebidas = '';
+                        const data_bebidas = [
+                            {
+                                titulo     : 'Ensalada poke de atún y algas con aguacate',
+                                descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus unde facere dolore sit blanditiis quia dignissimos officia sed dicta amet doloribus tempore reiciendis inventore quaerat odit, fugiat minus ipsa suscipit.',
+                                precio     : 30000,
+                                img        : ''+bed.bed_1+'',
+                                id         : 'bebida_1'
+                            },
+                            {
+                                titulo     : 'Ensalada poke de atún y algas con aguacate',
+                                descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus unde facere dolore sit blanditiis quia dignissimos officia sed dicta amet doloribus tempore reiciendis inventore quaerat odit, fugiat minus ipsa suscipit.',
+                                precio     : 30000,
+                                img        : ''+bed.bed_2+'',
+                                id         : 'bebida_2'
+                            },
+                            {
+                                titulo     : 'Ensalada poke de atún y algas con aguacate',
+                                descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus unde facere dolore sit blanditiis quia dignissimos officia sed dicta amet doloribus tempore reiciendis inventore quaerat odit, fugiat minus ipsa suscipit.',
+                                precio     : 30000,
+                                img        : ''+bed.bed_3+'',
+                                id         : 'bebida_3'
+                            },
+                            {
+                                titulo     : 'Ensalada poke de atún y algas con aguacate',
+                                descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus unde facere dolore sit blanditiis quia dignissimos officia sed dicta amet doloribus tempore reiciendis inventore quaerat odit, fugiat minus ipsa suscipit.',
+                                precio     : 30000,
+                                img        : ''+bed.bed_4+'',
+                                id         : 'bebida_4'
+                            },
+                            {
+                                titulo     : 'Ensalada poke de atún y algas con aguacate',
+                                descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus unde facere dolore sit blanditiis quia dignissimos officia sed dicta amet doloribus tempore reiciendis inventore quaerat odit, fugiat minus ipsa suscipit.',
+                                precio     : 30000,
+                                img        : ''+bed.bed_5+'',
+                                id         : 'bebida_5'
+                            },
+                            {
+                                titulo     : 'Ensalada poke de atún y algas con aguacate',
+                                descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus unde facere dolore sit blanditiis quia dignissimos officia sed dicta amet doloribus tempore reiciendis inventore quaerat odit, fugiat minus ipsa suscipit.',
+                                precio     : 30000,
+                                img        : ''+bed.bed_6+'',
+                                id         : 'bebida_6'
+                            },
+                            {
+                                titulo     : 'Ensalada poke de atún y algas con aguacate',
+                                descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus unde facere dolore sit blanditiis quia dignissimos officia sed dicta amet doloribus tempore reiciendis inventore quaerat odit, fugiat minus ipsa suscipit.',
+                                precio     : 30000,
+                                img        : ''+bed.bed_7+'',
+                                id         : 'bebida_7'
+                            },
+                            {
+                                titulo     : 'Ensalada poke de atún y algas con aguacate',
+                                descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus unde facere dolore sit blanditiis quia dignissimos officia sed dicta amet doloribus tempore reiciendis inventore quaerat odit, fugiat minus ipsa suscipit.',
+                                precio     : 30000,
+                                img        : ''+bed.bed_8+'',
+                                id         : 'bebida_8'
+                            },
+                            {
+                                titulo     : 'Ensalada poke de atún y algas con aguacate',
+                                descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus unde facere dolore sit blanditiis quia dignissimos officia sed dicta amet doloribus tempore reiciendis inventore quaerat odit, fugiat minus ipsa suscipit.',
+                                precio     : 30000,
+                                img        : ''+bed.bed_9+'',
+                                id         : 'bebida_9'
+                            },
+                            {
+                                titulo     : 'Ensalada poke de atún y algas con aguacate',
+                                descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus unde facere dolore sit blanditiis quia dignissimos officia sed dicta amet doloribus tempore reiciendis inventore quaerat odit, fugiat minus ipsa suscipit.',
+                                precio     : 30000,
+                                img        : ''+bed.bed_10+'',
+                                id         : 'bebida_10'
+                            },
+                            {
+                                titulo     : 'Ensalada poke de atún y algas con aguacate',
+                                descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus unde facere dolore sit blanditiis quia dignissimos officia sed dicta amet doloribus tempore reiciendis inventore quaerat odit, fugiat minus ipsa suscipit.',
+                                precio     : 30000,
+                                img        : ''+bed.bed_11+'',
+                                id         : 'bebida_11'
+                            },
+                            {
+                                titulo     : 'Ensalada poke de atún y algas con aguacate',
+                                descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus unde facere dolore sit blanditiis quia dignissimos officia sed dicta amet doloribus tempore reiciendis inventore quaerat odit, fugiat minus ipsa suscipit.',
+                                precio     : 30000,
+                                img        : ''+bed.bed_12+'',
+                                id         : 'bebida_12'
+                            }
+                            
+                        ];
+                        /* Bebidas */
+            
+                        const menu_bebidas = (data) => {
+                            for (let index = 0; index < data.length; index++) {
+                                const item = data[index];
+                                const cantidad_id = index +1;
+                                list_bebidas += 
+                                `
+                                <div class='col'>
+                                    <div class='card h-100 card-radius'>
+                                        <img src=${item.img} alt='...' class='card-img-top card-imf-radius'>
+                                            <div class='card-body'>
+                                                <h5 class='card-title text-capitalize'>${item.titulo}</h5>
+                                                <p class='card-text'>${item.descripcion}</p>
+                                                <p class='card-text'>$ ${item.precio}</p>
+                                                <button onclick="modal_data(${index},3,'${item.titulo}','${item.descripcion}','${item.img}','${item.precio}','bebidas_'+${index+1})" class='btn-general' data-bs-toggle='modal' data-bs-target='#exampleModalProducto'>Mas informacion</button>
+                                            </div>
+                                        </img>
+                                    </div>
                                 </div>
-                            </img>
-                        </div>
-                    </div>
-                    `;
+                                `;
+                                insertar_base_de_datos("bebidas",""+cantidad_id+"",""+item.titulo+"",""+item.descripcion+"",""+item.precio+"",""+item.img+"",cantidad_id);
+                            }
+                            bebidas.innerHTML = list_bebidas;
+                        }
+                        menu_bebidas(data_bebidas);
+                    }
                 }
-                bebidas.innerHTML = list_bebidas;
-            }
-            menu_bebidas(data_bebidas);
+            }).catch((error) => {
+                console.error(error);
+            });
         }
     },[visible3])
+
+    useEffect(()=>{
+        if(visible4){
+            var postres = document.getElementById("postres");
+            var cantidad = 0;
+            var top = document.getElementById("postres_1");
+            get(child(dbRef, `productos/postres_cantidad/`)).then((snapshot) => {
+                if (snapshot.exists()) {
+                    cantidad = snapshot.val().cantidad;
+                    console.log(cantidad);
+                    if(top){
+                        top.removeChild(top.firstChild);
+                        top.remove();
+                    }
+                    if(postres){
+                        var script = document.createElement("script");
+                        script.text = `/* ABRIR MODAL A PRODUCTO ESPECIFICO */
+                        var modal_titulo      = document.querySelector("#modal_titulo");
+                        var modal_descripcion = document.querySelector("#modal_descripcion");
+                        var modal_precio      = document.querySelector("#modal_precio");
+                        var modal_img         = document.querySelector("#modal_img");
+                        var id_prod           = document.querySelector("#id_prod")
+                        //indice: Es la posicion en el arreglo donde se encuentra el producto
+                        //lista: Tenemos 4 categorias en nuestro menu, cada una tiene un numero que identifica a cada una
+                        // Esta funcion extrae el producto en la categoria especifica
+                        function modal_data(indice,lista,nombre,descrip,img,precio,id){
+                                            
+                            let data = {
+                                titulo     : '',
+                                descripcion: '',
+                                img        : '',
+                                precio     : 0,
+                                id         : ''
+                            };
+            
+                            modal_titulo.innerHTML      = nombre
+                            modal_descripcion.innerHTML = descrip
+                            modal_img.src               = img
+                            modal_precio.innerHTML      = precio
+                            count_prod.innerHTML        = 1
+                            id_prod                     = id
+                            console.log(id_prod.value)
+                            console.log(indice);
+                            console.log(lista);
+                            console.log(nombre);
+                            console.log(descrip);
+                            console.log(img);
+                            console.log(precio);
+                            console.log(id);
+                        }
+                        if(parseInt(localStorage.getItem("cargar_informacion_postres"))!=1){
+                            /* Modificar cantidad de productos a comprar  */
+            
+                            const mas   = document.querySelector("#mas")
+                            const menos = document.querySelector("#menos")
+                            const count_prod = document.querySelector("#count_prod")
+            
+                            mas.addEventListener("click",() => {
+                                let count_ = parseInt(count_prod.innerHTML,10)
+                                count_prod.innerHTML = count_ = count_ + 1
+                            })
+            
+                            menos.addEventListener("click",() => {
+                                let count_ = parseInt(count_prod.innerHTML,10)
+                                if(count_ > 0){
+                                    count_prod.innerHTML = count_ = count_ - 1
+                                }
+                                
+                            })
+                                
+                            /* AGREGAR PRODUCTOS A LOCALSTORAGE */
+            
+                            const add_cart = document.querySelector("#add_cart")
+            
+                            add_cart.addEventListener("click", () =>{
+                                
+                                let productos = []
+                                let producto = {
+                                    titulo     : modal_titulo.innerHTML,
+                                    descripcion: modal_descripcion.innerHTML,
+                                    img        : modal_img.src,
+                                    precio     : parseInt(modal_precio.innerHTML,10),
+                                    count      : parseInt(count_prod.innerHTML,10),
+                                    id         : id_prod
+                                }
+            
+                                let localS = localStorage.getItem("productos")
+                                if(localS === null){
+                                    productos.push(producto)
+                                    localStorage.setItem("productos",JSON.stringify(productos))
+                                    location.reload(true);
+                                }else{
+                                    /* Verificar si el producto existe en el localstorage para evitar guardar duplicas*/
+                                    const cart_localstorage = JSON.parse(localS); // Convierto de string a JSON
+                                    let existe_ = cart_localstorage.filter(p => p.id === producto.id); // Verifico si el producto existe en localstorage
+                                    if(existe_.length > 0){ // verifico si encontro un producto repetido
+                                        //Si encuentra un producto repetido aumento el numero de productos que quiere
+                                        let add_storag = cart_localstorage.filter(p => p.id !== producto.id); // Obtengo todos los datos menos el producto repetido para agregar el actualizado
+                                        existe_[0].count = existe_[0].count + producto.count // sumo la cantidad de productos que tenia con la nueva que quiere ingresar
+                                        add_storag.push(...existe_) // Agregamos el producto actualizado
+                                        productos.push(...add_storag) // Agrego al arreglo todos los datos menos el producto duplicado
+                                        localStorage.setItem("productos",JSON.stringify(productos))
+                                        location.reload(true);
+                                    }else{
+                                        // Si no encuentra ningun producto duplicado Lo agrego al arreglo y actualizo el storage
+                                        productos.push(...cart_localstorage)
+                                        productos.push(producto)
+                                        localStorage.setItem("productos",JSON.stringify(productos))
+                                        location.reload(true);
+                                    }
+                                    
+                                    let cart = JSON.parse(localStorage.getItem("productos"))
+                                    //aumentar_icon_carrito(cart)
+                                }
+                            })
+                        }else{
+                            /* Modificar cantidad de productos a comprar  */
+            
+                            const mas   = document.querySelector("#mas")
+                            const menos = document.querySelector("#menos")
+                            const count_prod = document.querySelector("#count_prod")
+            
+                            mas.addEventListener("click",() => {
+                                let count_ = parseInt(count_prod.innerHTML,10)
+                                count_prod.innerHTML = count_ = count_ + 1
+                            })
+            
+                            menos.addEventListener("click",() => {
+                                let count_ = parseInt(count_prod.innerHTML,10)
+                                if(count_ > 0){
+                                    count_prod.innerHTML = count_ = count_ - 1
+                                }
+                                
+                            })
+            
+                                    
+                            /* AGREGAR PRODUCTOS A LOCALSTORAGE */
+            
+                            const add_cart = document.querySelector("#add_cart")
+            
+                            add_cart.addEventListener("click", () =>{
+                                
+                                let productos = []
+                                let producto = {
+                                    titulo     : modal_titulo.innerHTML,
+                                    descripcion: modal_descripcion.innerHTML,
+                                    img        : modal_img.src,
+                                    precio     : parseInt(modal_precio.innerHTML,10),
+                                    count      : parseInt(count_prod.innerHTML,10),
+                                    id         : id_prod
+                                }
+            
+                                let localS = localStorage.getItem("productos")
+                                if(localS === null){
+                                    productos.push(producto)
+                                    localStorage.setItem("productos",JSON.stringify(productos))
+                                    location.reload(true);
+                                }else{
+                                    /* Verificar si el producto existe en el localstorage para evitar guardar duplicas*/
+                                    const cart_localstorage = JSON.parse(localS); // Convierto de string a JSON
+                                    let existe_ = cart_localstorage.filter(p => p.id === producto.id); // Verifico si el producto existe en localstorage
+                                    if(existe_.length > 0){ // verifico si encontro un producto repetido
+                                        //Si encuentra un producto repetido aumento el numero de productos que quiere
+                                        let add_storag = cart_localstorage.filter(p => p.id !== producto.id); // Obtengo todos los datos menos el producto repetido para agregar el actualizado
+                                        existe_[0].count = existe_[0].count + producto.count // sumo la cantidad de productos que tenia con la nueva que quiere ingresar
+                                        add_storag.push(...existe_) // Agregamos el producto actualizado
+                                        productos.push(...add_storag) // Agrego al arreglo todos los datos menos el producto duplicado
+                                        localStorage.setItem("productos",JSON.stringify(productos))
+                                        location.reload(true);
+                                    }else{
+                                        // Si no encuentra ningun producto duplicado Lo agrego al arreglo y actualizo el storage
+                                        productos.push(...cart_localstorage)
+                                        productos.push(producto)
+                                        localStorage.setItem("productos",JSON.stringify(productos))
+                                        location.reload(true);
+                                    }
+                                    
+                                    let cart = JSON.parse(localStorage.getItem("productos"))
+                                    //aumentar_icon_carrito(cart)
+                                }
+                            })
+                        }`;
+                        script.id="postres_1";
+                        var postres_1 = document.querySelector("#postres");
+                        document.head.appendChild(script);
+                        localStorage.setItem("cargar_informacion_postres",1);
+                        var list_postres = '';
+                        for(var i=0; i<cantidad; i++){
+                            const id_cantidad = i+1;
+                            get(child(dbRef, `productos/postres/${id_cantidad}`)).then((snapshot) => {
+                                if (snapshot.exists()) {
+                                    list_postres += 
+                                    `
+                                        <div class='col'>
+                                            <div class='card h-100 card-radius'>
+                                                <img src=${snapshot.val().imagen} alt='...' class='card-img-top card-imf-radius'>
+                                                    <div class='card-body'>
+                                                        <h5 class='card-title text-capitalize'>${snapshot.val().nombre}</h5>
+                                                        <p class='card-text'>${snapshot.val().descripcion}</p>
+                                                        <p class='card-text'>$ ${snapshot.val().precio}</p>
+                                                        <button onclick="modal_data(${snapshot.val().id-1},3,'${snapshot.val().nombre}','${snapshot.val().descripcion}','${snapshot.val().imagen}','${snapshot.val().precio}','postres_'+${snapshot.val().id})" class='btn-general' data-bs-toggle='modal' data-bs-target='#exampleModalProducto'>Mas informacion</button>
+                                                    </div>
+                                                </img>
+                                            </div>
+                                        </div>
+                                    `;
+                                    postres.innerHTML = list_postres;
+                                } else {
+                                  console.log("No data available");
+                                }
+                            }).catch((error) => {
+                                console.error(error);
+                            });
+                        }
+                    }
+                } else {
+                    if(top){
+                        top.removeChild(top.firstChild);
+                        top.remove();
+                    }
+                    if(postres){
+                        var script = document.createElement("script");
+                        script.text = `/* ABRIR MODAL A PRODUCTO ESPECIFICO */
+                        var modal_titulo      = document.querySelector("#modal_titulo");
+                        var modal_descripcion = document.querySelector("#modal_descripcion");
+                        var modal_precio      = document.querySelector("#modal_precio");
+                        var modal_img         = document.querySelector("#modal_img");
+                        var id_prod           = document.querySelector("#id_prod")
+                        //indice: Es la posicion en el arreglo donde se encuentra el producto
+                        //lista: Tenemos 4 categorias en nuestro menu, cada una tiene un numero que identifica a cada una
+                        // Esta funcion extrae el producto en la categoria especifica
+                        function modal_data(indice,lista,nombre,descrip,img,precio,id){
+                                            
+                            let data = {
+                                titulo     : '',
+                                descripcion: '',
+                                img        : '',
+                                precio     : 0,
+                                id         : ''
+                            };
+            
+                            modal_titulo.innerHTML      = nombre
+                            modal_descripcion.innerHTML = descrip
+                            modal_img.src               = img
+                            modal_precio.innerHTML      = precio
+                            count_prod.innerHTML        = 1
+                            id_prod                     = id
+                            console.log(id_prod.value)
+                            console.log(indice);
+                            console.log(lista);
+                            console.log(nombre);
+                            console.log(descrip);
+                            console.log(img);
+                            console.log(precio);
+                            console.log(id);
+                        }
+                        if(parseInt(localStorage.getItem("cargar_informacion_postres"))!=1){
+                            /* Modificar cantidad de productos a comprar  */
+            
+                            const mas   = document.querySelector("#mas")
+                            const menos = document.querySelector("#menos")
+                            const count_prod = document.querySelector("#count_prod")
+            
+                            mas.addEventListener("click",() => {
+                                let count_ = parseInt(count_prod.innerHTML,10)
+                                count_prod.innerHTML = count_ = count_ + 1
+                            })
+            
+                            menos.addEventListener("click",() => {
+                                let count_ = parseInt(count_prod.innerHTML,10)
+                                if(count_ > 0){
+                                    count_prod.innerHTML = count_ = count_ - 1
+                                }
+                                
+                            })
+                                
+                            /* AGREGAR PRODUCTOS A LOCALSTORAGE */
+            
+                            const add_cart = document.querySelector("#add_cart")
+            
+                            add_cart.addEventListener("click", () =>{
+                                
+                                let productos = []
+                                let producto = {
+                                    titulo     : modal_titulo.innerHTML,
+                                    descripcion: modal_descripcion.innerHTML,
+                                    img        : modal_img.src,
+                                    precio     : parseInt(modal_precio.innerHTML,10),
+                                    count      : parseInt(count_prod.innerHTML,10),
+                                    id         : id_prod
+                                }
+            
+                                let localS = localStorage.getItem("productos")
+                                if(localS === null){
+                                    productos.push(producto)
+                                    localStorage.setItem("productos",JSON.stringify(productos))
+                                    location.reload(true);
+                                }else{
+                                    /* Verificar si el producto existe en el localstorage para evitar guardar duplicas*/
+                                    const cart_localstorage = JSON.parse(localS); // Convierto de string a JSON
+                                    let existe_ = cart_localstorage.filter(p => p.id === producto.id); // Verifico si el producto existe en localstorage
+                                    if(existe_.length > 0){ // verifico si encontro un producto repetido
+                                        //Si encuentra un producto repetido aumento el numero de productos que quiere
+                                        let add_storag = cart_localstorage.filter(p => p.id !== producto.id); // Obtengo todos los datos menos el producto repetido para agregar el actualizado
+                                        existe_[0].count = existe_[0].count + producto.count // sumo la cantidad de productos que tenia con la nueva que quiere ingresar
+                                        add_storag.push(...existe_) // Agregamos el producto actualizado
+                                        productos.push(...add_storag) // Agrego al arreglo todos los datos menos el producto duplicado
+                                        localStorage.setItem("productos",JSON.stringify(productos))
+                                        location.reload(true);
+                                    }else{
+                                        // Si no encuentra ningun producto duplicado Lo agrego al arreglo y actualizo el storage
+                                        productos.push(...cart_localstorage)
+                                        productos.push(producto)
+                                        localStorage.setItem("productos",JSON.stringify(productos))
+                                        location.reload(true);
+                                    }
+                                    
+                                    let cart = JSON.parse(localStorage.getItem("productos"))
+                                    //aumentar_icon_carrito(cart)
+                                }
+                            })
+                        }else{
+                            /* Modificar cantidad de productos a comprar  */
+            
+                            const mas   = document.querySelector("#mas")
+                            const menos = document.querySelector("#menos")
+                            const count_prod = document.querySelector("#count_prod")
+            
+                            mas.addEventListener("click",() => {
+                                let count_ = parseInt(count_prod.innerHTML,10)
+                                count_prod.innerHTML = count_ = count_ + 1
+                            })
+            
+                            menos.addEventListener("click",() => {
+                                let count_ = parseInt(count_prod.innerHTML,10)
+                                if(count_ > 0){
+                                    count_prod.innerHTML = count_ = count_ - 1
+                                }
+                                
+                            })
+            
+                                    
+                            /* AGREGAR PRODUCTOS A LOCALSTORAGE */
+            
+                            const add_cart = document.querySelector("#add_cart")
+            
+                            add_cart.addEventListener("click", () =>{
+                                
+                                let productos = []
+                                let producto = {
+                                    titulo     : modal_titulo.innerHTML,
+                                    descripcion: modal_descripcion.innerHTML,
+                                    img        : modal_img.src,
+                                    precio     : parseInt(modal_precio.innerHTML,10),
+                                    count      : parseInt(count_prod.innerHTML,10),
+                                    id         : id_prod
+                                }
+            
+                                let localS = localStorage.getItem("productos")
+                                if(localS === null){
+                                    productos.push(producto)
+                                    localStorage.setItem("productos",JSON.stringify(productos))
+                                    location.reload(true);
+                                }else{
+                                    /* Verificar si el producto existe en el localstorage para evitar guardar duplicas*/
+                                    const cart_localstorage = JSON.parse(localS); // Convierto de string a JSON
+                                    let existe_ = cart_localstorage.filter(p => p.id === producto.id); // Verifico si el producto existe en localstorage
+                                    if(existe_.length > 0){ // verifico si encontro un producto repetido
+                                        //Si encuentra un producto repetido aumento el numero de productos que quiere
+                                        let add_storag = cart_localstorage.filter(p => p.id !== producto.id); // Obtengo todos los datos menos el producto repetido para agregar el actualizado
+                                        existe_[0].count = existe_[0].count + producto.count // sumo la cantidad de productos que tenia con la nueva que quiere ingresar
+                                        add_storag.push(...existe_) // Agregamos el producto actualizado
+                                        productos.push(...add_storag) // Agrego al arreglo todos los datos menos el producto duplicado
+                                        localStorage.setItem("productos",JSON.stringify(productos))
+                                        location.reload(true);
+                                    }else{
+                                        // Si no encuentra ningun producto duplicado Lo agrego al arreglo y actualizo el storage
+                                        productos.push(...cart_localstorage)
+                                        productos.push(producto)
+                                        localStorage.setItem("productos",JSON.stringify(productos))
+                                        location.reload(true);
+                                    }
+                                    
+                                    let cart = JSON.parse(localStorage.getItem("productos"))
+                                    //aumentar_icon_carrito(cart)
+                                }
+                            })
+                        }`;
+                        script.id="postres_1";
+                        var postres_1 = document.querySelector("#postres");
+                        document.head.appendChild(script);
+                        localStorage.setItem("cargar_informacion_postres",1);
+                        var list_postres = '';
+                        const data_postres = [
+                            {
+                                titulo     : 'Ensalada poke de atún y algas con aguacate',
+                                descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus unde facere dolore sit blanditiis quia dignissimos officia sed dicta amet doloribus tempore reiciendis inventore quaerat odit, fugiat minus ipsa suscipit.',
+                                precio     : 30000,
+                                img        : ''+pos.pos_01+'',
+                                id         : 'postre_1'
+                            },
+                            {
+                                titulo     : 'Ensalada poke de atún y algas con aguacate',
+                                descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus unde facere dolore sit blanditiis quia dignissimos officia sed dicta amet doloribus tempore reiciendis inventore quaerat odit, fugiat minus ipsa suscipit.',
+                                precio     : 30000,
+                                img        : ''+pos.pos_02+'',
+                                id         : 'postre_2'
+                            },
+                            {
+                                titulo     : 'Ensalada poke de atún y algas con aguacate',
+                                descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus unde facere dolore sit blanditiis quia dignissimos officia sed dicta amet doloribus tempore reiciendis inventore quaerat odit, fugiat minus ipsa suscipit.',
+                                precio     : 30000,
+                                img        : ''+pos.pos_03+'',
+                                id         : 'postre_3'
+                            },
+                            {
+                                titulo     : 'Ensalada poke de atún y algas con aguacate',
+                                descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus unde facere dolore sit blanditiis quia dignissimos officia sed dicta amet doloribus tempore reiciendis inventore quaerat odit, fugiat minus ipsa suscipit.',
+                                precio     : 30000,
+                                img        : ''+pos.pos_04+'',
+                                id         : 'postre_4'
+                            },
+                            {
+                                titulo     : 'Ensalada poke de atún y algas con aguacate',
+                                descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus unde facere dolore sit blanditiis quia dignissimos officia sed dicta amet doloribus tempore reiciendis inventore quaerat odit, fugiat minus ipsa suscipit.',
+                                precio     : 30000,
+                                img        : ''+pos.pos_05+'',
+                                id         : 'postre_5'
+                            },
+                            {
+                                titulo     : 'Ensalada poke de atún y algas con aguacate',
+                                descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus unde facere dolore sit blanditiis quia dignissimos officia sed dicta amet doloribus tempore reiciendis inventore quaerat odit, fugiat minus ipsa suscipit.',
+                                precio     : 30000,
+                                img        : ''+pos.pos_06+'',
+                                id         : 'postre_6'
+                            },
+                            {
+                                titulo     : 'Ensalada poke de atún y algas con aguacate',
+                                descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus unde facere dolore sit blanditiis quia dignissimos officia sed dicta amet doloribus tempore reiciendis inventore quaerat odit, fugiat minus ipsa suscipit.',
+                                precio     : 30000,
+                                img        : ''+pos.pos_07+'',
+                                id         : 'postre_7'
+                            },
+                            {
+                                titulo     : 'Ensalada poke de atún y algas con aguacate',
+                                descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus unde facere dolore sit blanditiis quia dignissimos officia sed dicta amet doloribus tempore reiciendis inventore quaerat odit, fugiat minus ipsa suscipit.',
+                                precio     : 30000,
+                                img        : ''+pos.pos_08+'',
+                                id         : 'postre_8'
+                            },
+                            {
+                                titulo     : 'Ensalada poke de atún y algas con aguacate',
+                                descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus unde facere dolore sit blanditiis quia dignissimos officia sed dicta amet doloribus tempore reiciendis inventore quaerat odit, fugiat minus ipsa suscipit.',
+                                precio     : 30000,
+                                img        : ''+pos.pos_09+'',
+                                id         : 'postre_9'
+                            },
+                            {
+                                titulo     : 'Ensalada poke de atún y algas con aguacate',
+                                descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus unde facere dolore sit blanditiis quia dignissimos officia sed dicta amet doloribus tempore reiciendis inventore quaerat odit, fugiat minus ipsa suscipit.',
+                                precio     : 30000,
+                                img        : ''+pos.pos_10+'',
+                                id         : 'postre_10'
+                            },
+                            {
+                                titulo     : 'Ensalada poke de atún y algas con aguacate',
+                                descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus unde facere dolore sit blanditiis quia dignissimos officia sed dicta amet doloribus tempore reiciendis inventore quaerat odit, fugiat minus ipsa suscipit.',
+                                precio     : 30000,
+                                img        : ''+pos.pos_11+'',
+                                id         : 'postre_11'
+                            },
+                            {
+                                titulo     : 'Ensalada poke de atún y algas con aguacate',
+                                descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus unde facere dolore sit blanditiis quia dignissimos officia sed dicta amet doloribus tempore reiciendis inventore quaerat odit, fugiat minus ipsa suscipit.',
+                                precio     : 30000,
+                                img        : ''+pos.pos_12+'',
+                                id         : 'postre_12'
+                            }
+                            
+                        ];
+                        const menu_postres = (data) => {
+                            for (let index = 0; index < data.length; index++) {
+                                const item = data[index];
+                                const cantidad_id = index+1;
+                                list_postres += 
+                                `
+                                <div class='col'>
+                                    <div class='card h-100 card-radius'>
+                                        <img src=${item.img} alt='...' class='card-img-top card-imf-radius'>
+                                            <div class='card-body'>
+                                                <h5 class='card-title text-capitalize'>${item.titulo}</h5>
+                                                <p class='card-text'>${item.descripcion}</p>
+                                                <p class='card-text'>$ ${item.precio}</p>
+                                                <button onclick="modal_data(${index},3,'${item.titulo}','${item.descripcion}','${item.img}','${item.precio}','postres_'+${index+1})" class='btn-general' data-bs-toggle='modal' data-bs-target='#exampleModalProducto'>Mas informacion</button>
+                                            </div>
+                                        </img>
+                                    </div>
+                                </div>
+                                `;
+                                insertar_base_de_datos("postres",""+cantidad_id+"",""+item.titulo+"",""+item.descripcion+"",""+item.precio+"",""+item.img+"",cantidad_id);
+                            }
+                            postres.innerHTML = list_postres;
+                        }
+                        menu_postres(data_postres);
+                    }
+                }
+            }).catch((error) => {
+                console.error(error);
+            });
+        }
+    },[visible4])
+
     return (
         <div className="content" id="menu">
             <div className="container_12">
@@ -1609,7 +2619,7 @@ export const Menu = () => {
                         <button className="nav-link" id="nav-bebidas-tab" data-bs-toggle="tab" data-bs-target="#nav-bebidas"
                             type="button" role="tab" aria-controls="nav-bebidas" aria-selected="false" onClick={()=>setvisible3(true)}>Bebidas</button>
                         <button className="nav-link" id="nav-postres-tab" data-bs-toggle="tab" data-bs-target="#nav-postres"
-                            type="button" role="tab" aria-controls="nav-postres" aria-selected="false">Postres</button>
+                            type="button" role="tab" aria-controls="nav-postres" aria-selected="false" onClick={()=>setvisible4(true)}>Postres</button>
                     </div>
                 </nav>
 
