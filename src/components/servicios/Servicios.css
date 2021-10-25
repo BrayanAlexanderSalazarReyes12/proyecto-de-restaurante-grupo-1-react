@@ -1,0 +1,59 @@
+#servicios{
+    background: linear-gradient(to left, #467302, #d9e2cc);
+    padding-top: 10px;
+    padding-bottom: 5px;
+}
+
+.servicios .texto h1{
+    color: var(--color-1);
+    font-family: var(--fuente);
+    font-weight: var(--weight-titulos);
+    text-decoration: overline;
+}
+
+.texto{
+    margin-top: 18%;
+    text-align: center;
+}
+
+
+.servicios .texto p{
+    font-family: var(--fuente);
+    font-weight: var(--weight-parrafos);
+
+}
+div.servicios_card{
+    padding: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--color-3);
+}
+
+div.serviciosof{
+    background: linear-gradient(to right, #96bb0f, #467302);; 
+    border-radius: 30px;
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.servicios button{
+    color: rgba(255, 255, 255, 0.9) !important;
+    font-size: 20;
+    font-weight: 400;
+    padding: 0.5em 1.2em;
+    background: #467302;
+    border: 2px solid;
+    border-color: #83A603;
+    position: relative;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+.servicios button:hover {
+    color: rgba(255, 255, 255, 1) !important;
+    box-shadow: 0 4px 16px green;
+    transition: all 0.2s ease;
+}
