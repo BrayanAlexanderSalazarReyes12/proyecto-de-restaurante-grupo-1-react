@@ -24,10 +24,10 @@ const init = () => {
     return sumaTotal;
 }
 
-const productosS = () => {
+/* const productosS = () => {
     //return productos
     return JSON.parse(localStorage.getItem('productos')) || []
-}
+} */
 
 export const Carrito = () => {
 
@@ -43,16 +43,17 @@ export const Carrito = () => {
     
     let productos;
 
-    const [ storageTotal, setTotal ] = useState(init())
-    
-    const [state, setState] = useState(productosS())
 
-    
+    const handleVacio = () => {
+        setStorage({
+            data: [],
+            total: 0
+        })
+    }
 
     const [open, setOpen] = useState(false); // Modal
     const handleOpen = () => setOpen(true);
     
-   // const { storage } = UseLocalStorage();
 
 
 
@@ -116,7 +117,7 @@ export const Carrito = () => {
                     </div>
                 </div>
                 {/* Modal */}
-                    <ModalForm  sx={sty} open={open} setOpen={setOpen}/>
+                    <ModalForm onAction={handleVacio} sx={sty} open={open} setOpen={setOpen}/>
                 {/* Modal */}
             </div>
             

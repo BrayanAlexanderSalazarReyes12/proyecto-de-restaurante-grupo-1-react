@@ -122,7 +122,7 @@ export const Contactanos = () => {
 
     return (
         <section  id="contactos" className="contactanos row m-0 flex-row-reverse">
-            <div className="texto col-12 col-md-6 d-flex justify-content-center align-items-center">
+            <div className="texto m-0 col-12 col-md-6 d-flex justify-content-center align-items-center">
                 <div>
                     <h1 className="text-center">Contáctanos</h1>
                     <p className="text-center">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Numquam doloribus ipsa
@@ -182,7 +182,7 @@ export const Contactanos = () => {
                             {err.subject && <small>{err.subject}</small>}
                         </div>
 
-                        <div className="mb-3 row">
+                        <div className="mb-3">
                             <textarea className="form-control" 
                                         name="mensaje"
                                         value={mensaje}

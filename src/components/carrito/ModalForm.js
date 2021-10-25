@@ -11,6 +11,7 @@ import { EnviarEmail } from './../../helpers/EnviarEmail';
 import { Loading } from './../Ui/Loading';
 import { UseOpen } from '../../hooks/UseOpen';
 import { ToastMess } from '../Ui/ToastMess';
+import { UseLocalStorage } from '../../hooks/UseLocalStorage';
 
 const validationForm = (formValues) => {
     let errors = {}
@@ -39,7 +40,12 @@ const style = {
     p: 4,
 };
 
-export const ModalForm = ({open, setOpen}) => {
+export const ModalForm = ({open, setOpen, onAction}) => {
+
+    const { actualizar,
+            storage,
+            setStorage,
+            deleteStorage} = UseLocalStorage()
 
 
     const [value,handleInputChange, setValue] = useForm({
@@ -90,6 +96,7 @@ export const ModalForm = ({open, setOpen}) => {
                     nombre: '',
                     email: ''
                 })
+                onAction()
                 /* document.querySelector("#email").value = ''; // Reseteamos los input
                 document.querySelector("#nombre").value = ''; // Reseteamos los input */
                 // Ponemos el localstorage a 0
