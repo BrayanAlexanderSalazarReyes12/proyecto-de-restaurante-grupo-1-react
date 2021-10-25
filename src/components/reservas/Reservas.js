@@ -13,7 +13,6 @@ export const Reservas = () => {
                     <p>Lorem, ipsum dolor sit amet consectetur adipisicing.</p>
                 </div>
 
-
                 <div className="col-12 col-md-7 align-center container-reserva">
                     <form className="col-8 justify-content-center" id="form-resevas"
                     action="https://formsubmit.co/restauranttic2021@gmail.com" method="POST">
