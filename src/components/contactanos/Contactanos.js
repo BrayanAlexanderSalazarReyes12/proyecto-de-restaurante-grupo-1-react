@@ -130,19 +130,17 @@ export const Contactanos = () => {
                         cumque laboriosam ea aliquid.</p>
                 </div>
             </div>
+
             <div className="formulario position-relative col-12 col-md-6">
                 {/* Loading */}
                     { action && <Loading />}
                 {/* Loading */}
                 <div className="container " style={{opacity: action ? '.6' : '1'}}>
                     <form id="contactanos" onSubmit={handleSubmit}>
-                        {/* <input type="hidden" name="_captcha" value="false"> */}
-                        {/* <input type="hidden" name="_autoresponse" value="Reserva Confirmada" /> */}
+                        
                         <div className="mb-3 row">
-                            
                             <div className="col-sm-1-12">
                                 <input type="text" 
-                                        
                                         className="form-control" 
                                         name="nombre"
                                         value={nombre}
@@ -156,23 +154,20 @@ export const Contactanos = () => {
                         </div>
 
                         <div className="mb-3 row">
-                            
                             <div className="col-sm-1-12">
-                                <input type="text" 
-                                        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
-                                        className="form-control"
-                                        name="email" 
-                                        value={email}
-                                        onChange={handleInputChange}
-                                        id="email_" 
-                                        placeholder="Correo" required />
+                            <input type="text" 
+                                    pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+                                    className="form-control"
+                                    name="email" 
+                                    value={email}
+                                    onChange={handleInputChange}
+                                    id="email_" 
+                                    placeholder="Correo" required />
                             </div>
                             {err.email && <small>{err.email}</small>}
                         </div>
 
-
                         <div className="mb-3 row">
-                            
                             <div className="col-sm-1-12">
                                 <input type="text" 
                                         className="form-control" 
@@ -187,8 +182,7 @@ export const Contactanos = () => {
                             {err.subject && <small>{err.subject}</small>}
                         </div>
 
-                        <div className="mb-3">
-                            
+                        <div className="mb-3 row">
                             <textarea className="form-control" 
                                         name="mensaje"
                                         value={mensaje}
@@ -211,11 +205,10 @@ export const Contactanos = () => {
                             </div>
                         </div>
                     </form>
-
                 </div>
             </div>
             {/* Tost */}
-                {toast && (
+            {toast && (
                     <ToastMess 
                     titulo={data.titulo} 
                     mensaje={data.mensaje}

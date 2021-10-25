@@ -2,215 +2,352 @@ import React, {useState,useEffect} from 'react';
 import './css/menu.css';
 //import {cargar_info_ensal} from './js/cargar_pedidos_ensaladas';
 //import {prueba} from './js/prueba';
-
 import ensal from './img/ensaladas';
 import carta from './carta/menu.pdf'
+//base de datos
+import {
+    useFirebaseApp
+} from 'reactfire'
+import { insertar_base_de_datos } from '../bd/insertar_productos';
+//cargar informacion de la base de datos
+import { getDatabase, ref, child, get } from "firebase/database";
+const dbRef = ref(getDatabase());
+
 export const Menu = () => {
     var [visible,setvisible] = useState(false);
     var [visible1,setvisible1] = useState(false);
+    const firebase = useFirebaseApp();
+    
+    console.log(firebase);
     useEffect(()=>{
         var ensaldas = document.getElementById("ensaladas");
+        var cantidad = 0;
         if(visible){
-            var top = document.getElementById("ensalada");
-            if(top){
-                top.removeChild(top.firstChild);
-                top.remove();
-            }
-            if(ensaldas){
-                var script = document.createElement("script");
-                script.text = `/* ABRIR MODAL A PRODUCTO ESPECIFICO */
-                var modal_titulo      = document.querySelector("#modal_titulo");
-                var modal_descripcion = document.querySelector("#modal_descripcion");
-                var modal_precio      = document.querySelector("#modal_precio");
-                var modal_img         = document.querySelector("#modal_img");
-                var id_prod           = document.querySelector("#id_prod")
-                //indice: Es la posicion en el arreglo donde se encuentra el producto
-                //lista: Tenemos 4 categorias en nuestro menu, cada una tiene un numero que identifica a cada una
-                // Esta funcion extrae el producto en la categoria especifica
-                function modal_data(indice,lista,nombre,descrip,img,precio,id){
-                                    
-                    let data = {
-                        titulo     : '',
-                        descripcion: '',
-                        img        : '',
-                        precio     : 0,
-                        id         : ''
-                    };
-
-                    modal_titulo.innerHTML      = nombre
-                    modal_descripcion.innerHTML = descrip
-                    modal_img.src               = img
-                    modal_precio.innerHTML      = precio
-                    count_prod.innerHTML        = 1
-                    id_prod.value               = id
-                    console.log(id_prod.value)
-                    console.log(indice);
-                    console.log(lista);
-                    console.log(nombre);
-                    console.log(descrip);
-                    console.log(img);
-                    console.log(precio);
-                    console.log(id);
-                }
-                if(parseInt(localStorage.getItem("cargar_informacion"))!=1){
-                    /* Modificar cantidad de productos a comprar  */
-
-                    const mas   = document.querySelector("#mas")
-                    const menos = document.querySelector("#menos")
-                    const count_prod = document.querySelector("#count_prod")
-    
-                    mas.addEventListener("click",() => {
-                        let count_ = parseInt(count_prod.innerHTML,10)
-                        count_prod.innerHTML = count_ = count_ + 1
-                    })
-    
-                    menos.addEventListener("click",() => {
-                        let count_ = parseInt(count_prod.innerHTML,10)
-                        if(count_ > 0){
-                            count_prod.innerHTML = count_ = count_ - 1
+            get(child(dbRef, `productos/ensaladas_cantidad/`)).then((snapshot) => {
+                if (snapshot.exists()) {
+                    cantidad = snapshot.val().cantidad;
+                    console.log(cantidad);
+                    var top = document.getElementById("ensalada");
+                    if(top){
+                        top.removeChild(top.firstChild);
+                        top.remove();
+                    }
+                    if(ensaldas){
+                        var script = document.createElement("script");
+                        script.text = `/* ABRIR MODAL A PRODUCTO ESPECIFICO */
+                        var modal_titulo      = document.querySelector("#modal_titulo");
+                        var modal_descripcion = document.querySelector("#modal_descripcion");
+                        var modal_precio      = document.querySelector("#modal_precio");
+                        var modal_img         = document.querySelector("#modal_img");
+                        var id_prod           = document.querySelector("#id_prod")
+                        //indice: Es la posicion en el arreglo donde se encuentra el producto
+                        //lista: Tenemos 4 categorias en nuestro menu, cada una tiene un numero que identifica a cada una
+                        // Esta funcion extrae el producto en la categoria especifica
+                        function modal_data(indice,lista,nombre,descrip,img,precio,id){
+                                            
+                            let data = {
+                                titulo     : '',
+                                descripcion: '',
+                                img        : '',
+                                precio     : 0,
+                                id         : ''
+                            };
+        
+                            modal_titulo.innerHTML      = nombre
+                            modal_descripcion.innerHTML = descrip
+                            modal_img.src               = img
+                            modal_precio.innerHTML      = precio
+                            count_prod.innerHTML        = 1
+                            id_prod.value               = id
+                            console.log(id_prod.value)
+                            console.log(indice);
+                            console.log(lista);
+                            console.log(nombre);
+                            console.log(descrip);
+                            console.log(img);
+                            console.log(precio);
+                            console.log(id);
                         }
-                        
-                    })
-                }else{
-                    /* Modificar cantidad de productos a comprar  */
-
-                    const mas   = document.querySelector("#mas")
-                    const menos = document.querySelector("#menos")
-                    const count_prod = document.querySelector("#count_prod")
-    
-                    mas.addEventListener("click",() => {
-                        let count_ = parseInt(count_prod.innerHTML,10)
-                        count_prod.innerHTML = count_ = count_ + 1
-                    })
-    
-                    menos.addEventListener("click",() => {
-                        let count_ = parseInt(count_prod.innerHTML,10)
-                        if(count_ > 0){
-                            count_prod.innerHTML = count_ = count_ - 1
-                        }
-                        
-                    })
-                }`;
-                script.id="ensalada";
-                
-                document.head.appendChild(script);
-                localStorage.setItem("cargar_informacion",1);
-                
-                var ensaladas = document.querySelector("#ensaladas");
-                var list_ensaladas  = '';
-                const data_ensaladas = [
-                    {
-                        titulo     : 'Ensalada poke de atún y algas con aguacate',
-                        descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus unde facere dolore sit blanditiis quia dignissimos officia sed dicta amet doloribus tempore reiciendis inventore quaerat odit, fugiat minus ipsa suscipit.',
-                        precio     : 20000,
-                        img        : ''+ensal.en_1+'',
-                        id         : 'Ensalada_1'
-                    },
-                    {
-                        titulo     : 'Ensalada poke de atún y algas con aguacate',
-                        descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus unde facere dolore sit blanditiis quia dignissimos officia sed dicta amet doloribus tempore reiciendis inventore quaerat odit, fugiat minus ipsa suscipit.',
-                        precio     : 20000,
-                        img        : ''+ensal.en_2+'',
-                        id         : 'Ensalada_2'
-                    },
-                    {
-                        titulo     : 'Ensalada poke de atún y algas con aguacate',
-                        descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus unde facere dolore sit blanditiis quia dignissimos officia sed dicta amet doloribus tempore reiciendis inventore quaerat odit, fugiat minus ipsa suscipit.',
-                        precio     : 20000,
-                        img        : ''+ensal.en_3+'',
-                        id         : 'Ensalada_3'
-                    },
-                    {
-                        titulo     : 'Ensalada poke de atún y algas con aguacate',
-                        descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus unde facere dolore sit blanditiis quia dignissimos officia sed dicta amet doloribus tempore reiciendis inventore quaerat odit, fugiat minus ipsa suscipit.',
-                        precio     : 20000,
-                        img        : ''+ensal.en_4+'',
-                        id         : 'Ensalada_4'
-                    },
-                    {
-                        titulo     : 'Ensalada poke de atún y algas con aguacate',
-                        descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus unde facere dolore sit blanditiis quia dignissimos officia sed dicta amet doloribus tempore reiciendis inventore quaerat odit, fugiat minus ipsa suscipit.',
-                        precio     : 20000,
-                        img        : ''+ensal.en_5+'',
-                        id         : 'Ensalada_5'
-                    },
-                    {
-                        titulo     : 'Ensalada poke de atún y algas con aguacate',
-                        descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus unde facere dolore sit blanditiis quia dignissimos officia sed dicta amet doloribus tempore reiciendis inventore quaerat odit, fugiat minus ipsa suscipit.',
-                        precio     : 20000,
-                        img        : ''+ensal.en_6+'',
-                        id         : 'Ensalada_6'
-                    },
-                    {
-                        titulo     : 'Ensalada poke de atún y algas con aguacate',
-                        descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus unde facere dolore sit blanditiis quia dignissimos officia sed dicta amet doloribus tempore reiciendis inventore quaerat odit, fugiat minus ipsa suscipit.',
-                        precio     : 20000,
-                        img        : ''+ensal.en_7+'',
-                        id         : 'Ensalada_7'
-                    },
-                    {
-                        titulo     : 'Ensalada poke de atún y algas con aguacate',
-                        descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus unde facere dolore sit blanditiis quia dignissimos officia sed dicta amet doloribus tempore reiciendis inventore quaerat odit, fugiat minus ipsa suscipit.',
-                        precio     : 20000,
-                        img        : ''+ensal.en_8+'',
-                        id         : 'Ensalada_8'
-                    },
-                    {
-                        titulo     : 'Ensalada poke de atún y algas con aguacate',
-                        descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus unde facere dolore sit blanditiis quia dignissimos officia sed dicta amet doloribus tempore reiciendis inventore quaerat odit, fugiat minus ipsa suscipit.',
-                        precio     : 20000,
-                        img        : ''+ensal.en_9+'',
-                        id         : 'Ensalada_9'
-                    },
-                    {
-                        titulo     : 'Ensalada poke de atún y algas con aguacate',
-                        descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus unde facere dolore sit blanditiis quia dignissimos officia sed dicta amet doloribus tempore reiciendis inventore quaerat odit, fugiat minus ipsa suscipit.',
-                        precio     : 20000,
-                        img        : ''+ensal.en_10+'',
-                        id         : 'Ensalada_10'
-                    },
-                    {
-                        titulo     : 'Ensalada poke de atún y algas con aguacate',
-                        descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus unde facere dolore sit blanditiis quia dignissimos officia sed dicta amet doloribus tempore reiciendis inventore quaerat odit, fugiat minus ipsa suscipit.',
-                        precio     : 20000,
-                        img        : ''+ensal.en_11+'',
-                        id         : 'Ensalada_11'
-                    },
-                    {
-                        titulo     : 'Ensalada poke de atún y algas con aguacate',
-                        descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus unde facere dolore sit blanditiis quia dignissimos officia sed dicta amet doloribus tempore reiciendis inventore quaerat odit, fugiat minus ipsa suscipit.',
-                        precio     : 20000,
-                        img        : ''+ensal.en_12+'',
-                        id         : 'Ensalada_12'
-                    },
-                ];
-                /* Ensaladas */
-                const menu_ensaladas = (data) => {
-                    
-                    for (let index = 0; index < data.length; index++) {
-                        const item = data[index];
-                        list_ensaladas += 
-                        `
-                        <div class='col'>
-                            <div class='card h-100 card-radius'>
-                                <img src='${item.img}' alt='...' class='card-img-top card-imf-radius'>
-                                    <div class='card-body'>
-                                        <h5 class='card-titulo text-capitalize'>${item.titulo}</h5>
-                                        <p class='card-texto'>${item.descripcion}</p>
-                                        <p class='card-texto'>$ ${item.precio}</p>
-                                        <button onclick="modal_data(${index},1,'${item.titulo}','${item.descripcion}','${item.img}','${item.precio}',${index+1})" class='card-titulo btn-general' data-bs-toggle='modal' data-bs-target='#exampleModalProducto'>Mas informacion</button>
-                                    </div>
-                                </img>
-                            </div>
-                        </div>
-                        `;
-                        
-                    }   
-                    ensaladas.innerHTML = list_ensaladas;
-                }
-                menu_ensaladas(data_ensaladas);
-            }
+                        if(parseInt(localStorage.getItem("cargar_informacion"))!=1){
+                            /* Modificar cantidad de productos a comprar  */
+        
+                            const mas   = document.querySelector("#mas")
+                            const menos = document.querySelector("#menos")
+                            const count_prod = document.querySelector("#count_prod")
             
+                            mas.addEventListener("click",() => {
+                                let count_ = parseInt(count_prod.innerHTML,10)
+                                count_prod.innerHTML = count_ = count_ + 1
+                            })
+            
+                            menos.addEventListener("click",() => {
+                                let count_ = parseInt(count_prod.innerHTML,10)
+                                if(count_ > 0){
+                                    count_prod.innerHTML = count_ = count_ - 1
+                                }
+                                
+                            })
+                        }else{
+                            /* Modificar cantidad de productos a comprar  */
+        
+                            const mas   = document.querySelector("#mas")
+                            const menos = document.querySelector("#menos")
+                            const count_prod = document.querySelector("#count_prod")
+            
+                            mas.addEventListener("click",() => {
+                                let count_ = parseInt(count_prod.innerHTML,10)
+                                count_prod.innerHTML = count_ = count_ + 1
+                            })
+            
+                            menos.addEventListener("click",() => {
+                                let count_ = parseInt(count_prod.innerHTML,10)
+                                if(count_ > 0){
+                                    count_prod.innerHTML = count_ = count_ - 1
+                                }
+                                
+                            })
+                        }`;
+                        script.id="ensalada";
+                        
+                        document.head.appendChild(script);
+                        localStorage.setItem("cargar_informacion",1);
+                        var ensaladas = document.querySelector("#ensaladas");
+                        var list_ensaladas = '';
+                        for(var i=0; i<cantidad; i++){
+                            var id_cantidad = i +1;
+                            get(child(dbRef, `productos/ensaladas/${id_cantidad}`)).then((snapshot) => {
+                                if (snapshot.exists()) {
+                                    list_ensaladas += 
+                                    `
+                                    <div class='col'>
+                                        <div class='card h-100 card-radius'>
+                                            <img src='${snapshot.val().imagen}' alt='...' class='card-img-top card-imf-radius'>
+                                                <div class='card-body'>
+                                                    <h5 class='card-titulo text-capitalize'>${snapshot.val().nombre}</h5>
+                                                    <p class='card-texto'>${snapshot.val().descripcion}</p>
+                                                    <p class='card-texto'>$ ${snapshot.val().precio}</p>
+                                                    <button onclick="modal_data(${i},1,'${snapshot.val().nombre}','${snapshot.val().descripcion}','${snapshot.val().imagen}','${snapshot.val().precio}',${id_cantidad})" class='card-titulo btn-general' data-bs-toggle='modal' data-bs-target='#exampleModalProducto'>Mas informacion</button>
+                                                </div>
+                                            </img>
+                                        </div>
+                                    </div>
+                                    `;
+                                    ensaladas.innerHTML = list_ensaladas;
+                                    
+                                } else {
+                                  console.log("No data available");
+                                }
+                              }).catch((error) => {
+                                console.error(error);
+                            });
+                        }
+                        
+                    }
+                } else {
+                    var top = document.getElementById("ensalada");
+                    if(top){
+                        top.removeChild(top.firstChild);
+                        top.remove();
+                    }
+                    if(ensaldas){
+                        var script = document.createElement("script");
+                        script.text = `/* ABRIR MODAL A PRODUCTO ESPECIFICO */
+                        var modal_titulo      = document.querySelector("#modal_titulo");
+                        var modal_descripcion = document.querySelector("#modal_descripcion");
+                        var modal_precio      = document.querySelector("#modal_precio");
+                        var modal_img         = document.querySelector("#modal_img");
+                        var id_prod           = document.querySelector("#id_prod")
+                        //indice: Es la posicion en el arreglo donde se encuentra el producto
+                        //lista: Tenemos 4 categorias en nuestro menu, cada una tiene un numero que identifica a cada una
+                        // Esta funcion extrae el producto en la categoria especifica
+                        function modal_data(indice,lista,nombre,descrip,img,precio,id){
+                                            
+                            let data = {
+                                titulo     : '',
+                                descripcion: '',
+                                img        : '',
+                                precio     : 0,
+                                id         : ''
+                            };
+        
+                            modal_titulo.innerHTML      = nombre
+                            modal_descripcion.innerHTML = descrip
+                            modal_img.src               = img
+                            modal_precio.innerHTML      = precio
+                            count_prod.innerHTML        = 1
+                            id_prod.value               = id
+                            console.log(id_prod.value)
+                            console.log(indice);
+                            console.log(lista);
+                            console.log(nombre);
+                            console.log(descrip);
+                            console.log(img);
+                            console.log(precio);
+                            console.log(id);
+                        }
+                        if(parseInt(localStorage.getItem("cargar_informacion"))!=1){
+                            /* Modificar cantidad de productos a comprar  */
+        
+                            const mas   = document.querySelector("#mas")
+                            const menos = document.querySelector("#menos")
+                            const count_prod = document.querySelector("#count_prod")
+            
+                            mas.addEventListener("click",() => {
+                                let count_ = parseInt(count_prod.innerHTML,10)
+                                count_prod.innerHTML = count_ = count_ + 1
+                            })
+            
+                            menos.addEventListener("click",() => {
+                                let count_ = parseInt(count_prod.innerHTML,10)
+                                if(count_ > 0){
+                                    count_prod.innerHTML = count_ = count_ - 1
+                                }
+                                
+                            })
+                        }else{
+                            /* Modificar cantidad de productos a comprar  */
+        
+                            const mas   = document.querySelector("#mas")
+                            const menos = document.querySelector("#menos")
+                            const count_prod = document.querySelector("#count_prod")
+            
+                            mas.addEventListener("click",() => {
+                                let count_ = parseInt(count_prod.innerHTML,10)
+                                count_prod.innerHTML = count_ = count_ + 1
+                            })
+            
+                            menos.addEventListener("click",() => {
+                                let count_ = parseInt(count_prod.innerHTML,10)
+                                if(count_ > 0){
+                                    count_prod.innerHTML = count_ = count_ - 1
+                                }
+                                
+                            })
+                        }`;
+                        script.id="ensalada";
+                        
+                        document.head.appendChild(script);
+                        localStorage.setItem("cargar_informacion",1);
+                        
+                        var ensaladas = document.querySelector("#ensaladas");
+                        var list_ensaladas  = '';
+                        const data_ensaladas = [
+                            {
+                                titulo     : 'Ensalada poke de atún y algas con aguacate',
+                                descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus unde facere dolore sit blanditiis quia dignissimos officia sed dicta amet doloribus tempore reiciendis inventore quaerat odit, fugiat minus ipsa suscipit.',
+                                precio     : 20000,
+                                img        : ''+ensal.en_1+'',
+                                id         : 'Ensalada_1'
+                            },
+                            {
+                                titulo     : 'Ensalada poke de atún y algas con aguacate',
+                                descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus unde facere dolore sit blanditiis quia dignissimos officia sed dicta amet doloribus tempore reiciendis inventore quaerat odit, fugiat minus ipsa suscipit.',
+                                precio     : 20000,
+                                img        : ''+ensal.en_2+'',
+                                id         : 'Ensalada_2'
+                            },
+                            {
+                                titulo     : 'Ensalada poke de atún y algas con aguacate',
+                                descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus unde facere dolore sit blanditiis quia dignissimos officia sed dicta amet doloribus tempore reiciendis inventore quaerat odit, fugiat minus ipsa suscipit.',
+                                precio     : 20000,
+                                img        : ''+ensal.en_3+'',
+                                id         : 'Ensalada_3'
+                            },
+                            {
+                                titulo     : 'Ensalada poke de atún y algas con aguacate',
+                                descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus unde facere dolore sit blanditiis quia dignissimos officia sed dicta amet doloribus tempore reiciendis inventore quaerat odit, fugiat minus ipsa suscipit.',
+                                precio     : 20000,
+                                img        : ''+ensal.en_4+'',
+                                id         : 'Ensalada_4'
+                            },
+                            {
+                                titulo     : 'Ensalada poke de atún y algas con aguacate',
+                                descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus unde facere dolore sit blanditiis quia dignissimos officia sed dicta amet doloribus tempore reiciendis inventore quaerat odit, fugiat minus ipsa suscipit.',
+                                precio     : 20000,
+                                img        : ''+ensal.en_5+'',
+                                id         : 'Ensalada_5'
+                            },
+                            {
+                                titulo     : 'Ensalada poke de atún y algas con aguacate',
+                                descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus unde facere dolore sit blanditiis quia dignissimos officia sed dicta amet doloribus tempore reiciendis inventore quaerat odit, fugiat minus ipsa suscipit.',
+                                precio     : 20000,
+                                img        : ''+ensal.en_6+'',
+                                id         : 'Ensalada_6'
+                            },
+                            {
+                                titulo     : 'Ensalada poke de atún y algas con aguacate',
+                                descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus unde facere dolore sit blanditiis quia dignissimos officia sed dicta amet doloribus tempore reiciendis inventore quaerat odit, fugiat minus ipsa suscipit.',
+                                precio     : 20000,
+                                img        : ''+ensal.en_7+'',
+                                id         : 'Ensalada_7'
+                            },
+                            {
+                                titulo     : 'Ensalada poke de atún y algas con aguacate',
+                                descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus unde facere dolore sit blanditiis quia dignissimos officia sed dicta amet doloribus tempore reiciendis inventore quaerat odit, fugiat minus ipsa suscipit.',
+                                precio     : 20000,
+                                img        : ''+ensal.en_8+'',
+                                id         : 'Ensalada_8'
+                            },
+                            {
+                                titulo     : 'Ensalada poke de atún y algas con aguacate',
+                                descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus unde facere dolore sit blanditiis quia dignissimos officia sed dicta amet doloribus tempore reiciendis inventore quaerat odit, fugiat minus ipsa suscipit.',
+                                precio     : 20000,
+                                img        : ''+ensal.en_9+'',
+                                id         : 'Ensalada_9'
+                            },
+                            {
+                                titulo     : 'Ensalada poke de atún y algas con aguacate',
+                                descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus unde facere dolore sit blanditiis quia dignissimos officia sed dicta amet doloribus tempore reiciendis inventore quaerat odit, fugiat minus ipsa suscipit.',
+                                precio     : 20000,
+                                img        : ''+ensal.en_10+'',
+                                id         : 'Ensalada_10'
+                            },
+                            {
+                                titulo     : 'Ensalada poke de atún y algas con aguacate',
+                                descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus unde facere dolore sit blanditiis quia dignissimos officia sed dicta amet doloribus tempore reiciendis inventore quaerat odit, fugiat minus ipsa suscipit.',
+                                precio     : 20000,
+                                img        : ''+ensal.en_11+'',
+                                id         : 'Ensalada_11'
+                            },
+                            {
+                                titulo     : 'Ensalada poke de atún y algas con aguacate',
+                                descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus unde facere dolore sit blanditiis quia dignissimos officia sed dicta amet doloribus tempore reiciendis inventore quaerat odit, fugiat minus ipsa suscipit.',
+                                precio     : 20000,
+                                img        : ''+ensal.en_12+'',
+                                id         : 'Ensalada_12'
+                            },
+                        ];
+                        /* Ensaladas */
+                        const menu_ensaladas = (data) => {
+                            
+                            for (let index = 0; index < data.length; index++) {
+                                const item = data[index];
+                                const cantidad_id = index + 1;
+                                list_ensaladas += 
+                                `
+                                <div class='col'>
+                                    <div class='card h-100 card-radius'>
+                                        <img src='${item.img}' alt='...' class='card-img-top card-imf-radius'>
+                                            <div class='card-body'>
+                                                <h5 class='card-titulo text-capitalize'>${item.titulo}</h5>
+                                                <p class='card-texto'>${item.descripcion}</p>
+                                                <p class='card-texto'>$ ${item.precio}</p>
+                                                <button onclick="modal_data(${index},1,'${item.titulo}','${item.descripcion}','${item.img}','${item.precio}',${index+1})" class='card-titulo btn-general' data-bs-toggle='modal' data-bs-target='#exampleModalProducto'>Mas informacion</button>
+                                            </div>
+                                        </img>
+                                    </div>
+                                </div>
+                                `;
+                                insertar_base_de_datos("ensaladas",""+cantidad_id+"",""+item.titulo+"",""+item.descripcion+"",""+item.precio+"",""+item.img+"",cantidad_id);
+                            }   
+                            ensaladas.innerHTML = list_ensaladas;
+                        }
+                        menu_ensaladas(data_ensaladas);
+                    }
+                }
+            }).catch((error) => {
+                console.error(error);
+            });
         }
     },[visible])
     
