@@ -1,0 +1,59 @@
+
+.main_prensent{
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+.txt_pre{
+    position: absolute;
+    color: #ffffff;
+    padding: 10px 20px;
+    text-align: center;
+}
+
+.ca_title{
+    text-align: center;
+}
+.textoo{
+    height:144px; overflow:hidden
+}
+.carousel{
+    height: 450px;
+}
+.carousel-inner{
+    height:100%;
+}
+
+.carousel-item{
+    height:210px;
+    
+}
+
+.carousel-item img{
+    
+    width:620px; 
+    height:450px
+}
+.carousel-item .div{
+    width:calc(100% - 10%); position: relative; left:5%;
+}
+.carousel-item .p{
+    width: 470px; display: inline;
+}
+.carousel-control-prev{
+    width:5% !important
+}
+.carousel-control-next{
+    width:5% !important
+}
+
+.testimonio{
+    height:200px !important
+}
+.img-testimonio{
+    height: 80px !important;
+    width: 80px !important;
+    border: 1px solid black;
+    margin-right: 1.5rem;
+    border-radius: 50%;
+}

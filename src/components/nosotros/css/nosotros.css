@@ -1,0 +1,14 @@
+.img-personal{
+    width: 100px !important; 
+    height: 100px !important; 
+    border-radius: 50% !important;
+}
+.row .col h5{
+    color: black;
+}
+#equipo .row{
+    margin-bottom: 2rem;
+}
+#equipo h1{
+    color: black;
+}
