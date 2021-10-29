@@ -13,6 +13,7 @@ import { AuthContext } from '../auth/AuthContext';
 export const RouterApp = () => {
 
     const { user } = useContext(AuthContext)
+    
 
     return (
         <Router>
@@ -25,7 +26,7 @@ export const RouterApp = () => {
                     <PrivateRoute
                                 path="/admin"  
                                 component={ AdministracionRoute } 
-                                isAuth={ user }
+                                isAuth={ user.login }
                                 />
                     
                     <Route path="/" component={ DashboardRoute } />

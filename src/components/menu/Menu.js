@@ -10,7 +10,8 @@ import carta from './carta/menu.pdf'
 import {
     useFirebaseApp
 } from 'reactfire'
-import { insertar_base_de_datos } from '../bd/insertar_productos';
+import { insertar_base_de_datos } from './../../data/Admin/menu/insertar_productos';
+
 //cargar informacion de la base de datos
 import { getDatabase, ref, child, get } from "firebase/database";
 const dbRef = ref(getDatabase());

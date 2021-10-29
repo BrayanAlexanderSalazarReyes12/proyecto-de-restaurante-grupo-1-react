@@ -3,13 +3,11 @@ import { Link, NavLink, useHistory } from "react-router-dom";
 import { AuthContext } from '../../auth/AuthContext';
 import './css/navbar.css'
 import { types } from './../../types/types';
-import { useFirebaseApp } from 'reactfire';
 import { getAuth, signOut } from 'firebase/auth'
 
 export const NavbarAdmin = () => {
 
     const { user, dispatch} = useContext(AuthContext)
-    const firebase = useFirebaseApp()
 
     const history = useHistory()
     const auth = getAuth();
@@ -49,6 +47,22 @@ export const NavbarAdmin = () => {
                             <li className="nav-item">
                                 <NavLink className="nav-link" activeClassName="active" exact to="/admin/inicio">
                                     Inicio
+                                </NavLink>
+                            </li>
+                            <li className="nav-item">
+                                <NavLink className="nav-link" activeClassName="active" exact to="/admin/nosotros">
+                                    Nosotros
+                                </NavLink>
+                            </li>
+                            <li className="nav-item">
+                                <NavLink className="nav-link" activeClassName="active" exact to="/admin/menu">
+                                    Menu
+                                </NavLink>
+                            </li>
+                            
+                            <li className="nav-item">
+                                <NavLink className="nav-link" activeClassName="active" exact to="/admin/servicios">
+                                    Servicios
                                 </NavLink>
                             </li>
                             

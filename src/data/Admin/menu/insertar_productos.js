@@ -1,8 +1,8 @@
 import { initializeApp } from '@firebase/app'
 import {getDatabase, ref, set} from 'firebase/database/'
-import firebaseConfig from './firebase-config';
+import { config } from '../../configData';
 
-const app = initializeApp(firebaseConfig);
+const app = initializeApp(config);
 const database = getDatabase(app);
 
 export function insertar_base_de_datos(nombre_categoria, idproducto, nombre, descripcion, precio, imagen, cantidad) {

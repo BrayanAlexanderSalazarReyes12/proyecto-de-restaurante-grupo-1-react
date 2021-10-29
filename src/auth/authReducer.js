@@ -7,10 +7,13 @@ export const authReducer = (state = {},action) => {
             return {
                 uid : action.payload.uid,
                 name: "ADMIN",
+                login: true
             }
         
         case types.logout:
-            return { }
+            return { 
+                login: false
+            }
         
         default:
             return state
