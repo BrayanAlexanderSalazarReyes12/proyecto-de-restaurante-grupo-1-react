@@ -17,6 +17,7 @@
     "react-scripts": "4.0.3",
     "reactfire": "^4.0.0-rc.2",
     "simple-react-google-maps": "^1.1.2",
+    "uuidv4": "^6.2.12",
     "web-vitals": "^1.1.2"
   },
   "scripts": {

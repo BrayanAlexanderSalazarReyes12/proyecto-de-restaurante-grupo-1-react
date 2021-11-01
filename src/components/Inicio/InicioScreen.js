@@ -1,7 +1,13 @@
 import React from 'react'
+//import { UseInicio } from '../../hooks/inicio/useInicio'
 import './css/inicioScreen.css'
 
 export const InicioScreen = () => {
+
+    //const { imgs } = UseInicio()
+    /* useEffect(()=>{
+        
+    }) */
     return (
         <>
             <section class="ctn" id="Home">
