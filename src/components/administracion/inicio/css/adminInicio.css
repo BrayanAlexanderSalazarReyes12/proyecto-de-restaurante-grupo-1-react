@@ -42,7 +42,6 @@ background-color: #87dbd0;
 }
 
 .carousel{
-    border: 1px solid black;
     overflow: hidden;
     position: relative;
 }
@@ -57,7 +56,6 @@ background-color: #87dbd0;
     height: 100%;
     overflow: hidden;
     transition: 0.3s ease all;
-    border: 1px solid blue;
     position: relative;
 }
 

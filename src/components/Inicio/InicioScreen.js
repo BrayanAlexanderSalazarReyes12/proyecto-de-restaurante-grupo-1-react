@@ -1,43 +1,30 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import { app } from '../../data/bd'
+import { Carousel } from './Carousel'
+
 //import { UseInicio } from '../../hooks/inicio/useInicio'
 import './css/inicioScreen.css'
 
 export const InicioScreen = () => {
 
-    //const { imgs } = UseInicio()
-    /* useEffect(()=>{
-        
-    }) */
+    const [slideImg, setSlideImg] = useState([])
+
+    useEffect(() => {
+        const docRef = app.database().ref('inicio/carousel')
+        docRef.on('value', (img) => {
+            const all = img.val();
+            let arrayImg = []
+            for (const id in all) {
+                arrayImg.push({ id,...all[id] })
+            }
+            setSlideImg(arrayImg)
+        })
+    }, [])
     return (
         <>
             <section class="ctn" id="Home">
                 <div class="main_carr">
-                    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-                        <div class="carousel-indicators">
-                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
-                        </div>
-                        <div class="carousel-inner">
-                            <div class="carousel-item active">
-                                <img src="https://dam.cocinafacil.com.mx/wp-content/uploads/2020/04/comida-china-tipica.jpg" class="d-block w-100" alt="imagen 1"  />
-                            </div>
-                            <div class="carousel-item">
-                                <img src="https://us.123rf.com/450wm/emmanperez/emmanperez1909/emmanperez190900019/130851138-deliciosas-enchiladas-de-excelente-comida-mexicana-mole-y-queso-comida-t%C3%ADpica-mexicana-.jpg?ver=6" class="d-block w-100" alt="imagen 2"  />
-                            </div>
-                            <div class="carousel-item">
-                                <img src="https://img.freepik.com/foto-gratis/ensalada-pechuga-pollo-parrilla-vegetales-frescos-tomates-pepinos-hojas-lechuga-ensalada-pollo-comida-sana_2829-4246.jpg?size=626&ext=jpg" class="d-block w-100" alt="imagen 3" />
-                            </div>
-                        </div>
-                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Previous</span>
-                        </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Next</span>
-                        </button>
-                    </div>
+                    <Carousel />
                 </div>
             
                 <div class="main_prensent">
