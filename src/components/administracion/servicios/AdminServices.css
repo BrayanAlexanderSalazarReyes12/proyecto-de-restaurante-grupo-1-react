@@ -1,0 +1,30 @@
+
+.newservice{
+    background-color: blanchedalmond;
+    padding-bottom: 200px;
+    padding-top: 30px;
+    text-align: center;
+}
+.newservice form{
+
+    margin-left: 30px;
+    margin-right: 30px;
+}
+
+.newservice h3{
+    color: var(--color-5);
+    padding-top: 25px;
+    margin-bottom: 20px;
+}
+
+
+#btn_añadir{
+    border-radius: 10px;
+    margin-top: 50px;
+    padding: 10px 10px 10px 10px;
+    background-color: var(--color-5);
+}
+#btn_añadir:hover{
+    box-shadow: 0 8px 16px 0 rgba(92, 20, 20, 0.2), 0 6px 20px 0 rgba(143, 12, 12, 0.19);
+
+}
