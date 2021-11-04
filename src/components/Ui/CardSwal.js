@@ -16,4 +16,7 @@ export const Alerta = async() => {
 export const respAlerta = (titulo,texto) => {
     return swal(titulo, texto, "success");
 }
+export const respError = (titulo,texto) => {
+    return swal(titulo, texto, "error");
+}
 

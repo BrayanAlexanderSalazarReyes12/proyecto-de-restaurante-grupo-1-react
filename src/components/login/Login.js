@@ -9,6 +9,7 @@ import { getAuth,signInWithEmailAndPassword } from 'firebase/auth'
 import './css/login.css'
 import { ToastMess } from '../Ui/ToastMess'
 import { UseOpen } from '../../hooks/UseOpen'
+import { respError } from './../Ui/CardSwal';
 
 
 export const Login = ({history}) => {
@@ -47,20 +48,10 @@ export const Login = ({history}) => {
                 }
     
             })
-            console.log(user)
             history.replace("/admin/inicio")
         })
         .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            console.log(errorCode)
-            console.log(errorMessage)
-            setToast(true)
-            handleData({
-                titulo: "Error",mensaje: "Email - Password incorrecto"})
-            setTimeout(() => {
-                setToast(false)
-            }, 3000);
+            respError('Error', 'Verifica tu email/password')
         });
         
     }
