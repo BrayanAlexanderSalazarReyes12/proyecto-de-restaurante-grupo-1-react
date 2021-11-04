@@ -4,6 +4,7 @@ import { Carousel } from './Carousel'
 
 //import { UseInicio } from '../../hooks/inicio/useInicio'
 import './css/inicioScreen.css'
+import { Propuesta } from './Propuesta'
 
 export const InicioScreen = () => {
 
@@ -24,17 +25,14 @@ export const InicioScreen = () => {
         <>
             <section class="ctn" id="Home">
                 <div class="main_carr">
-                    <Carousel />
+                    {/* Carousel de imagenes */}
+                        <Carousel />
+                    {/* Carousel de imagenes */}
                 </div>
-            
-                <div class="main_prensent">
-                    <img src="https://es.justexw.com/wp-content/uploads/sites/2/gestion-de-un-restaurante-en-excel.jpg" alt="" width="100%" height="450px" />  
-                    <div class="txt_pre">
-                        <h1>Nuestra propuesta</h1>
-                        <p className="textoo">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ratione debitis itaque dolorum animi! Nisi modi aut recusandae nesciunt perspiciatis laborum, odit rerum amet accusamus. Soluta quasi non fuga. Commodi, fugit!
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis, vitae libero! Aliquam vel fuga itaque, eum, esse facere quam laborum odio, eveniet voluptates est quia mollitia veniam tempora hic delectus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde rerum nisi at magnam earum! Illo exercitationem provident quasi rerum, unde adipisci, debitis excepturi error accusantium impedit obcaecati, cumque dignissimos earum?</p>
-                    </div> 
-                </div>
+
+                {/* Propuesta */}
+                    <Propuesta />
+                {/* Propuesta */}
                 
             
             <section id="recomendaciones">
@@ -90,10 +88,11 @@ export const InicioScreen = () => {
                     </div>
                 </div>
             </section>
-                <div class="main_prensent">
+            
+                <div class="main_prensent justify-content-center">
                 
                     <img  src="https://hotelciros.com/wp-content/uploads/2015/05/negocios031.jpg" alt="" width="100%" height="450px" />  
-                    <div class="txt_pre">
+                    <div class="txt_pre" style={mensaje}>
 
                         <h1 class="title_pre">Organizamos tu evento</h1>
                         <p class="parra-title textoo" >Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ratione debitis itaque dolorum animi! Nisi modi aut recusandae nesciunt perspiciatis laborum, odit rerum amet accusamus. Soluta quasi non fuga. Commodi, fugit!
@@ -142,4 +141,13 @@ export const InicioScreen = () => {
             </section>
         </>
     )
+}
+
+
+const mensaje = {
+    border: '1px solid white',
+    width: '90%',
+    backdropFilter: 'blur(8px)',
+    borderRadius: '10px',
+    color: 'black',
 }

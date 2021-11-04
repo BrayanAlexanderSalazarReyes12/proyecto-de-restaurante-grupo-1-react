@@ -11,7 +11,7 @@ import { saveImage, updateImage, deleteImage } from './../../../helpers/FileUplo
 
 
 
-export const ModalSlide = ({open, setOpen, data,onAction}) => {
+export const ModalSlide = ({open, setOpen, data }) => {
 
     const carpeta = 'inicio/carousel';
     const { FileUrl, setFileUrl } = usePrevImg()

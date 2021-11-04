@@ -1,14 +1,37 @@
-import React, { useRef, useEffect, useState } from 'react'
-import { app } from '../../data/bd'
-import { Slide } from './Slide';
+import React, { useState, useRef, useEffect } from 'react'
+import { app } from '../../../data/bd'
+import { CardTestimonio } from './CardTestimonio'
+import { ModalTestimonio } from './ModalTestimonio'
 
-export const Carousel = () => {
+export const Testimonios = () => {
 
 
     const [slideImg, setSlideImg] = useState([])
-    
-    useEffect(() => { // Obtener datos de la base de datos
-        const docRef = app.database().ref('inicio/carousel')
+    const [open, setOpen] = useState(false); // Modal
+    const [newSlide, setNewSlide] = useState({})
+
+    const handleSlide = (img,texto,id,d) => {
+        if(d){
+            //*Eliminar el slider seleccionado
+            setNewSlide({
+                img,
+                texto,
+                id,
+                delete: true
+            })
+        }else{
+            //* Actualizar o agregar un nuevo slider
+            setNewSlide({
+                img,
+                texto,
+                id,
+                delete: false
+            })
+        }
+    }
+
+    useEffect(() => {
+        const docRef = app.database().ref('inicio/testimonios')
         docRef.on('value', (img) => {
             const all = img.val();
             let arrayImg = []
@@ -17,10 +40,10 @@ export const Carousel = () => {
             }
             setSlideImg(arrayImg)
         })
-    },[])
+    }, [])
 
     const slidex = useRef(null);
-    
+
     const handleNext = () => {
         if(slidex.current.children.length > 0){
             console.log("Siguiente")
@@ -65,22 +88,34 @@ export const Carousel = () => {
             }, 40)
         }
     }
-    let key = 0;
+
+    const handleNew = () => {
+
+    }
+
     return (
         <>
-            <div className="carousel position-relative">
+            <div style={carousel} className="position-relative">
 
                 <div className="contenedor-sliders" ref={slidex}>
 
-                    { 
-                        slideImg.map(im => (
-                            
-                            <Slide {...im} key={`key${key++}`}/>
+                    {
+                        slideImg.map(test => (
+                            <CardTestimonio { ...test }
+                                            setOpen={setOpen}
+                                            onAction={handleSlide}
+                                            key={test.id} />
                         ))
                     }
 
-                    
-                    
+                    <div style={nueva} className="position-relative item d-flex flex-column flex-md-row justify-content-center">
+                        <small style={editar} onClick={handleNew}>
+                            <i class="far fa-images"></i>
+                        </small>
+                        <img style={{ objectFit: 'cover'}} 
+                            src="https://firebasestorage.googleapis.com/v0/b/restaurantetic21.appspot.com/o/carousel%2Fdefault-featured-image.jpg?alt=media&token=525b974e-724a-44c4-8821-c8fae2286fe3" alt="" />
+                    </div>
+
                 </div>
 
                 <div style={prev_next} className="next position-absolute" onClick={handleNext}>
@@ -92,11 +127,56 @@ export const Carousel = () => {
                     <i className="fas fa-angle-left"></i>
                 </div>
             </div>
-            
 
+            {open && (
+                <ModalTestimonio 
+                        sx={sty} 
+                        open={open} 
+                        setOpen={setOpen}
+                        data={newSlide}
+                        />
+            )}
         </>
     )
 }
+
+const sty = {
+    position: 'absolute'
+}
+
+const nueva = {
+    minWidth: '100%',
+    margin: 'auto',
+    height: '200px'
+}
+
+const editar = {
+    position: 'absolute',
+    width: '50px',
+    height: '50px',
+    padding: '.5rem',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    top: '1rem',
+    left: '1rem',
+    borderRadius: '50%',
+    fontSize: '20px',
+    background: 'rgb(68, 228, 68)',
+    color: 'white',
+}
+
+
+const carousel = {
+    overflow: 'hidden',
+    height: 'auto',
+    minHeight: '200px',
+    alignItems: 'center',
+    display: 'flex'
+}
+
+
 const prev_next = {
-    background: 'black'
+    background: 'transparent',
+    color: 'black',
 }
