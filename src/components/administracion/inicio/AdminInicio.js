@@ -9,6 +9,7 @@ import { Carousel } from './Carousel';
 import { Propuesta } from './Propuesta';
 import { Recomendaciones } from './Recomendaciones';
 import { Testimonios } from './Testimonios';
+import { CardSwal } from '../../Ui/CardSwal';
 
 export const AdminInicio = () => {
 
@@ -42,6 +43,7 @@ export const AdminInicio = () => {
                 {/* Testimonios */}
                     <Testimonios />
                 {/* Testimonios */}
+
 
             </section>
         </>

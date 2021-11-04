@@ -8,6 +8,7 @@ import { UseOpen } from '../../../hooks/UseOpen';
 import { Loading } from '../../Ui/Loading';
 import { app } from './../../../data/bd';
 import { saveImage, updateImage, deleteImage } from './../../../helpers/FileUpload';
+import { Alerta, respAlerta } from '../../Ui/CardSwal';
 
 
 
@@ -60,6 +61,7 @@ export const ModalSlide = ({open, setOpen, data }) => {
                 }
                 docRef.push(data).then(() =>{
                     handleAction(false)
+                    respAlerta('Correcto','Se Guardo correctamente');
                 })
             }
             
@@ -76,6 +78,7 @@ export const ModalSlide = ({open, setOpen, data }) => {
                 
                 docRef.update(img).then(() => {
                     handleAction(false)
+                    respAlerta('Correcto','Se Actualizo correctamente');
                 })
             }
             
@@ -84,15 +87,23 @@ export const ModalSlide = ({open, setOpen, data }) => {
     }
 
     const handleDelete = async() => {
-        handleAction(true)
+        const resp = await Alerta()
+        if(resp){
+            handleAction(true)
 
-        await deleteImage(data.img,'carousel')
+            await deleteImage(data.img,'carousel')
+            
+            const docRef = app.database().ref(carpeta).child(data.id)
+            
+            docRef.remove().then(() => {
+                handleAction(false)
+                respAlerta('Correcto','Se Elimino correctamente');
+                setOpen(false)
+            })
+        }else{
+
+        }
         
-        const docRef = app.database().ref(carpeta).child(data.id)
-        
-        docRef.remove().then(() => {
-            handleAction(false)
-        })
         
         
     }

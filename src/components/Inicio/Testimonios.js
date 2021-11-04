@@ -1,34 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { app } from '../../../data/bd'
-import { CardTestimonio } from './CardTestimonio'
-import { ModalTestimonio } from './ModalTestimonio'
+import { app } from '../../data/bd'
+import { CardTestimonio } from './CardTestimonio';
 
 export const Testimonios = () => {
 
-    const defaultI = 'https://firebasestorage.googleapis.com/v0/b/restaurantetic21.appspot.com/o/carousel%2Fdefault-featured-image.jpg?alt=media&token=525b974e-724a-44c4-8821-c8fae2286fe3'
     const [slideImg, setSlideImg] = useState([])
-    const [open, setOpen] = useState(false); // Modal
-    const [newSlide, setNewSlide] = useState({})
-
-    const handleSlide = (img,texto,id,d) => {
-        if(d){
-            //*Eliminar el slider seleccionado
-            setNewSlide({
-                img,
-                texto,
-                id,
-                delete: true
-            })
-        }else{
-            //* Actualizar o agregar un nuevo slider
-            setNewSlide({
-                img,
-                texto,
-                id,
-                delete: true
-            })
-        }
-    }
 
     useEffect(() => {
         const docRef = app.database().ref('inicio/testimonios')
@@ -41,6 +17,7 @@ export const Testimonios = () => {
             setSlideImg(arrayImg)
         })
     }, [])
+
 
     const slidex = useRef(null);
 
@@ -88,33 +65,16 @@ export const Testimonios = () => {
             }, 40)
         }
     }
-
-    const handleNew = (defaultI) => {
-        setNewSlide({
-            img: defaultI
-        })
-        setOpen(true)
-    }
-
+    
     return (
         <>
             <div style={carousel} className="position-relative">
 
                 <div className="contenedor-sliders" ref={slidex}>
 
-                    <div style={nueva} className="position-relative item d-flex flex-column flex-md-row justify-content-center">
-                        <small style={editar} onClick={() => handleNew(defaultI)}>
-                            <i class="far fa-images"></i>
-                        </small>
-                        <img style={{ objectFit: 'cover'}} 
-                            src={defaultI} alt="" />
-                    </div>
-
                     {
                         slideImg.map(test => (
                             <CardTestimonio { ...test }
-                                            setOpen={setOpen}
-                                            onAction={handleSlide}
                                             key={test.id} />
                         ))
                     }
@@ -132,43 +92,8 @@ export const Testimonios = () => {
                     <i className="fas fa-angle-left"></i>
                 </div>
             </div>
-
-            {open && (
-                <ModalTestimonio 
-                        sx={sty} 
-                        open={open} 
-                        setOpen={setOpen}
-                        data={newSlide}
-                        />
-            )}
         </>
     )
-}
-
-const sty = {
-    position: 'absolute'
-}
-
-const nueva = {
-    minWidth: '100%',
-    margin: 'auto',
-    height: '200px'
-}
-
-const editar = {
-    position: 'absolute',
-    width: '50px',
-    height: '50px',
-    padding: '.5rem',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    top: '1rem',
-    left: '1rem',
-    borderRadius: '50%',
-    fontSize: '20px',
-    background: 'rgb(68, 228, 68)',
-    color: 'white',
 }
 
 
@@ -179,7 +104,6 @@ const carousel = {
     alignItems: 'center',
     display: 'flex'
 }
-
 
 const prev_next = {
     background: 'transparent',

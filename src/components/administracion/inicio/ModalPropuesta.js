@@ -8,6 +8,7 @@ import { updateImage } from './../../../helpers/FileUpload';
 import { app } from '../../../data/bd';
 import { UseOpen } from '../../../hooks/UseOpen';
 import { Loading } from '../../Ui/Loading';
+import { respAlerta } from '../../Ui/CardSwal';
 
 export const ModalPropuesta = ({onAction,data,open, setOpen, path}) => {
 
@@ -58,23 +59,42 @@ export const ModalPropuesta = ({onAction,data,open, setOpen, path}) => {
     }, [])
 
     const componente = async(referencia, child) => {
-        const newUrlImage = await updateImage(data.img, FileUrl.file,child)
+        if(FileUrl.file !== null){
+            const newUrlImage = await updateImage(data.img, FileUrl.file,child)
             
-        if(newUrlImage){
-            const docRef = app.database().ref(referencia).child(child)
-            
-            const updatePropuesta = {
-                img: newUrlImage,
-                texto: changeTexto.texto,
-                titulo: data.titulo,
-
+            if(newUrlImage){
+                const docRef = app.database().ref(referencia).child(child)
+                
+                const updatePropuesta = {
+                    img: newUrlImage,
+                    texto: changeTexto.texto,
+                    titulo: data.titulo,
+    
+                }
+                
+                docRef.update(updatePropuesta).then(() => {
+                    onAction(updatePropuesta)
+                    handleAction(false)
+                    respAlerta('Correcto','Se Actualizo correctamente');
+                })
             }
-            
-            docRef.update(updatePropuesta).then(() => {
-                onAction(updatePropuesta)
-                handleAction(false)
-            })
+        }else{
+            const docRef = app.database().ref(referencia).child(child)
+                
+                const updatePropuesta = {
+                    img: FileUrl.img,
+                    texto: changeTexto.texto,
+                    titulo: data.titulo,
+    
+                }
+                
+                docRef.update(updatePropuesta).then(() => {
+                    onAction(updatePropuesta)
+                    handleAction(false)
+                    respAlerta('Correcto','Se Actualizo correctamente');
+                })
         }
+        
     }
 
 

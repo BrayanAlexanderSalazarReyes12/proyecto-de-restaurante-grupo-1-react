@@ -9,6 +9,7 @@ import { updateImage } from '../../../helpers/FileUpload';
 import { app } from '../../../data/bd';
 import { UseOpen } from '../../../hooks/UseOpen';
 import { Loading } from '../../Ui/Loading';
+import { respAlerta } from '../../Ui/CardSwal';
 
 export const ModalPlatos = ({id,img,titulo,descripcion,open, setOpen}) => {
 
@@ -64,6 +65,7 @@ export const ModalPlatos = ({id,img,titulo,descripcion,open, setOpen}) => {
             
             docRef.update(updatePropuesta).then(() => {
                 handleAction(false)
+                respAlerta('Correcto','Se Actualizo correctamente');
             })
         }else{
             const newUrlImage = await updateImage(img, FileUrl.file,'recomendacion')
@@ -80,6 +82,7 @@ export const ModalPlatos = ({id,img,titulo,descripcion,open, setOpen}) => {
                 
                 docRef.update(updatePropuesta).then(() => {
                     handleAction(false)
+                    respAlerta('Correcto','Se Actualizo correctamente');
                 })
             }
         }
@@ -142,7 +145,7 @@ export const ModalPlatos = ({id,img,titulo,descripcion,open, setOpen}) => {
                                         </div>
                                     </div>
                                     <div>
-                                        <button type="submit" class="btn btn-outline-success">
+                                        <button type="submit" class="m-2 btn btn-outline-success">
                                             Guardar
                                         </button>
                                     </div>
