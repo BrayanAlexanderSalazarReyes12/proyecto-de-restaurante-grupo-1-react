@@ -27,14 +27,13 @@ export const Servicios = () => {
             <div className="serviciosof col-12 col-md-6">
                 <div className="Servicios_card ">
                     <div className="container">
-                        <div className="row row-cols-1 row-cols-md-3 g-4">
+                        <div id="cards" className="row row-cols-1 row-cols-md-3 g-4">
                             <div className="col col-lg-6">
                                 <div className="card card-">
-                                    <img src={cumple} className="card-img-top card-imf-radius"  width="285" height="202" alt="Esto es una imagen"></img>
+                                    <img id="img-card-cumple" src={cumple} className="card-img-top card-imf-radius"  width="285" height="202" alt="Esto es una imagen"></img>
                                     <div className="card-body">
                                         <h5 className="card-title">Celebración de cumpleaños</h5>
-                                        <p className="card-text">This is a longer card with supporting text below as a
-                                            natural lead-in to additional content. This content is a little bit longer.
+                                        <p className="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.
                                         </p>
                                         <Link to="/contactanos"><button>¿Preguntas? Contactanos</button></Link>
                                         
