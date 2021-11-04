@@ -7,10 +7,9 @@ export const FacturaProducto = () => {
     
     for(let i = 0; i < facturaP.length; i++) {
         const producto = facturaP[i];
-        let total = Number(producto.cantidad * producto.precio) 
+        let total = Number(producto.count * producto.precio) 
         suma_total += total;
-        lista_prod[producto.titulo] = `Cantidad: ${producto.cantidad} | Precio: ${producto.precio} |  Total: ${total}`
-        
+        lista_prod[producto.titulo] = `Cantidad: ${producto.count} | Precio: ${producto.precio} |  Total: ${total}`
     }
 
     lista_prod["total_factura"] = suma_total
