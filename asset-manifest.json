@@ -1,23 +1,23 @@
 {
   "files": {
-    "main.css": "/Restaurante/static/css/main.f75024f8.chunk.css",
-    "main.js": "/Restaurante/static/js/main.c9a4037e.chunk.js",
-    "main.js.map": "/Restaurante/static/js/main.c9a4037e.chunk.js.map",
-    "runtime-main.js": "/Restaurante/static/js/runtime-main.a0806f9a.js",
-    "runtime-main.js.map": "/Restaurante/static/js/runtime-main.a0806f9a.js.map",
-    "static/js/2.f4ace8b1.chunk.js": "/Restaurante/static/js/2.f4ace8b1.chunk.js",
-    "static/js/2.f4ace8b1.chunk.js.map": "/Restaurante/static/js/2.f4ace8b1.chunk.js.map",
-    "static/js/3.ee32b660.chunk.js": "/Restaurante/static/js/3.ee32b660.chunk.js",
-    "static/js/3.ee32b660.chunk.js.map": "/Restaurante/static/js/3.ee32b660.chunk.js.map",
-    "index.html": "/Restaurante/index.html",
-    "static/css/main.f75024f8.chunk.css.map": "/Restaurante/static/css/main.f75024f8.chunk.css.map",
-    "static/js/2.f4ace8b1.chunk.js.LICENSE.txt": "/Restaurante/static/js/2.f4ace8b1.chunk.js.LICENSE.txt",
-    "static/media/menu.360f1d63.pdf": "/Restaurante/static/media/menu.360f1d63.pdf"
+    "main.css": "/proyecto-de-restaurante-grupo-1-react/static/css/main.f75024f8.chunk.css",
+    "main.js": "/proyecto-de-restaurante-grupo-1-react/static/js/main.cd4059ad.chunk.js",
+    "main.js.map": "/proyecto-de-restaurante-grupo-1-react/static/js/main.cd4059ad.chunk.js.map",
+    "runtime-main.js": "/proyecto-de-restaurante-grupo-1-react/static/js/runtime-main.6e092da9.js",
+    "runtime-main.js.map": "/proyecto-de-restaurante-grupo-1-react/static/js/runtime-main.6e092da9.js.map",
+    "static/js/2.c20db7a6.chunk.js": "/proyecto-de-restaurante-grupo-1-react/static/js/2.c20db7a6.chunk.js",
+    "static/js/2.c20db7a6.chunk.js.map": "/proyecto-de-restaurante-grupo-1-react/static/js/2.c20db7a6.chunk.js.map",
+    "static/js/3.ee32b660.chunk.js": "/proyecto-de-restaurante-grupo-1-react/static/js/3.ee32b660.chunk.js",
+    "static/js/3.ee32b660.chunk.js.map": "/proyecto-de-restaurante-grupo-1-react/static/js/3.ee32b660.chunk.js.map",
+    "index.html": "/proyecto-de-restaurante-grupo-1-react/index.html",
+    "static/css/main.f75024f8.chunk.css.map": "/proyecto-de-restaurante-grupo-1-react/static/css/main.f75024f8.chunk.css.map",
+    "static/js/2.c20db7a6.chunk.js.LICENSE.txt": "/proyecto-de-restaurante-grupo-1-react/static/js/2.c20db7a6.chunk.js.LICENSE.txt",
+    "static/media/menu.360f1d63.pdf": "/proyecto-de-restaurante-grupo-1-react/static/media/menu.360f1d63.pdf"
   },
   "entrypoints": [
-    "static/js/runtime-main.a0806f9a.js",
-    "static/js/2.f4ace8b1.chunk.js",
+    "static/js/runtime-main.6e092da9.js",
+    "static/js/2.c20db7a6.chunk.js",
     "static/css/main.f75024f8.chunk.css",
-    "static/js/main.c9a4037e.chunk.js"
+    "static/js/main.cd4059ad.chunk.js"
   ]
 }
