@@ -1,14 +1,30 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import cumple from './img/img_servicios/cumpleanos.webp'
-import aniversarios from './img/img_servicios/aniversarios.webp'
-import cumple_infantil from './img/img_servicios/infantil.webp'
-import declaracion from './img/img_servicios/declaraciones.webp'
-import despedida from './img/img_servicios/despedidas.webp'
-import cena_amigos from './img/img_servicios/cena_amigos.webp'
 import './Servicios.css'
+import { app } from '../../data/bd'
+import { CardServices } from './cardServices'
 
 export const Servicios = () => {
+
+
+    const carpeta = 'Servicios';
+    const [ servicios, setServicios ] = useState([])
+
+
+    useEffect(() => { // Obtener datos de la base de datos
+        const docRef = app.database().ref(carpeta)
+        docRef.on('value', (data) => {
+            const all = data.val();
+            let arrayImg = []
+            for (const id in all) {
+                arrayImg.push({ id,...all[id] })
+            }
+            
+            setServicios(arrayImg)
+        })
+    },[])
+
+
     return (
         <>
     <div className="" id="servicios">
@@ -27,79 +43,15 @@ export const Servicios = () => {
             <div className="serviciosof col-12 col-md-6">
                 <div className="Servicios_card ">
                     <div className="container">
-                        <div id="cards" className="row row-cols-1 row-cols-md-3 g-4">
-                            <div className="col col-lg-6">
-                                <div className="card card-">
-                                    <img id="img-card-cumple" src={cumple} className="card-img-top card-imf-radius"  width="285" height="202" alt="Esto es una imagen"></img>
-                                    <div className="card-body">
-                                        <h5 className="card-title">Celebración de cumpleaños</h5>
-                                        <p className="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.
-                                        </p>
-                                        <Link to="/contactanos"><button>¿Preguntas? Contactanos</button></Link>
-                                        
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col col-lg-6">
-                                <div className="card card-">
-                                    <img src={aniversarios} className="card-img-top card-imf-radius" width="285" height="202" alt="Esto es una imagen"></img>
-                                    <div className="card-body">
-                                        <h5 className="card-title">Aniversarios</h5>
-                                        <p className="card-text">This is a longer card with supporting text below as a
-                                            natural lead-in to additional content. This content is a little bit longer.
-                                        </p>
-                                        <Link to="/contactanos"><button>¿Preguntas? Contactanos</button></Link>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col col-lg-6">
-                                <div className="card card-">
-                                    <img src={cumple_infantil} className="card-img-top card-imf-radius" width="285" height="202" alt="Esto es imagen"></img>
-                                    <div className="card-body">
-                                        <h5 className="card-title">Fiestas infantiles</h5>
-                                        <p className="card-text">This is a longer card with supporting text below as a
-                                            natural lead-in to additional content.This content is a little bit longer.
-                                            </p>
-                                            <Link to="/reservas"><button>¿Preguntas? Contactanos</button></Link>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col col-lg-6">
-                                <div className="card card-">
-                                    <img src={declaracion} className="card-img-top card-imf-radius" width="285" height="202" alt="Esto es una imagen"></img>
-                                    <div className="card-body">
-                                        <h5 className="card-title">Declaraciones y propuestas</h5>
-                                        <p className="card-text">This is a longer card with supporting text below as a
-                                            natural lead-in to additional content. This content is a little bit longer.
-                                        </p>
-                                        <Link to="/contactanos"><button>¿Preguntas? Contactanos</button></Link>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col col-lg-6">
-                                <div className="card card-">
-                                    <img src={despedida} className="card-img-top card-imf-radius" width="285" height="202" alt="Esto es una imagen"></img>
-                                    <div className="card-body">
-                                        <h5 className="card-title">Despedidas</h5>
-                                        <p className="card-text">This is a longer card with supporting text below as a
-                                            natural lead-in to additional content. This content is a little bit longer.
-                                        </p>
-                                        <Link to="/contactanos"><button>¿Preguntas? Contactanos</button></Link>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col col-lg-6">
-                                <div className="card card-">
-                                    <img src={cena_amigos} className="card-img-top card-imf-radius" width="285" height="202" alt="Esto es una imagen"></img>
-                                    <div className="card-body">
-                                        <h5 className="card-title">Cena con amigos</h5>
-                                        <p className="card-text">This is a longer card with supporting text below as a
-                                            natural lead-in to additional content. This content is a little bit longer.
-                                        </p>
-                                        <Link to="/contactanos"><button>¿Preguntas? Contactanos</button></Link>
-                                    </div>
-                                </div>
-                            </div>
+                        <div id="cards" className="row">
+                            
+                            {
+                                servicios.map(servicio => (
+                                <CardServices
+                                key={servicio.id} {...servicio}/>
+                                ))
+                            }
+                        
                         </div>
                     </div>
                 </div>

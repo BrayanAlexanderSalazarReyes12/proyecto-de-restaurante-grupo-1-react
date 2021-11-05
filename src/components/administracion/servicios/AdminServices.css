@@ -1,9 +1,10 @@
 
 .newservice{
-    background-color: blanchedalmond;
+    background: seashell;
     padding-bottom: 200px;
-    padding-top: 30px;
+    padding-top: 200px;
     text-align: center;
+    background: linear-gradient(to right, #B07C1C, rgb(255, 255, 255));
 }
 .newservice form{
 
@@ -28,3 +29,34 @@
     box-shadow: 0 8px 16px 0 rgba(92, 20, 20, 0.2), 0 6px 20px 0 rgba(143, 12, 12, 0.19);
 
 }
+
+
+
+div.cards_servicios{
+    padding: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--color-3);
+    border-radius: 10px;
+    margin-bottom: 15px;
+    margin-top: 25px;
+}
+
+.listaservice{
+    text-align: center;
+}
+
+.listaservice h3{
+    margin-top: 40px;
+    margin-bottom: 50px;
+    color: var(--color-5);
+}
+
+.listaservice button{
+    background: var(--color-5);
+    padding-top:5px;
+    padding-bottom: 5px;
+    border-radius: 10px;
+}
+

@@ -22,13 +22,7 @@
     font-weight: var(--weight-parrafos);
 
 }
-div.servicios_card{
-    padding: 16px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: var(--color-3);
-}
+
 
 div.serviciosof{
     background: linear-gradient(to right, #96bb0f, #467302);; 
@@ -56,4 +50,9 @@ div.serviciosof{
     color: rgba(255, 255, 255, 1) !important;
     box-shadow: 0 4px 16px green;
     transition: all 0.2s ease;
+}
+
+.card{
+    margin-bottom: 25px;
+    border-radius: 10px;
 }
