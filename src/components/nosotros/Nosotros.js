@@ -54,10 +54,10 @@ export const Nosotros = () => {
                 </div>
             
 
-                <div class="container" >
-                    <div class="cmo">
+                <div className="container" >
+                    <div className="cmo">
                
-                    <div class="testimonios"class="col-sm-12 col-md-12 col-lg-12 col-xl-12 p-5">
+                    <div className="testimonios col-sm-12 col-md-12 col-lg-12 col-xl-12 p-5">
 
                        <DiscussionEmbed
                         shortname="Restaurante-App"
@@ -69,8 +69,6 @@ export const Nosotros = () => {
                                 language: 'es_MX'	
                             }
                         }
-
-
                        />
                 </div>
                 

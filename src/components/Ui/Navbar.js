@@ -61,9 +61,24 @@ export const Navbar = () => {
                             <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
                             <button className="btn btn-outline-light" type="submit">Search</button>
                         </form>
+                        <NavLink style={Admin}  className="nav-link d-flex justify-content-center align-items-center" activeClassName="active" exact to="/login">
+                                    ADM
+                                </NavLink>
                     </div>
                 </div>
             </nav>
         </header>
     )
+}
+
+
+const Admin= {
+    width: '50px',
+    height:'50px',
+    border: '1px solid white',
+    borderRadius: '50%',
+    padding:'5px',
+    marginLeft: '15px',
+    
+   
 }
