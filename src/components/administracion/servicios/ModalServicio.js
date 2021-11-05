@@ -113,8 +113,8 @@ export const ModalServicio = ({id,img,nombreServicio,descripcion,open, setOpen})
                                 <div style={cardEdit} className="card position-relative">
                                     <img src={FileUrl.url} className="card-img-top" alt={nombreServicio} />
                                     <div className="card-body">
-                                        <h5 class="card-title">{value.nombreServicio}</h5>
-                                        <p class="card-text">{value.descripcion}</p>
+                                        <h5 className="card-title">{value.nombreServicio}</h5>
+                                        <p className="card-text">{value.descripcion}</p>
                                     </div>
                                 </div>
                                 { action && <Loading /> }
@@ -125,7 +125,7 @@ export const ModalServicio = ({id,img,nombreServicio,descripcion,open, setOpen})
                                         onSubmit={handleSubmit}>
                                     <div style={cardEdit} className="card position-relative">
                                         <small style={editar} onClick={handleImage}>
-                                            <i class="far fa-images"></i>
+                                            <i className="far fa-images"></i>
                                         </small>
                                         <img src={FileUrl.url} className="card-img-top" alt={nombreServicio} />
                                         <div className="card-body">
@@ -133,7 +133,7 @@ export const ModalServicio = ({id,img,nombreServicio,descripcion,open, setOpen})
                                             value={value.nombreServicio}
                                                     onChange={handleInputChange}
                                                     />
-                                            <textarea   value={value.descripcion} class="form-control mt-1"
+                                            <textarea   value={value.descripcion} className="form-control mt-1"
                                                         onChange={handleInputChange}
                                                         name='descripcion'
                                                         id="exampleFormControlTextarea1" rows="3">
@@ -146,14 +146,14 @@ export const ModalServicio = ({id,img,nombreServicio,descripcion,open, setOpen})
                                         </div>
                                     </div>
                                     <div>
-                                        <button type="submit" class="m-2 btn btn-outline-success">
+                                        <button type="submit" className="m-2 btn btn-outline-success">
                                             Guardar
                                         </button>
                                     </div>
                                 </form>
                                     <button type="button"
                                             onClick={() => setOpen(false)}
-                                            class="btn btn-outline-danger">
+                                            className="btn btn-outline-danger">
                                         Cancelar
                                     </button>
                             </div>
