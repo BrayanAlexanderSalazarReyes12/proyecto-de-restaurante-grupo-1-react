@@ -19,6 +19,7 @@
 }
 .cmo {
     border:  #E39F9A 5px dashed;
+    background: var(--color-5);
   }
   #Nosotros{
     background: #C9FFBF;  /* fallback for old browsers */
