@@ -1,5 +1,6 @@
 import React from 'react'
 import './css/nosotros.css'
+import { DiscussionEmbed } from 'disqus-react';
 export const Nosotros = () => {
     return (
         <>
@@ -16,7 +17,7 @@ export const Nosotros = () => {
                             <p >Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa a dolorem suscipit animi provident fugiat dolor harum! Iusto quibusdam corporis mollitia dolor, ea repellendus, quo assumenda expedita cum ab fugiat! <br/>
                             Lorem ipsum dolor sit amet consectetur, adipisicing elit. Commodi eveniet id doloremque eum sapiente reiciendis. Temporibus voluptate laudantium ipsam dolorem? </p>
                         </div>
-
+                        
                     </div>
                 </div>
 
@@ -55,28 +56,24 @@ export const Nosotros = () => {
 
                 <div class="container" >
                     <div class="cmo">
-                <h3 class="p-3">Comentarios</h3>
+               
                     <div class="testimonios"class="col-sm-12 col-md-12 col-lg-12 col-xl-12 p-5">
 
-                    
+                       <DiscussionEmbed
+                        shortname="Restaurante-App"
+                        config={
+                            {
+                                url:"http://localhost:3000/nosotros",
+                                identifier: 0,
+                                title: "Comentarios",
+                                language: 'es_MX'	
+                            }
+                        }
 
-                        <img className="img-cmo" src={process.env.PUBLIC_URL + '/assets/personal5.jpg'}  alt=""/>
-                        <p >Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quod iusto dolores repellat at non eveniet facilis doloribus, delectus odio velit officiis, distinctio commodi nihil illum eos cumque nesciunt in vitae.</p>
-                   
 
-                   
+                       />
                 </div>
                 
-                <div class="testimonios"class="col-sm-12 col-md-12 col-lg-12 col-xl-12 p-5">
-
-                        <div class="form-floating">
-                        <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
-                        <label for="floatingTextarea">Comments</label>
-                        </div>
-                        <br/>
-                    <input class="btn btn-primary" type="submit" value="Subir"/>
-
-                    </div>
 
                 </div>
             </div>
