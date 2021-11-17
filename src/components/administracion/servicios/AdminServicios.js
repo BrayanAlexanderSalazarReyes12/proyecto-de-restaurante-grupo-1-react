@@ -41,10 +41,11 @@ export const AdminServicios = () => {
         
 
 
-        <div className="row col-12">
-            <div className="newservice col-6 col-md-6 justify-content-center">
-                <h3>Editar Servicio</h3>
-                <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+        <div className="newservice"id="">
+            <section className="newservice row m-1">
+            <div className="txt_servicio col-12 col-md-6 justify-content-center">
+                <h3 className="text-center">Editar Servicio</h3>
+                <p className="text-center">Lorem ipsum, dolor sit amet consectetur adipisicing elit.
                         Esse eius, architecto ipsum delectus placeat odit veritatis reprehenderit vero
                         assumenda id? Laborum quo numquam nihil enim, odit consequatur quasi cum.
                         Exercitationem odit ea qui quo fugit id ipsa quos voluptatum, beatae placeat
@@ -78,7 +79,7 @@ export const AdminServicios = () => {
                 </div>  
     {*/}              
             </div>
-            <div className="listaservice col-6 col-md-6 justify-content-center">
+            <div className="listaservice col-12 col-md-6 justify-content-center">
                 <div className="cards_servicio col-12 row" id="cards_servicios">
 
                             {/* Consultar Servicios */}
@@ -102,7 +103,7 @@ export const AdminServicios = () => {
                                     />
                     )}
                 {/* Modal */}
-
+            </section>
 
         </div>
 

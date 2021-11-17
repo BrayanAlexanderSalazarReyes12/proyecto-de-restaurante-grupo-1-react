@@ -66,6 +66,7 @@ export const Mapa = () => {
 
             <div className="mapa_lugar">
                 <div className="txt_mapa"><h2>Ubicanos</h2></div>
+                
                 <GoogleMaps
                     apiKey={"AIzaSyD_vldU89p9AHSTmRUSQwukMpp6DI6daOg"}
                     style={{height:"300px", width:"1100px"}}
@@ -76,7 +77,8 @@ export const Mapa = () => {
                     }}
                     markers={{lat:4.647255, lng:-74.107864}}
                 />
-            </div>
+                </div>
+            
         </div>
     </>
     

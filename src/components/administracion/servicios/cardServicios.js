@@ -17,7 +17,7 @@ export const CardServicios = ({
 
     return (
         <>
-            <div className="col-md-6  ">
+            <div className="cards_serv_usuario col-lg-6">
                 <div className="cards_servicios">
                     
                     <div className="card-body ">
