@@ -1,22 +1,18 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { app } from '../../data/bd'
+import { UseFetch } from '../../hooks/UseFetch';
 import { CardTestimonio } from './CardTestimonio';
 
 export const Testimonios = () => {
 
     const [slideImg, setSlideImg] = useState([])
+    const { data } = UseFetch(`https://localhost:44380/api/testimonios`)
 
     useEffect(() => {
-        const docRef = app.database().ref('inicio/testimonios')
-        docRef.on('value', (img) => {
-            const all = img.val();
-            let arrayImg = []
-            for (const id in all) {
-                arrayImg.push({ id,...all[id] })
-            }
-            setSlideImg(arrayImg)
-        })
-    }, [])
+        if(!!data){
+            setSlideImg(data)
+        }
+    }, [data])
 
 
     const slidex = useRef(null);

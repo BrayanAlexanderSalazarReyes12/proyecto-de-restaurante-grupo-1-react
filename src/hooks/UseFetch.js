@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import  { useState, useEffect } from 'react'
 
-export const UseFetch = ( action ) => {
+export const UseFetch = ( url ) => {
     
     
     const [ state, setState ] = useState({
@@ -10,9 +10,16 @@ export const UseFetch = ( action ) => {
     })
 
     useEffect( () => {
-
-        
-    }, [ action ])
+        fetch( url )
+        .then( ( response ) => response.json() )
+        .then( ( d ) => {
+            setState( {
+                data: d,
+                loading: false,
+                err: null
+            } )
+        })
+    }, [ url ])
     
     
     
