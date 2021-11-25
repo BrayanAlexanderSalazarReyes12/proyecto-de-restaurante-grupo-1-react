@@ -8,7 +8,7 @@ import { UseOpen } from '../../../hooks/UseOpen';
 import { Loading } from '../../Ui/Loading';
 import { app } from './../../../data/bd';
 import { saveImage, updateImage, deleteImage } from './../../../helpers/FileUpload';
-import { Alerta, respAlerta } from '../../Ui/CardSwal';
+import { Alerta, respAlerta, respError } from '../../Ui/CardSwal';
 
 
 
@@ -42,7 +42,7 @@ export const ModalSlide = ({open, setOpen, data }) => {
 
     useEffect(() => {
         setFileUrl({
-            url: data.img,
+            url: data.img_acordion,
             file: null
         })
     },[])
@@ -50,16 +50,15 @@ export const ModalSlide = ({open, setOpen, data }) => {
 
     const handleSave = async() => {
         handleAction(true)
-        if(data.id === null){
+        if(data.idacordion === null){
             //* GUARDAR UN NUEVO SLIDE EN LA BASE DE DATOS
             const urlImage = await saveImage(FileUrl.file,'carousel');
 
             if(urlImage){
-                const docRef = app.database().ref(carpeta)
-                const data = {
-                    img: urlImage
-                }
-                docRef.push(data).then(() =>{
+
+                Mpost('https://localhost:44380/api/inicio',{
+                    "img_acordion": urlImage,
+                }).then(res => {
                     handleAction(false)
                     respAlerta('Correcto','Se Guardo correctamente');
                 })
@@ -67,21 +66,25 @@ export const ModalSlide = ({open, setOpen, data }) => {
             
         }else{
             //* ACTUALIZAR UN SLIDER EXISTENTE
-            const newUrlImage = await updateImage(data.img, FileUrl.file,'carousel')
+            const newUrlImage = await updateImage(data.img_acordion, FileUrl.file,'carousel')
             
             if(newUrlImage){
-                const docRef = app.database().ref(carpeta).child(data.id)
-                
-                const img = {
-                    img: newUrlImage
-                }
-                
-                docRef.update(img).then(() => {
+                fetch( `https://localhost:44380/api/inicio`,{
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        "idacordion": data.idacordion,
+                        "img_acordion": newUrlImage
+                    })
+                })
+                .then( res => res.json() )
+                .then( data => {
                     handleAction(false)
                     respAlerta('Correcto','Se Actualizo correctamente');
                 })
             }
-            
         }
         
     }
@@ -91,15 +94,22 @@ export const ModalSlide = ({open, setOpen, data }) => {
         if(resp){
             handleAction(true)
 
-            await deleteImage(data.img,'carousel')
+            await deleteImage(data.img_acordion,'carousel')
             
-            const docRef = app.database().ref(carpeta).child(data.id)
-            
-            docRef.remove().then(() => {
-                handleAction(false)
-                respAlerta('Correcto','Se Elimino correctamente');
-                setOpen(false)
-            })
+            fetch( `https://localhost:44380/api/inicio`,{
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        "idacordion": data.idacordion
+                    })
+                })
+                .then( res => res.json() )
+                .then( data => {
+                    handleAction(false)
+                    respAlerta('Correcto','Se elimino correctamente');
+                })
         }else{
 
         }
@@ -182,4 +192,18 @@ const modal = {
     height: 'auto',
     bgcolor: 'background.paper',
     boxShadow: 24,
+}
+
+
+const Mpost = async(url,body) => {
+    const res = await fetch(url, { 
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+    });
+
+    const json = await res.json();
+    return json;
 }

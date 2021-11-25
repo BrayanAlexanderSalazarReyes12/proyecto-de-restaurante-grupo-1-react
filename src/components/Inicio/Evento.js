@@ -1,27 +1,30 @@
 import React,{ useState, useEffect } from 'react'
-import { app } from './../../data/bd';
+import { UseFetch } from '../../hooks/UseFetch';
+
 
 export const Evento = () => {
     
-    const [ data, setData ] = useState([])
-    
+    const [ da, setData ] = useState([])
+
     useEffect(() => {
-        const docRef = app.database().ref('inicio/evento')
-            docRef.on('value', (img) => {
-                const all = img.val();
-                setData(all)
-            })
-    }, [])
+        fetch( `https://localhost:44380/api/eventos`)
+        .then( res => res.json() )
+        .then( data => {
+            setData(data[0])
+        })
+        }
+    ,[])
+    
 
     return (
         <>
             <div class="main_prensent justify-content-center position-relative">
                     
-                    <img style={img} src={data.img} alt="" />  
+                    <img style={img} src={da.ImgEventos} alt="" />  
                     
                     <div class="position-absolute text-center" style={mensaje}>
-                        <h1>{data.titulo}</h1>
-                        <p className="textoo">{data.texto}</p>
+                        <h1>{da.TituloEvento}</h1>
+                        <p className="textoo">{da.TextoEvento}</p>
                     </div>
                     
             </div>

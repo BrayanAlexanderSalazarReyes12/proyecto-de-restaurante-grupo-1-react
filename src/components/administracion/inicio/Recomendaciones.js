@@ -13,15 +13,12 @@ export const Recomendaciones = () => {
     
 
     useEffect(() => { // Obtener datos de la base de datos
-        const docRef = app.database().ref(carpeta)
-        docRef.on('value', (data) => {
-            const all = data.val();
-            let arrayImg = []
-            for (const id in all) {
-                arrayImg.push({ id,...all[id] })
-            }
-            setPlatos(arrayImg)
-        })
+        fetch( `https://localhost:44380/api/recomendaciones`)
+            .then( res => res.json() )
+            .then( data => {
+                setPlatos(data)   
+            })
+            console.log(platos)
     },[])
 
     const handleImage = async() => {
@@ -49,7 +46,7 @@ export const Recomendaciones = () => {
                                         <CardPlatos 
                                             onAction={handleAction} 
                                             setOpen={setOpen}
-                                            key={plato.id} {...plato}/>
+                                            key={plato.IdRecom} {...plato}/>
                                     ))
                                 }
                             {/* Platosrecomendados por el cheft */}

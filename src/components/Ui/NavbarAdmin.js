@@ -66,6 +66,13 @@ export const NavbarAdmin = () => {
                                 </NavLink>
                             </li>
                             
+                            <li className="nav-item">
+                                <NavLink className="nav-link" activeClassName="active" exact to="/admin/reservas">
+                                    Reservas
+                                </NavLink>
+                            </li>
+                            
+
                         </ul>
 
                         <div>

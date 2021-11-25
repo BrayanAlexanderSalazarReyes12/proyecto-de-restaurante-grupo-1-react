@@ -1,23 +1,21 @@
 import React, { useEffect, useState } from 'react'
 import { app } from '../../data/bd'
+import { UseFetch } from '../../hooks/UseFetch'
 import { CardRecom } from './CardRecom'
 
 export const Recomendaciones = () => {
 
     const carpeta = 'inicio/recomendaciones'
     const [ platos, setPlatos ] = useState([])
-
-    useEffect(() => { // Obtener datos de la base de datos
-        const docRef = app.database().ref(carpeta)
-        docRef.on('value', (data) => {
-            const all = data.val();
-            let arrayImg = []
-            for (const id in all) {
-                arrayImg.push({ id,...all[id] })
-            }
-            setPlatos(arrayImg)
+    
+    useEffect(() => {
+        fetch( `https://localhost:44380/api/recomendaciones`)
+        .then( res => res.json() )
+        .then( data => {
+            setPlatos(data)
         })
     },[])
+    
 
     return (
         <>
@@ -34,7 +32,7 @@ export const Recomendaciones = () => {
                                 {
                                     platos.map(plato => (
                                         <CardRecom
-                                            key={plato.id} {...plato}/>
+                                            key={plato.IdRecom} {...plato}/>
                                     ))
                                 }
                             {/* Platosrecomendados por el cheft */}

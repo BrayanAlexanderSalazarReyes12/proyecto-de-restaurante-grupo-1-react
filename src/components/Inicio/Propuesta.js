@@ -1,29 +1,26 @@
 import React, { useEffect, useState } from 'react'
-import { app } from './../../data/bd';
+import { UseFetch } from '../../hooks/UseFetch';
 
 export const Propuesta = () => {
 
     const [state, setState] = useState([])
 
     useEffect(() => {
-
-        const docRef = app.database().ref('inicio/propuesta')
-
-        docRef.on('value', (img) => {
-            const all = img.val();
-            setState(all)
+        fetch(`https://localhost:44380/api/propuesta`)
+        .then( res => res.json() )
+        .then( data => {
+            setState(data[0])
         })
-        
-    },[])
-    console.log(state)
+    }
+    ,[])
 
     return (
         <>
             <div class="main_prensent justify-content-center">
-                <img src={state.img} alt="" width="100%" height="450px" />  
+                <img src={state.ImgPropuesta} alt="" width="100%" height="450px" />  
                 <div class="txt_pre" style={mensaje}>
-                    <h1>{state.titulo}</h1>
-                    <p className="textoo">{state.texto}</p>
+                    <h1>{state.TituloPropuesta}</h1>
+                    <p className="textoo">{state.TextoPropuesta}</p>
                 </div> 
             </div>
         </>

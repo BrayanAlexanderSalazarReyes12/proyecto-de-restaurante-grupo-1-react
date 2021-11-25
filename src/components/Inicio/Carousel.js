@@ -1,24 +1,20 @@
 import React, { useRef, useEffect, useState } from 'react'
-import { app } from '../../data/bd'
+import { UseFetch } from '../../hooks/UseFetch';
 import { Slide } from './Slide';
 
 export const Carousel = () => {
 
 
     const [slideImg, setSlideImg] = useState([])
-    
-    useEffect(() => { // Obtener datos de la base de datos
-        const docRef = app.database().ref('inicio/carousel')
-        docRef.on('value', (img) => {
-            const all = img.val();
-            let arrayImg = []
-            for (const id in all) {
-                arrayImg.push({ id,...all[id] })
-            }
-            setSlideImg(arrayImg)
-        })
-    },[])
 
+    useEffect(() => {
+        fetch( `https://localhost:44380/api/inicio`)
+        .then( res => res.json() )
+        .then( data => {
+            setSlideImg(data)
+        })
+    }, [])
+    
     const slidex = useRef(null);
     
     const handleNext = () => {
@@ -65,7 +61,9 @@ export const Carousel = () => {
             }, 40)
         }
     }
+    
     let key = 0;
+
     return (
         <>
             <div className="carousel position-relative">
