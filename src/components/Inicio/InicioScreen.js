@@ -9,22 +9,18 @@ import { CardRecom } from './CardRecom';
 import { Recomendaciones } from './Recomendaciones'
 import { Evento } from './Evento'
 import { Testimonios } from './Testimonios'
+import { UseFetch } from '../../hooks/UseFetch'
 
 export const InicioScreen = () => {
+   /*  const { data } = UseFetch(`https://localhost:44380/api/inicio`,{
+        method: 'POST',
+        body: JSON.stringify({"img_acordion": "Funciona Plisss"})
+    })
 
-    const [slideImg, setSlideImg] = useState([])
-
+    
     useEffect(() => {
-        const docRef = app.database().ref('inicio/carousel')
-        docRef.on('value', (img) => {
-            const all = img.val();
-            let arrayImg = []
-            for (const id in all) {
-                arrayImg.push({ id,...all[id] })
-            }
-            setSlideImg(arrayImg)
-        })
-    }, [])
+        console.log(data)
+    }, [data]) */
     return (
         <>
             <section class="ctn" id="Home">

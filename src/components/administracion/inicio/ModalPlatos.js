@@ -11,7 +11,7 @@ import { UseOpen } from '../../../hooks/UseOpen';
 import { Loading } from '../../Ui/Loading';
 import { respAlerta } from '../../Ui/CardSwal';
 
-export const ModalPlatos = ({id,img,titulo,descripcion,open, setOpen}) => {
+export const ModalPlatos = ({IdRecom,ImgRecom,TituloRecom,TextoRecom,open, setOpen}) => {
 
     const mediaQ1 = useMediaQuery('(max-width: 720px)')
 
@@ -21,8 +21,8 @@ export const ModalPlatos = ({id,img,titulo,descripcion,open, setOpen}) => {
     const [ value, 
             handleInputChange,
             setValue] = useForm({
-                titulo, 
-                descripcion
+                TituloRecom, 
+                TextoRecom
             })
 
     const hanldeFileChange = (e) => {
@@ -44,7 +44,7 @@ export const ModalPlatos = ({id,img,titulo,descripcion,open, setOpen}) => {
 
     useEffect(() => {
         setFileUrl({
-            url: img,
+            url: ImgRecom,
             file: null
         })
     },[])
@@ -54,36 +54,52 @@ export const ModalPlatos = ({id,img,titulo,descripcion,open, setOpen}) => {
         e.preventDefault();
         handleAction(true)
         if(FileUrl.file === null){
-            const docRef = app.database().ref('inicio/recomendaciones').child(id)
-                
-            const updatePropuesta = {
-                img: FileUrl.url,
-                descripcion: value.descripcion,
-                titulo: value.titulo,
-
-            }
             
-            docRef.update(updatePropuesta).then(() => {
+            const updatePropuesta = {
+                IdRecom: IdRecom,
+                ImgRecom: FileUrl.url,
+                TextoRecom: value.TextoRecom,
+                TituloRecom: value.TituloRecom
+            }
+
+            fetch( `https://localhost:44380/api/recomendaciones`,
+            {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(updatePropuesta)
+            })
+            .then( res => res.json() )
+            .then( data => {
                 handleAction(false)
-                respAlerta('Correcto','Se Actualizo correctamente');
+                respAlerta('Correcto',"Actualizado correctamente")
             })
         }else{
-            const newUrlImage = await updateImage(img, FileUrl.file,'recomendacion')
+            const newUrlImage = await updateImage(ImgRecom, FileUrl.file,'recomendacion')
             
             if(newUrlImage){
-                const docRef = app.database().ref('inicio/recomendaciones').child(id)
-                
                 const updatePropuesta = {
-                    img: newUrlImage,
-                    descripcion: value.descripcion,
-                    titulo: value.titulo,
-
+                    IdRecom: IdRecom,
+                    ImgRecom: newUrlImage,
+                    TextoRecom: value.TextoRecom,
+                    TituloRecom: value.TituloRecom,
                 }
-                
-                docRef.update(updatePropuesta).then(() => {
-                    handleAction(false)
-                    respAlerta('Correcto','Se Actualizo correctamente');
-                })
+
+                fetch( `https://localhost:44380/api/recomendaciones`,
+            {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(updatePropuesta)
+            })
+            .then( res => res.json() )
+            .then( data => {
+                handleAction(false)
+                respAlerta('Correcto',"Actualizado correctamente")
+            })
+            
             }
         }
             
@@ -111,10 +127,10 @@ export const ModalPlatos = ({id,img,titulo,descripcion,open, setOpen}) => {
                             <div style={query2.container(mediaQ1,action)} 
                                 className="position-relative d-flex justify-content-center align-items-center">
                                 <div style={cardEdit} className="card position-relative">
-                                    <img src={FileUrl.url} className="card-img-top" alt={titulo} />
+                                    <img src={FileUrl.url} className="card-img-top" alt={TituloRecom} />
                                     <div className="card-body">
-                                        <h5 class="card-title">{value.titulo}</h5>
-                                        <p class="card-text">{value.descripcion}</p>
+                                        <h5 class="card-title">{value.TituloRecom}</h5>
+                                        <p class="card-text">{value.TextoRecom}</p>
                                     </div>
                                 </div>
                                 { action && <Loading /> }
@@ -127,14 +143,14 @@ export const ModalPlatos = ({id,img,titulo,descripcion,open, setOpen}) => {
                                         <small style={editar} onClick={handleImage}>
                                             <i class="far fa-images"></i>
                                         </small>
-                                        <img src={FileUrl.url} className="card-img-top" alt={titulo} />
+                                        <img src={FileUrl.url} className="card-img-top" alt={TituloRecom} />
                                         <div className="card-body">
-                                            <input  type="text" name="titulo"
+                                            <input  type="text" name="TituloRecom"
                                                     onChange={handleInputChange}
-                                                    value={value.titulo} />
-                                            <textarea   value={value.descripcion} class="form-control mt-1"
+                                                    value={value.TituloRecom} />
+                                            <textarea   value={value.TextoRecom} class="form-control mt-1"
                                                         onChange={handleInputChange}
-                                                        name='descripcion'
+                                                        name='TextoRecom'
                                                         id="exampleFormControlTextarea1" rows="3">
                                             </textarea>
                                             <input  type="file"

@@ -7,16 +7,15 @@ export const Recomendaciones = () => {
 
     const carpeta = 'inicio/recomendaciones'
     const [ platos, setPlatos ] = useState([])
-
-    const { data } = UseFetch(`https://localhost:44380/api/recomendaciones`)
-
-    useEffect(() => { // Obtener datos de la base de datos
-        if (!!data) {
+    
+    useEffect(() => {
+        fetch( `https://localhost:44380/api/recomendaciones`)
+        .then( res => res.json() )
+        .then( data => {
             setPlatos(data)
-            console.log(data)
-        }
-        
-    },[data])
+        })
+    },[])
+    
 
     return (
         <>

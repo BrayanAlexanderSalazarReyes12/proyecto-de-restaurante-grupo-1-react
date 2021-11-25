@@ -1,27 +1,26 @@
 import  { useState, useEffect } from 'react'
 
-export const UseFetch = ( url ) => {
+export const UseFetch = () => {
     
     
     const [ state, setState ] = useState({
         data: null,
         loading: true,
-        err: null
+        err: false
     })
 
-   /*     useEffect( () => {
-        fetch( url )
-        .then( ( response ) => response.json() )
-        .then( ( d ) => {
-            setState( {
-                data: d,
+    const fet = (url, options = {}) => {
+        fetch( url, options )
+        .then( res => res.json() )
+        .then( data => {
+            setState({
+                data,
                 loading: false,
-                err: null
-            } )
+                err: false
+            })
         })
-    }, [ url ])*/
+    }
     
     
-    
-    return state
+    return { state, fet }
 }

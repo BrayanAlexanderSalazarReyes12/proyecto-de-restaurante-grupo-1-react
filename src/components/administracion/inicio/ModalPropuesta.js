@@ -5,7 +5,6 @@ import Fade     from '@mui/material/Fade';
 import { useMediaQuery } from '../../../hooks/useMediaQuery';
 import { usePrevImg } from './../../../hooks/inicio/usePrevImg';
 import { updateImage } from './../../../helpers/FileUpload';
-import { app } from '../../../data/bd';
 import { UseOpen } from '../../../hooks/UseOpen';
 import { Loading } from '../../Ui/Loading';
 import { respAlerta } from '../../Ui/CardSwal';
@@ -52,46 +51,82 @@ export const ModalPropuesta = ({onAction,data,open, setOpen, path}) => {
     }
 
     useEffect(() => {
+        console.log(data)
         setFileUrl({
             img: data.img,
             file: null
         })
     }, [])
 
+
     const componente = async(referencia, child) => {
+        var json = {};
         if(FileUrl.file !== null){
             const newUrlImage = await updateImage(data.img, FileUrl.file,child)
             
             if(newUrlImage){
-                const docRef = app.database().ref(referencia).child(child)
                 
-                const updatePropuesta = {
-                    img: newUrlImage,
-                    texto: changeTexto.texto,
-                    titulo: data.titulo,
-    
+                if(child === 'propuesta'){
+                    
+                    json = {
+                        IdPropuesta: data.id,
+                        ImgPropuesta: newUrlImage,
+                        TextoPropuesta: changeTexto.texto,
+                        TituloPropuesta: data.titulo
+                    };
+                }else{
+                    json = {
+                        IdEventos: data.id,
+                        ImgEventos: data.img,
+                        TextoEvento: changeTexto.texto,
+                        TituloEvento: data.titulo
+                    };
                 }
                 
-                docRef.update(updatePropuesta).then(() => {
-                    onAction(updatePropuesta)
-                    handleAction(false)
-                    respAlerta('Correcto','Se Actualizo correctamente');
+                fetch( `https://localhost:44380/api/${child}`,{
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(json)
                 })
-            }
-        }else{
-            const docRef = app.database().ref(referencia).child(child)
+                .then( res => res.json() )
+                .then( data => {
+                    handleAction(false)
+                    respAlerta('Correcto','Se actualizo correctamente');
+                })
                 
-                const updatePropuesta = {
-                    img: FileUrl.img,
-                    texto: changeTexto.texto,
-                    titulo: data.titulo,
-    
+            }
+        }else{     
+            
+                if(child === 'propuesta'){
+                    
+                    json = {
+                        IdPropuesta: data.id,
+                        ImgPropuesta: data.img,
+                        TextoPropuesta: changeTexto.texto,
+                        TituloPropuesta: data.titulo
+                    };
+                }else{
+                    json = {
+                        IdEventos: data.id,
+                        ImgEventos: data.img,
+                        TextoEvento: changeTexto.texto,
+                        TituloEvento: data.titulo
+                    };
                 }
                 
-                docRef.update(updatePropuesta).then(() => {
-                    onAction(updatePropuesta)
+                fetch( `https://localhost:44380/api/${child}`,{
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(json)
+                })
+                .then( res => res.json() )
+                .then( data => {
                     handleAction(false)
-                    respAlerta('Correcto','Se Actualizo correctamente');
+                    respAlerta('Correcto','Se actualizo correctamente');
                 })
         }
         
@@ -103,7 +138,7 @@ export const ModalPropuesta = ({onAction,data,open, setOpen, path}) => {
         if(path){
             await componente('inicio','propuesta');
         }else{
-            await componente('inicio','evento');
+            await componente('inicio','eventos');
         }
     }
 
