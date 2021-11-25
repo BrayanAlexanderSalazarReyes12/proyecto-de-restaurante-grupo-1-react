@@ -4,7 +4,7 @@ import { app } from './../../../data/bd';
 import { updateImage, deleteImage } from './../../../helpers/FileUpload';
 import { respAlerta } from '../../Ui/CardSwal';
 
-export default class Ensaladas extends Component{
+export default class Sopas extends Component{
     constructor(props) {
         super(props);
         this.state = { 
@@ -22,7 +22,7 @@ export default class Ensaladas extends Component{
     }
 
     fetchData() {
-        fetch("https://localhost:44380/api/ensaladas")
+        fetch("https://localhost:44380/api/sopas")
           .then((response) => response.json())
           .then((data) => {
             this.setState({ datos: data });
@@ -47,16 +47,14 @@ export default class Ensaladas extends Component{
         this.setState(state)
     }
 
-
     render(){
-        const carpeta = 'inicio/ensaladas';
-
+        const carpeta = 'inicio/sopas';
         return this.state.datos.map((data) => {
             const hanldeFileChange = (e) => {
                 const file = e.target.files[0]
                 console.log(file);
                 //* ACTUALIZAR UN SLIDER EXISTENTE
-                const newUrlImage = updateImage(data.img, file,'ensaladas')
+                const newUrlImage = updateImage(data.img, file,'sopas')
                         
                 if(newUrlImage){
                     const docRef = app.database().ref(carpeta)
@@ -85,10 +83,8 @@ export default class Ensaladas extends Component{
                     })
                 }
             }
-            const Actualizarensaladas=async(id,nombre,img,tokenimg,descrip,precio)=>{
+            const Actualizarsopas=async(id,nombre,img,tokenimg,descrip,precio)=>{
                 console.log(this.state);
-                //console.log(data.img);
-                console.log(img);
                 var nombreensal = "";
                 var imgensal = "";
                 var tokenimgsol = "";
@@ -120,31 +116,32 @@ export default class Ensaladas extends Component{
                     precioensal = this.state.precio;
                 }
                 console.log(imgensal);
-                console.log(tokenimgsol);
                 try {
                     const { data } = await axios.put(
-                        'https://localhost:44380/api/ensaladas',
+                        'https://localhost:44380/api/sopas',
                         {
                             id: id,
                             "nombre": nombreensal,
                             "url": imgensal,
                             "tokenimg":tokenimg,
-                            "descrip": descripensal,
+                            "descripcion": descripensal,
                             "precio": precioensal
                         }
                     );
+                    console.log(data);
                     respAlerta('Correcto','Se Actualizo correctamente la informacion del plato');
                 } catch (error) {
                     console.log(error);
                 }
             }
-            const Eliminarensaladas=async(id,img)=>{
-                deleteImage(img,'ensaladas')
+            
+            const Eliminarsopas=async(id,img)=>{
+                deleteImage(img,'sopas')
             
                 const docRef = app.database().ref(carpeta).child(data.id)
                 
                 docRef.remove().then(() => {
-                    fetch("https://localhost:44380/api/ensaladas/" + id, {
+                    fetch("https://localhost:44380/api/sopas/" + id, {
                     method: "DELETE",
                     })
                     .then((response) => response.json())
@@ -153,7 +150,7 @@ export default class Ensaladas extends Component{
                     });
                 })
             }
-            if(data.categoria == "ensaladas"){
+            if(data.categoria == "sopas"){
                 return (
                     <>
                     <div class='col' key={data.id}>
@@ -165,7 +162,7 @@ export default class Ensaladas extends Component{
                                 <p class='card-texto'>$ {data.precio}</p>
                                 <div class="card-body">
                                     <button class='card-titulo btn-general' data-bs-toggle='modal' data-bs-target={data.actualizarinfo}>Editar</button>
-                                    <button onClick={()=>Eliminarensaladas(data.id,data.img)} class='card-titulo btn-general' data-bs-toggle='modal' data-bs-target='#exampleModalProducto'>Eliminar</button>
+                                    <button onClick={()=>Eliminarsopas(data.id,data.img)} class='card-titulo btn-general' data-bs-toggle='modal' data-bs-target='#exampleModalProducto'>Eliminar</button>
                                 </div>
                             </div>
                         </div>
@@ -185,7 +182,7 @@ export default class Ensaladas extends Component{
                                 <h1>Descripcion<input onChange={(ev)=>{this.syncDescripcion(ev.target.value,'descripcion')}} placeholder={data.descrip} value={this.state.descripcion} className="form-control mb-2" type="text" name='descripcion'/></h1>
                                 <h1>Precio<input onChange={(ev)=>{this.syncPrecio(ev.target.value,'precio')}} placeholder={data.precio} value={this.state.precio} className="form-control mb-2" type="text" name='precio' /></h1>
                                 </div>
-                                    <button id="add_cart" type='file' className='btn-general' onClick={()=>Actualizarensaladas(data.id,data.nombre,data.img,data.tokenimg,data.descrip,data.precio)}>Actualizar</button>
+                                    <button id="add_cart" type='file' className='btn-general' onClick={()=>Actualizarsopas(data.id,data.nombre,data.img,data.tokenimg,data.descrip,data.precio)}>Actualizar</button>
                                     <button id="add_cart" type='button' className='btn-general'>Cerrar</button>
                                 </div>
                             </div>

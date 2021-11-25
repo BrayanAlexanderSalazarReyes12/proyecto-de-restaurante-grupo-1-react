@@ -10,7 +10,14 @@ import { getDatabase, ref, child, get } from "firebase/database";
 const dbRef = ref(getDatabase());
 /* eslint-disable import/first */
 import Ensaladas from './Ensaladas';
-import axios from 'axios';
+import Sopas from './Sopas';
+import Aperitivos from './Aperitivos';
+import Bebidas from './Bebidas';
+import Postres from './Postres';
+import { app } from './../../../data/bd';
+import { saveImage } from './../../../helpers/FileUpload';
+import { respAlerta } from '../../Ui/CardSwal';
+import { async } from '@firebase/util';
 
 export const AdminMenu = () => {
     var [visible,setvisible] = useState(false);
@@ -19,9 +26,6 @@ export const AdminMenu = () => {
     var [visible3,setvisible3] = useState(false);
     var [visible4,setvisible4] = useState(false);
     var [visible5,setvisible5] = useState(false);
-    var [cantensopas,setcantsopas] = useState(0);
-    var [cantenaper,setcantaper] = useState(0);
-    var [cantbebi,setcantbebi] = useState(0);
     var [cantpost,setcantpost] = useState(0);
     const firebase = useFirebaseApp();
     const [archivos,setarchivos] = useState(null);
@@ -30,6 +34,8 @@ export const AdminMenu = () => {
         descripcion:'',
         precio:''
     })
+    const [img,setimg] = useState("");
+    const [tokenimg,settokenimg] = useState("");
     console.log(firebase);
 
     //ensaladas
@@ -44,7 +50,6 @@ export const AdminMenu = () => {
     //sopas
     useEffect(()=>{
         setvisible5(true);
-        setcantsopas(1);
         setvisible(false);
         setvisible2(false);
         setvisible3(false);
@@ -54,7 +59,6 @@ export const AdminMenu = () => {
     //aperitivos
     useEffect(()=>{
         setvisible5(true);
-        setcantaper(1);
         setvisible(false);
         setvisible1(false);
         setvisible3(false);
@@ -63,7 +67,6 @@ export const AdminMenu = () => {
 
     useEffect(()=>{
         setvisible5(true);
-        setcantbebi(1);
         setvisible2(false);
         setvisible1(false);
         setvisible(false);
@@ -72,7 +75,6 @@ export const AdminMenu = () => {
 
     useEffect(()=>{
         setvisible5(true);
-        setcantpost(1);
         setvisible3(false);
         setvisible2(false);
         setvisible1(false);
@@ -80,205 +82,10 @@ export const AdminMenu = () => {
     },[visible4])
 
     useEffect(()=>{
-        var bebidas = document.getElementById("bebidas");
-        var postres = document.getElementById("postres");
         if(visible5){
-            
-            if(cantensopas == 1){
-                var sopas = document.getElementById("sopas");
-                var cantidad = 0;
-                if(visible1){
-                    get(child(dbRef, `productos/sopas_cantidad/`)).then((snapshot) => {
-                        if (snapshot.exists()) {
-                            cantidad = snapshot.val().cantidad;
-                            console.log(cantidad);
-                            if(sopas){
-                                localStorage.setItem("cargar_informacion_sopas",1);
-                                var list_sopas = '';
-                                for(var i=0; i<cantidad; i++){
-                                    var id_cantidad = i +1;
-                                    const dbRef = ref(getDatabase());
-                                    get(child(dbRef, `productos/sopas/${id_cantidad}`)).then((snapshot) => {
-                                    if (snapshot.exists()) {
-                                        list_sopas += 
-                                        `
-                                        <div class='col'>
-                                            <div class='card h-100 card-radius'>
-                                                <img src='${snapshot.val().imagen}' alt='...' class='card-img-top card-imf-radius'>
-                                                    <div class='card-body'>
-                                                        <h5 class='card-title text-capitalize'>${snapshot.val().nombre}</h5>
-                                                        <p class='card-text'>${snapshot.val().descripcion}</p>
-                                                        <p class='card-text'>$ ${snapshot.val().precio}</p>
-                                                        <button onclick="modal_data(${snapshot.val().id-1},1,'${snapshot.val().nombre}','${snapshot.val().descripcion}','${snapshot.val().imagen}','${snapshot.val().precio}','sopas_'+${snapshot.val().id})" class='card-titulo btn-general' data-bs-toggle='modal' data-bs-target='#exampleModalProducto'>Mas informacion</button>
-                                                    </div>
-                                                </img>
-                                            </div>
-                                        </div>
-                                        `;
-                                        sopas.innerHTML = list_sopas;
-                                    } else {
-                                        console.log("No data available");
-                                    }
-                                    }).catch((error) => {
-                                    console.error(error);
-                                    });
-                                    
-                                }
-                            }
-                        }
-                    }).catch((error) => {
-                        console.error(error);
-                    });
-                    
-                }
-            }
-            if(cantenaper == 1){
-                setcantaper(0);
-                var aperitivos = document.getElementById("aperitivos");
-                var cantidad = 0;
-                if(visible2){
-                    get(child(dbRef, `productos/aperitivos_cantidad/`)).then((snapshot) => {
-                        if (snapshot.exists()) {
-                            cantidad = snapshot.val().cantidad;
-                            console.log(cantidad);
-                            if(aperitivos){
-                                localStorage.setItem("cargar_informacion_aperitivos",1);
-                                var list_aperitivos = '';
-                                for(var i=0; i<cantidad; i++){
-                                    const id_cantidad = i+1;
-                                    get(child(dbRef, `productos/aperitivos/${id_cantidad}`)).then((snapshot) => {
-                                    if (snapshot.exists()) {
-                                        list_aperitivos += 
-                                        `
-                                        <div class='col'>
-                                            <div class='card h-100 card-radius'>
-                                                <img src=${snapshot.val().imagen} alt='...' class='card-img-top card-imf-radius'>
-                                                    <div class='card-body'>
-                                                        <h5 class='card-title text-capitalize'>${snapshot.val().nombre}</h5>
-                                                        <p class='card-text'>${snapshot.val().descripcion}</p>
-                                                        <p class='card-text'>$ ${snapshot.val().precio}</p>
-                                                        <button onclick="modal_data(${snapshot.val().id-1},3,'${snapshot.val().nombre}','${snapshot.val().descripcion}','${snapshot.val().imagen}','${snapshot.val().precio}','aperitivos_'+${snapshot.val().id})" class='btn-general' data-bs-toggle='modal' data-bs-target='#exampleModalProducto'>Mas informacion</button>
-                                                    </div>
-                                                </img>
-                                            </div>
-                                        </div>
-                                        `;
-                                        aperitivos.innerHTML = list_aperitivos;
-                                    } else {
-                                        console.log("No data available");
-                                    }
-                                    }).catch((error) => {
-                                        console.error(error);
-                                    });
-                                }
-                            }
-                        } 
-                    }).catch((error) => {
-                    console.error(error);
-                    });
-                }
-            }
-            if(cantbebi == 1){
-                setcantbebi(0);
-                var bebidas = document.getElementById("bebidas");
-                var cantidad = 0;
-                if(visible3){
-                    
-                    get(child(dbRef, `productos/bebidas_cantidad/`)).then((snapshot) => {
-                        if (snapshot.exists()) {
-                            cantidad = snapshot.val().cantidad;
-                            console.log(cantidad);
-                            if(bebidas){
-                                localStorage.setItem("cargar_informacion_bebidas",1);
-                                var list_bebidas = '';
-                                for(var i=0; i<cantidad;i++){
-                                    const id_cantidad = i +1;
-                                    get(child(dbRef, `productos/bebidas/${id_cantidad}`)).then((snapshot) => {
-                                        if (snapshot.exists()) {           
-                                                list_bebidas += 
-                                                `
-                                                <div class='col'>
-                                                    <div class='card h-100 card-radius'>
-                                                        <img src=${snapshot.val().imagen} alt='...' class='card-img-top card-imf-radius'>
-                                                            <div class='card-body'>
-                                                                <h5 class='card-title text-capitalize'>${snapshot.val().nombre}</h5>
-                                                                <p class='card-text'>${snapshot.val().descripcion}</p>
-                                                                <p class='card-text'>$ ${snapshot.val().precio}</p>
-                                                                <button onclick="modal_data(${snapshot.val().id-1},3,'${snapshot.val().nombre}','${snapshot.val().descripcion}','${snapshot.val().imagen}','${snapshot.val().precio}','bebidas_'+${snapshot.val().id})" class='btn-general' data-bs-toggle='modal' data-bs-target='#exampleModalProducto'>Mas informacion</button>
-                                                            </div>
-                                                        </img>
-                                                    </div>
-                                                </div>
-                                                `;
-                                                bebidas.innerHTML = list_bebidas;
-                                            
-                                        } else {
-                                        console.log("No data available");
-                                        }
-                                    }).catch((error) => {
-                                        console.error(error);
-                                    });
-                                }
-                            }
-                        }
-                    }).catch((error) => {
-                        console.error(error);
-                    });
-                }
-            }
-            if(cantpost == 1){
-                 if(visible4){
-                    var postres = document.getElementById("postres");
-                    var cantidad = 0;
-                    get(child(dbRef, `productos/postres_cantidad/`)).then((snapshot) => {
-                        if (snapshot.exists()) {
-                            cantidad = snapshot.val().cantidad;
-                            console.log(cantidad);
-                            if(postres){
-                                localStorage.setItem("cargar_informacion_postres",1);
-                                var list_postres = '';
-                                for(var i=0; i<cantidad; i++){
-                                    const id_cantidad = i+1;
-                                    get(child(dbRef, `productos/postres/${id_cantidad}`)).then((snapshot) => {
-                                        if (snapshot.exists()) {
-                                            list_postres += 
-                                            `
-                                                <div class='col'>
-                                                    <div class='card h-100 card-radius'>
-                                                        <img src=${snapshot.val().imagen} alt='...' class='card-img-top card-imf-radius'>
-                                                            <div class='card-body'>
-                                                                <h5 class='card-title text-capitalize'>${snapshot.val().nombre}</h5>
-                                                                <p class='card-text'>${snapshot.val().descripcion}</p>
-                                                                <p class='card-text'>$ ${snapshot.val().precio}</p>
-                                                                <button onclick="modal_data(${snapshot.val().id-1},3,'${snapshot.val().nombre}','${snapshot.val().descripcion}','${snapshot.val().imagen}','${snapshot.val().precio}','postres_'+${snapshot.val().id})" class='btn-general' data-bs-toggle='modal' data-bs-target='#exampleModalProducto'>Mas informacion</button>
-                                                            </div>
-                                                        </img>
-                                                    </div>
-                                                </div>
-                                            `;
-                                            postres.innerHTML = list_postres;
-                                        } else {
-                                        console.log("No data available");
-                                        }
-                                    }).catch((error) => {
-                                        console.error(error);
-                                    });
-                                }
-                            }
-                        }
-                    }).catch((error) => {
-                        console.error(error);
-                    });
-                }
-            }
             setvisible5(false);
         }
     },[visible5])
-
-    
-    const subirarchivo=e =>{
-        setarchivos(e);
-    }
 
     const handleInputChange = (event) =>{
         setDatos({
@@ -287,28 +94,204 @@ export const AdminMenu = () => {
         })
     }
 
-    const insertararchivos=async()=>{
-        const f = new FormData();
-        f.append("image",archivos[0]);
+    const hanldeFileChange = (e) => {
+        const carpeta = 'inicio/ensaladas';
+        //setarchivos(e);
+        const file = e.target.files[0];
+        //const imageUrl = URL.createObjectURL(file);
         
-        await axios.post("http://localhost:17093/api/archivos",f)
-        .then(response=>{
-            console.log("bien");
-            console.log(response.data);
-        }).catch(error=>{
-            console.log(error);
-        })
+        const urlImage = saveImage(file,'ensaladas');
 
+        if(urlImage){
+            const docRef = app.database().ref(carpeta)
+            const data = {
+                img: urlImage
+            }
+            docRef.push(data).then(() =>{
+                data.img.then((value)=>{
+                    //console.log(value);
+                    const data2 = value.split("?");
+                    const token = data2[1];                   
+                    const img = data2[0].split("%2F");
+                    const nameImage = img[1];
+                    console.log(nameImage);
+                    console.log(token);
+                    setimg(nameImage);
+                    settokenimg(token);
+                })
+            })
+        }
+    }
+
+    const hanldeFileChangesop = (e) => {
+        const carpeta = 'inicio/sopas';
+        //setarchivos(e);
+        const file = e.target.files[0];
+        //const imageUrl = URL.createObjectURL(file);
+        
+        const urlImage = saveImage(file,'sopas');
+
+        if(urlImage){
+            const docRef = app.database().ref(carpeta)
+            const data = {
+                img: urlImage
+            }
+            docRef.push(data).then(() =>{
+                data.img.then((value)=>{
+                    //console.log(value);
+                    const data2 = value.split("?");
+                    const token = data2[1];                   
+                    const img = data2[0].split("%2F");
+                    const nameImage = img[1];
+                    console.log(nameImage);
+                    console.log(token);
+                    setimg(nameImage);
+                    settokenimg(token);
+                })
+            })
+        }
+    }
+
+    const hanldeFileChangeap = (e) =>{
+        const carpeta = 'inicio/aperitivos';
+        //setarchivos(e);
+        const file = e.target.files[0];
+        
+        const urlImage = saveImage(file,'aperitivos');
+
+        if(urlImage){
+            const docRef = app.database().ref(carpeta)
+            const data = {
+                img: urlImage
+            }
+            docRef.push(data).then(() =>{
+                data.img.then((value)=>{
+                    //console.log(value);
+                    const data2 = value.split("?");
+                    const token = data2[1];                   
+                    const img = data2[0].split("%2F");
+                    const nameImage = img[1];
+                    console.log(nameImage);
+                    console.log(token);
+                    setimg(nameImage);
+                    settokenimg(token);
+                })
+            })
+        }
+    }
+
+    const hanldeFileChangebeb = (e) =>{
+        const carpeta = 'inicio/bebidas';
+        const file = e.target.files[0];
+        
+        const urlImage = saveImage(file,'bebidas');
+
+        if(urlImage){
+            const docRef = app.database().ref(carpeta)
+            const data = {
+                img: urlImage
+            }
+            docRef.push(data).then(() =>{
+                data.img.then((value)=>{
+                    const data2 = value.split("?");
+                    const token = data2[1];                   
+                    const img = data2[0].split("%2F");
+                    const nameImage = img[1];
+                    console.log(nameImage);
+                    console.log(token);
+                    setimg(nameImage);
+                    settokenimg(token);
+                })
+            })
+        }
+    }
+
+    const hanldeFileChangepos = (e) =>{
+        const carpeta = 'inicio/postres';
+        const file = e.target.files[0];
+        
+        const urlImage = saveImage(file,'postres');
+
+        if(urlImage){
+            const docRef = app.database().ref(carpeta)
+            const data = {
+                img: urlImage
+            }
+            docRef.push(data).then(() =>{
+                data.img.then((value)=>{
+                    const data2 = value.split("?");
+                    const token = data2[1];                   
+                    const img = data2[0].split("%2F");
+                    const nameImage = img[1];
+                    console.log(nameImage);
+                    console.log(token);
+                    setimg(nameImage);
+                    settokenimg(token);
+                })
+            })
+        }
+    }
+
+    const insertararchivos=async()=>{
         const precio = datos.precio;
-        fetch("https://localhost:44380/api/ensaladas/"+"ensaladas"+","+datos.nombredelplato+","+archivos[0].name+","+datos.descripcion+","+precio,{
+        fetch("https://localhost:44380/api/ensaladas/"+"ensaladas"+","+datos.nombredelplato+","+img+","+tokenimg+","+datos.descripcion+","+precio,{
             method:"POST",
         })
           .then((response) => response.json())
           .then((data) => {
             this.setState({ datos: data });
         });
-        alert("Categoria: ensaladas"+" Nombre del plato: "+datos.nombredelplato+"img: /assets/ensaladas/"+archivos[0].name+" descrip: "+datos.descripcion+" precio:"+datos.precio);
+        respAlerta('Correcto','Se Guardo correctamente el nuevo plato');
+    }
+
+    const insertararchivossopas=async()=>{
+        const precio = datos.precio;
+        fetch("https://localhost:44380/api/sopas/"+"sopas"+","+datos.nombredelplato+","+img+","+tokenimg+","+datos.descripcion+","+precio,{
+            method:"POST",
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            this.setState({ datos: data });
+        });
+        respAlerta('Correcto','Se Guardo correctamente el nuevo plato');
+        //alert("Categoria: ensaladas"+" Nombre del plato: "+datos.nombredelplato+"img: /assets/ensaladas/"+archivos[0].name+" descrip: "+datos.descripcion+" precio:"+datos.precio);
         
+    }
+
+    const insertararchivosaperitivos=async()=>{
+        const precio = datos.precio;
+        fetch("https://localhost:44380/api/aperitivos/"+"aperitivos"+","+datos.nombredelplato+","+img+","+tokenimg+","+datos.descripcion+","+precio,{
+            method:"POST",
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            this.setState({ datos: data });
+        });
+        respAlerta('Correcto','Se Guardo correctamente el nuevo plato');
+    }
+
+    const insertararchivosbebidas=async()=>{
+        const precio = datos.precio;
+        fetch("https://localhost:44380/api/bebidas/"+"bebidas"+","+datos.nombredelplato+","+img+","+tokenimg+","+datos.descripcion+","+precio,{
+            method:"POST",
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            this.setState({ datos: data });
+        });
+        respAlerta('Correcto','Se Guardo correctamente el nuevo plato');
+    }
+    
+    const insertararchivospostres=async()=>{
+        const precio = datos.precio;
+        fetch("https://localhost:44380/api/postres/"+"postres"+","+datos.nombredelplato+","+img+","+tokenimg+","+datos.descripcion+","+precio,{
+            method:"POST",
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            this.setState({ datos: data });
+        });
+        respAlerta('Correcto','Se Guardo correctamente el nuevo plato');
     }
 
     return (
@@ -357,28 +340,72 @@ export const AdminMenu = () => {
                     <div className="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
                         <div className="menu_muestra_1" id="menu_muestra_1">
                             <div id="sopas" className='row row-cols-1 row-cols-md-3 g-4'>
-                                <h1>sopas</h1>
+                                <div class='col'>
+                                    <div class='card h-100 card-radius'>
+                                        <img src='https://firebasestorage.googleapis.com/v0/b/restaurantetic21.appspot.com/o/carousel%2Fdefault-featured-image.jpg?alt=media&token=525b974e-724a-44c4-8821-c8fae2286fe3' alt='...' class='card-img-top card-imf-radius'/>
+                                        <div class='card-body'>
+                                            <h5 class='card-titulo text-capitalize'>titulo</h5>
+                                            <p class='card-texto'> Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eum tenetur at in id itaque ullam dolorum excepturi laudantium voluptatem illo quibusdam asperiores, praesentium labore harum error numquam? Rerum, illo corrupti?</p>
+                                            <p class='card-texto'>$ 9999999999999</p>
+                                            <button class='card-titulo btn-general' data-bs-toggle='modal' data-bs-target='#exampleModalAñadirSopas'>Añadir producto</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <Sopas/>
                             </div>
                         </div>
                     </div>
                     <div className="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
                         <div className="menu_muestra_1" id="menu_muestra_1">
                             <div id="aperitivos" className='row row-cols-1 row-cols-md-3 g-4'>
-                                <h1>aperitivos</h1>
+                                <div class='col'>
+                                    <div class='card h-100 card-radius'>
+                                        <img src='https://firebasestorage.googleapis.com/v0/b/restaurantetic21.appspot.com/o/carousel%2Fdefault-featured-image.jpg?alt=media&token=525b974e-724a-44c4-8821-c8fae2286fe3' alt='...' class='card-img-top card-imf-radius'/>
+                                        <div class='card-body'>
+                                            <h5 class='card-titulo text-capitalize'>titulo</h5>
+                                            <p class='card-texto'> Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eum tenetur at in id itaque ullam dolorum excepturi laudantium voluptatem illo quibusdam asperiores, praesentium labore harum error numquam? Rerum, illo corrupti?</p>
+                                            <p class='card-texto'>$ 9999999999999</p>
+                                            <button class='card-titulo btn-general' data-bs-toggle='modal' data-bs-target='#exampleModalAñadirAperitivos'>Añadir producto</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <Aperitivos/>
                             </div>
                         </div>
                     </div>
                     <div className="tab-pane fade" id="nav-bebidas" role="tabpanel" aria-labelledby="nav-bebidas-tab">
                         <div className="menu_muestra_1" id="menu_muestra_1">
                             <div id="bebidas" className='row row-cols-1 row-cols-md-3 g-4'>
-                                <h1>bebidas</h1>
+                                <div class='col'>
+                                    <div class='card h-100 card-radius'>
+                                        <img src='https://firebasestorage.googleapis.com/v0/b/restaurantetic21.appspot.com/o/carousel%2Fdefault-featured-image.jpg?alt=media&token=525b974e-724a-44c4-8821-c8fae2286fe3' alt='...' class='card-img-top card-imf-radius'/>
+                                        <div class='card-body'>
+                                            <h5 class='card-titulo text-capitalize'>titulo</h5>
+                                            <p class='card-texto'> Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eum tenetur at in id itaque ullam dolorum excepturi laudantium voluptatem illo quibusdam asperiores, praesentium labore harum error numquam? Rerum, illo corrupti?</p>
+                                            <p class='card-texto'>$ 9999999999999</p>
+                                            <button class='card-titulo btn-general' data-bs-toggle='modal' data-bs-target='#exampleModalAñadirBebidas'>Añadir producto</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <Bebidas/>
                             </div>
                         </div>
                     </div>
                     <div className="tab-pane fade" id="nav-postres" role="tabpanel" aria-labelledby="nav-postres-tab">
                         <div className="menu_muestra_1" id="menu_muestra_1">
                             <div id="postres" className='row row-cols-1 row-cols-md-3 g-4'>
-                                <h1>postres</h1>
+                                <div class='col'>
+                                    <div class='card h-100 card-radius'>
+                                        <img src='https://firebasestorage.googleapis.com/v0/b/restaurantetic21.appspot.com/o/carousel%2Fdefault-featured-image.jpg?alt=media&token=525b974e-724a-44c4-8821-c8fae2286fe3' alt='...' class='card-img-top card-imf-radius'/>
+                                        <div class='card-body'>
+                                            <h5 class='card-titulo text-capitalize'>titulo</h5>
+                                            <p class='card-texto'> Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eum tenetur at in id itaque ullam dolorum excepturi laudantium voluptatem illo quibusdam asperiores, praesentium labore harum error numquam? Rerum, illo corrupti?</p>
+                                            <p class='card-texto'>$ 9999999999999</p>
+                                            <button class='card-titulo btn-general' data-bs-toggle='modal' data-bs-target='#exampleModalAñadirPostres'>Añadir producto</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <Postres/>
                             </div>
                         </div>
                     </div>
@@ -395,7 +422,7 @@ export const AdminMenu = () => {
                     </div>
                     <div className='modal-footer d-flex justify-content-between'>
                     <div class="custom-file">
-                    <input  type="file" name="fileImg" onChange={(e)=>subirarchivo(e.target.files)}/>
+                    <input  type="file" name="fileImg" onChange={hanldeFileChange}/>
                     <h1>Nombre del plato<input placeholder="Ingrese El Nombre Del Plato" className="form-control mb-2" type="text" name='nombredelplato' onChange={handleInputChange}/></h1>
                     <h1>Descripcion<input placeholder="Ingrese La Descripcion Del Plato" className="form-control mb-2" type="text" name='descripcion' onChange={handleInputChange}/></h1>
                     <h1>Precio<input placeholder="Ingrese El Precio Del Plato" className="form-control mb-2" type="text" name='precio' onChange={handleInputChange}/></h1>
@@ -406,7 +433,90 @@ export const AdminMenu = () => {
                 </div>
             </div>
         </div>
-        
+        <div className='modal' id='exampleModalAñadirSopas' tabIndex='-1' aria-labelledby='exampleModalLabel'
+            aria-hidden='true'>
+            <div className='modal-dialog'>
+                <div className='modal-content'>
+                    <input id='id_prod' type="hidden" value=""/>
+                    <div className='modal-body'>
+                        <img id="modal_img" src='https://firebasestorage.googleapis.com/v0/b/restaurantetic21.appspot.com/o/carousel%2Fdefault-featured-image.jpg?alt=media&token=525b974e-724a-44c4-8821-c8fae2286fe3' alt='...' className='card-img-top '/>
+                    </div>
+                    <div className='modal-footer d-flex justify-content-between'>
+                    <div class="custom-file">
+                    <input  type="file" name="fileImg" onChange={hanldeFileChangesop}/>
+                    <h1>Nombre del plato<input placeholder="Ingrese El Nombre Del Plato" className="form-control mb-2" type="text" name='nombredelplato' onChange={handleInputChange}/></h1>
+                    <h1>Descripcion<input placeholder="Ingrese La Descripcion Del Plato" className="form-control mb-2" type="text" name='descripcion' onChange={handleInputChange}/></h1>
+                    <h1>Precio<input placeholder="Ingrese El Precio Del Plato" className="form-control mb-2" type="text" name='precio' onChange={handleInputChange}/></h1>
+                    </div>
+                        <button id="add_cart" type='file' className='btn-general' onClick={()=>insertararchivossopas()}>Agregar producto</button>
+                        <button id="add_cart" type='button' className='btn-general'>Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div className='modal' id='exampleModalAñadirAperitivos' tabIndex='-1' aria-labelledby='exampleModalLabel'
+            aria-hidden='true'>
+            <div className='modal-dialog'>
+                <div className='modal-content'>
+                    <input id='id_prod' type="hidden" value=""/>
+                    <div className='modal-body'>
+                        <img id="modal_img" src='https://firebasestorage.googleapis.com/v0/b/restaurantetic21.appspot.com/o/carousel%2Fdefault-featured-image.jpg?alt=media&token=525b974e-724a-44c4-8821-c8fae2286fe3' alt='...' className='card-img-top '/>
+                    </div>
+                    <div className='modal-footer d-flex justify-content-between'>
+                    <div class="custom-file">
+                    <input  type="file" name="fileImg" onChange={hanldeFileChangeap}/>
+                    <h1>Nombre del plato<input placeholder="Ingrese El Nombre Del Plato" className="form-control mb-2" type="text" name='nombredelplato' onChange={handleInputChange}/></h1>
+                    <h1>Descripcion<input placeholder="Ingrese La Descripcion Del Plato" className="form-control mb-2" type="text" name='descripcion' onChange={handleInputChange}/></h1>
+                    <h1>Precio<input placeholder="Ingrese El Precio Del Plato" className="form-control mb-2" type="text" name='precio' onChange={handleInputChange}/></h1>
+                    </div>
+                        <button id="add_cart" type='file' className='btn-general' onClick={()=>insertararchivosaperitivos()}>Agregar producto</button>
+                        <button id="add_cart" type='button' className='btn-general'>Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div className='modal' id='exampleModalAñadirBebidas' tabIndex='-1' aria-labelledby='exampleModalLabel'
+            aria-hidden='true'>
+            <div className='modal-dialog'>
+                <div className='modal-content'>
+                    <input id='id_prod' type="hidden" value=""/>
+                    <div className='modal-body'>
+                        <img id="modal_img" src='https://firebasestorage.googleapis.com/v0/b/restaurantetic21.appspot.com/o/carousel%2Fdefault-featured-image.jpg?alt=media&token=525b974e-724a-44c4-8821-c8fae2286fe3' alt='...' className='card-img-top '/>
+                    </div>
+                    <div className='modal-footer d-flex justify-content-between'>
+                    <div class="custom-file">
+                    <input  type="file" name="fileImg" onChange={hanldeFileChangebeb}/>
+                    <h1>Nombre del plato<input placeholder="Ingrese El Nombre Del Plato" className="form-control mb-2" type="text" name='nombredelplato' onChange={handleInputChange}/></h1>
+                    <h1>Descripcion<input placeholder="Ingrese La Descripcion Del Plato" className="form-control mb-2" type="text" name='descripcion' onChange={handleInputChange}/></h1>
+                    <h1>Precio<input placeholder="Ingrese El Precio Del Plato" className="form-control mb-2" type="text" name='precio' onChange={handleInputChange}/></h1>
+                    </div>
+                        <button id="add_cart" type='file' className='btn-general' onClick={()=>insertararchivosbebidas()}>Agregar producto</button>
+                        <button id="add_cart" type='button' className='btn-general'>Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div className='modal' id='exampleModalAñadirPostres' tabIndex='-1' aria-labelledby='exampleModalLabel'
+            aria-hidden='true'>
+            <div className='modal-dialog'>
+                <div className='modal-content'>
+                    <input id='id_prod' type="hidden" value=""/>
+                    <div className='modal-body'>
+                        <img id="modal_img" src='https://firebasestorage.googleapis.com/v0/b/restaurantetic21.appspot.com/o/carousel%2Fdefault-featured-image.jpg?alt=media&token=525b974e-724a-44c4-8821-c8fae2286fe3' alt='...' className='card-img-top '/>
+                    </div>
+                    <div className='modal-footer d-flex justify-content-between'>
+                    <div class="custom-file">
+                    <input  type="file" name="fileImg" onChange={hanldeFileChangepos}/>
+                    <h1>Nombre del plato<input placeholder="Ingrese El Nombre Del Plato" className="form-control mb-2" type="text" name='nombredelplato' onChange={handleInputChange}/></h1>
+                    <h1>Descripcion<input placeholder="Ingrese La Descripcion Del Plato" className="form-control mb-2" type="text" name='descripcion' onChange={handleInputChange}/></h1>
+                    <h1>Precio<input placeholder="Ingrese El Precio Del Plato" className="form-control mb-2" type="text" name='precio' onChange={handleInputChange}/></h1>
+                    </div>
+                        <button id="add_cart" type='file' className='btn-general' onClick={()=>insertararchivospostres()}>Agregar producto</button>
+                        <button id="add_cart" type='button' className='btn-general'>Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         </>
     )
 }
