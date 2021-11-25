@@ -6,6 +6,7 @@ import { AdminInicio } from '../components/administracion/inicio/AdminInicio';
 import { AdminMenu } from '../components/administracion/menu/AdminMenu';
 import { AdminNosotros } from '../components/administracion/nosotros/AdminNosotros';
 import { AdminServicios } from '../components/administracion/servicios/AdminServicios';
+import { Adminreservas } from '../components/administracion/reservas/Adminreservas';
 import { NavbarAdmin } from '../components/Ui/NavbarAdmin';
 import './css/Router.css'
 
@@ -23,6 +24,8 @@ export const AdministracionRoute = () => {
                     <Route exact path="/admin/menu"      component={ AdminMenu } />
 
                     <Route exact path="/admin/servicios"  component={ AdminServicios } />
+
+                    <Route exact path="/admin/reservas"  component={ Adminreservas } />
                     
                     <Redirect to="/admin/inicio"/>
                 

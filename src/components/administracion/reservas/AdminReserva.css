@@ -1,0 +1,28 @@
+
+.AdminReserv{
+    background: linear-gradient(to bottom , white, rgb(210, 210, 213));
+    padding-bottom: 28%;
+}
+
+
+
+h1{
+    padding-top: 5%;
+    text-align: center;
+    padding-bottom: 3%;
+    font-family: var(--fuente);
+    color: var(--color-5);
+}
+table{
+    text-align: center;
+    font-family: var(--fuente);
+    font-size: 20px;
+}
+
+table th{
+    color: var(--color-5);
+}
+
+button{
+    margin-right: 5px;
+}

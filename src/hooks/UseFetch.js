@@ -9,7 +9,7 @@ export const UseFetch = ( url ) => {
         err: null
     })
 
-    useEffect( () => {
+   /*     useEffect( () => {
         fetch( url )
         .then( ( response ) => response.json() )
         .then( ( d ) => {
@@ -19,7 +19,7 @@ export const UseFetch = ( url ) => {
                 err: null
             } )
         })
-    }, [ url ])
+    }, [ url ])*/
     
     
     
