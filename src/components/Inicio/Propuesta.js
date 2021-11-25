@@ -1,20 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import { UseFetch } from '../../hooks/UseFetch';
-import { app } from './../../data/bd';
 
 export const Propuesta = () => {
 
     const [state, setState] = useState([])
 
-    const { data } = UseFetch(`https://localhost:44380/api/propuesta`)
-
     useEffect(() => {
-        if(!!data){
+        fetch(`https://localhost:44380/api/propuesta`)
+        .then( res => res.json() )
+        .then( data => {
             setState(data[0])
-            console.log(data)
-        }
-    },[data])
-    
+        })
+    }
+    ,[])
 
     return (
         <>

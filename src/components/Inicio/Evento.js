@@ -1,16 +1,20 @@
 import React,{ useState, useEffect } from 'react'
 import { UseFetch } from '../../hooks/UseFetch';
-import { app } from './../../data/bd';
+
 
 export const Evento = () => {
     
     const [ da, setData ] = useState([])
-    const { data } = UseFetch(`https://localhost:44380/api/eventos`)
+
     useEffect(() => {
-        if(!!data){
+        fetch( `https://localhost:44380/api/eventos`)
+        .then( res => res.json() )
+        .then( data => {
             setData(data[0])
+        })
         }
-    }, [data])
+    ,[])
+    
 
     return (
         <>

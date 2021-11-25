@@ -1,5 +1,4 @@
 import React, { useRef, useEffect, useState } from 'react'
-import { app } from '../../data/bd'
 import { UseFetch } from '../../hooks/UseFetch';
 import { Slide } from './Slide';
 
@@ -8,16 +7,14 @@ export const Carousel = () => {
 
     const [slideImg, setSlideImg] = useState([])
 
-    const { data } = UseFetch(`https://localhost:44380/api/inicio`)
-    
-    
-    
-    useEffect(() => { // Obtener datos de la base de datos
-        if(!!data){
+    useEffect(() => {
+        fetch( `https://localhost:44380/api/inicio`)
+        .then( res => res.json() )
+        .then( data => {
             setSlideImg(data)
-        }
-    },[data])
-
+        })
+    }, [])
+    
     const slidex = useRef(null);
     
     const handleNext = () => {

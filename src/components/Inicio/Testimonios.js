@@ -1,18 +1,20 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { app } from '../../data/bd'
 import { UseFetch } from '../../hooks/UseFetch';
 import { CardTestimonio } from './CardTestimonio';
 
 export const Testimonios = () => {
 
     const [slideImg, setSlideImg] = useState([])
-    const { data } = UseFetch(`https://localhost:44380/api/testimonios`)
-
+    
     useEffect(() => {
-        if(!!data){
+        fetch(`https://localhost:44380/api/testimonios`)
+        .then( res => res.json() )
+        .then( data => {
             setSlideImg(data)
-        }
-    }, [data])
+        })
+    },[])
+    
+    
 
 
     const slidex = useRef(null);
@@ -71,7 +73,7 @@ export const Testimonios = () => {
                     {
                         slideImg.map(test => (
                             <CardTestimonio { ...test }
-                                            key={test.id} />
+                                            key={test.IdTest} />
                         ))
                     }
 

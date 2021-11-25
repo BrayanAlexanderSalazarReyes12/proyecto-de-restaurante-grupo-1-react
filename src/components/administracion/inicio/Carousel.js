@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { CardCarousel } from './CardCarousel';
 import { ModalSlide } from './ModalSlide';
-import { app } from './../../../data/bd';
 
 
 const sty = {
@@ -12,49 +11,47 @@ export const Carousel = () => {
 
     const defauldImage = 'https://firebasestorage.googleapis.com/v0/b/restaurantetic21.appspot.com/o/carousel%2Fdefault-featured-image.jpg?alt=media&token=525b974e-724a-44c4-8821-c8fae2286fe3'
 
-    const [slideImg, setSlideImg] = useState([])
+    const [slideImg, setSlideImg] = useState([]) // HookScroll
 
     const [open, setOpen] = useState(false); // Modal
     const handleOpen = () => setOpen(true);
     const [newSlide, setNewSlide] = useState({})
 
-    const handleSlide = (img,id,d) => { // Accion que me regresa un slide
-        //Todo: img = la imagen que se mostrara al abrir el modal
-        //Todo: id  = si tiene valor es porque vamos a editar la imagen
-        //Todo: id  = si es null es porque vamos a agregar una nueva imagen
+    const handleSlide = (img_acordion,idacordion,d) => { // Accion que me regresa un slide
+        //Todo: img_acordion = la imagen que se mostrara al abrir el modal
+        //Todo: idacordion  = si tiene valor es porque vamos a editar la imagen
+        //Todo: idacordion  = si es null es porque vamos a agregar una nueva imagen
         //Todo: d   = si es true es porque vamos a eliminar esa imagen
         //* Abrir modal
         handleOpen()
         if(d){
             //*Eliminar el slider seleccionado
             setNewSlide({
-                img,
-                id,
+                img_acordion,
+                idacordion,
                 delete: true
             })
         }else{
             //* Actualizar o agregar un nuevo slider
             setNewSlide({
-                img,
-                id,
+                img_acordion,
+                idacordion,
                 delete: false
             })
         }
         
     }
     
-
-    useEffect(() => { // Obtener datos de la base de datos
-        const docRef = app.database().ref('inicio/carousel')
-        docRef.on('value', (img) => {
-            const all = img.val();
-            let arrayImg = []
-            for (const id in all) {
-                arrayImg.push({ id,...all[id] })
-            }
-            setSlideImg(arrayImg)
+    
+    useEffect(() => { // Obtener datos de la base de datos `https://localhost:44380/api/inicio`
+        fetch( `https://localhost:44380/api/inicio`)
+        .then( res => res.json() )
+        .then( data => {
+            setSlideImg(data)
         })
     },[])
+
+
 
     const handleModal = (data,id) => { // accion que me regresa el modal
         //* Cerrar Modal

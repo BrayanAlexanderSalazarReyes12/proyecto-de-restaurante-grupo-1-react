@@ -22,6 +22,7 @@ export const ModalTestimonio = ({open,setOpen,data}) => {
     const mediaQ1 = useMediaQuery('(max-width: 720px)')
 
     useEffect(() => {
+        console.log(data)
         setFileUrl({
             img: data.img, 
             file: null
@@ -59,27 +60,43 @@ export const ModalTestimonio = ({open,setOpen,data}) => {
     const newTestimonio = async() => {
 
         if(FileUrl.file === null){
-            const docRef = app.database().ref('inicio/testimonios')
             
             const data = {
-                img: '',
-                texto: textoChange.texto
+                ImgTest: '',
+                TextTest: textoChange.texto
             }
-
-            docRef.push(data).then(() =>{
+            fetch( `https://localhost:44380/api/testimonios`,{
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then( res => res.json() )
+            .then( data => {
                 handleAction(false)
                 respAlerta('Correcto','Se Guardo correctamente');
             })
+            
+            
         }else{
             const urlImage = await saveImage(FileUrl.file,'testimonios');
 
             if(urlImage){
-                const docRef = app.database().ref('inicio/testimonios')
+                
                 const data = {
-                    img: urlImage,
-                    texto: textoChange.texto
+                    ImgTest: urlImage,
+                    TextTest: textoChange.texto
                 }
-                docRef.push(data).then(() =>{
+                fetch( `https://localhost:44380/api/testimonios`,{
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then( res => res.json() )
+                .then( data => {
                     handleAction(false)
                     respAlerta('Correcto','Se Guardo correctamente');
                 })
@@ -109,38 +126,61 @@ export const ModalTestimonio = ({open,setOpen,data}) => {
         }else{
             // Verificamos si va a actualizar el testimonio con una imagen o sigue con la misma imagen
             if(action.file === null){
-                const docRef = app.database().ref(action.carpetaBd).child(action.id)
+               
                     
                 const img = {
-                    img: action.imgUrl,
-                    texto: action.texto
+                    IdTest: action.id,
+                    ImgTest: action.imgUrl,
+                    TextTest: action.texto
                 }
                 
-                docRef.update(img).then(() => {
-                    handleAction(false)
-                    respAlerta('Correcto','Se Actualizo correctamente');
+                //Actualizar testimonio con la misma imagen
+                fetch( `https://localhost:44380/api/testimonios`,{
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(img)
                 })
+                .then( res => res.json() )
+                .then( data => {
+                    handleAction(false)
+                    respAlerta('Correcto','Se Guardo correctamente');
+                })
+
+
             }else{
+                // Actualizar testimonio con una imagen elegida por el administrador
+                
                 let newUrlImage = ''
                 if(action.imgUrl === ''){
                     newUrlImage = await saveImage(FileUrl.file,'testimonios');
                 }else{
-                    newUrlImage = updateImage(action.imgUrl, action.file,action.carpetaStorage)
+                    newUrlImage = await updateImage(action.imgUrl, action.file,action.carpetaStorage)
                 }
                 
                 if(newUrlImage){
-    
-                    const docRef = app.database().ref(action.carpetaBd).child(action.id)
                     
                     const img = {
-                        img: newUrlImage,
-                        texto: action.texto
+                        IdTest: action.id,
+                        ImgTest: newUrlImage,
+                        TextTest: action.texto
                     }
                     
-                    docRef.update(img).then(async() => {
-                        handleAction(false)
-                        respAlerta('Correcto','Se Actualizo correctamente');
+                    
+                   fetch( `https://localhost:44380/api/testimonios`,{
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(img)
                     })
+                    .then( res => res.json() )
+                    .then( data => {
+                        handleAction(false)
+                        respAlerta('Correcto','Se Guardo correctamente');
+                    })
+                    console.log(img)
                 }
                 
             }
@@ -160,14 +200,20 @@ export const ModalTestimonio = ({open,setOpen,data}) => {
             handleAction(true)
             try {
                 await deleteImage(data.img,'testimonios')
-            
-                const docRef = app.database().ref('inicio/testimonios').child(data.id)
-            
-                docRef.remove().then(() => {
-                    handleAction(false)
-                    respAlerta('Correcto','Se elimino correctamente');
-                    setOpen(false)
+                
+                fetch( `https://localhost:44380/api/testimonios`,{
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({IdTest: data.id})
                 })
+                .then( res => res.json() )
+                .then( data => {
+                    handleAction(false)
+                    respAlerta('Correcto','Se Elimino correctamente');
+                })
+                
             } catch (error) {
                 respAlerta('Error','Error al eliminar la imagen');
                 

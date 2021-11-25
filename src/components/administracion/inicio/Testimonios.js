@@ -31,15 +31,11 @@ export const Testimonios = () => {
     }
 
     useEffect(() => {
-        const docRef = app.database().ref('inicio/testimonios')
-        docRef.on('value', (img) => {
-            const all = img.val();
-            let arrayImg = []
-            for (const id in all) {
-                arrayImg.push({ id,...all[id] })
-            }
-            setSlideImg(arrayImg)
-        })
+        fetch( `https://localhost:44380/api/testimonios`)
+            .then( res => res.json() )
+            .then( data => {
+                setSlideImg(data)   
+            })
     }, [])
 
     const slidex = useRef(null);
@@ -115,7 +111,7 @@ export const Testimonios = () => {
                             <CardTestimonio { ...test }
                                             setOpen={setOpen}
                                             onAction={handleSlide}
-                                            key={test.id} />
+                                            key={test.IdTest} />
                         ))
                     }
 

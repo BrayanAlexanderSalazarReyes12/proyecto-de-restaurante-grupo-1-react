@@ -1,6 +1,5 @@
 import React,{ useState, useEffect } from 'react'
 import { ModalPropuesta } from './ModalPropuesta';
-import { app } from './../../../data/bd';
 
 export const Propuesta = ({path}) => {
 
@@ -9,6 +8,7 @@ export const Propuesta = ({path}) => {
     const handleOpen = () => setOpen(true);
 
     const handleModal = () => {
+        console.log(data)
         handleOpen();
     }
 
@@ -18,21 +18,29 @@ export const Propuesta = ({path}) => {
 
     useEffect(() => {
         if(path){
-            const docRef = app.database().ref('inicio/propuesta')
-            docRef.on('value', (img) => {
-                const all = img.val();
-                setData(all)
+            fetch(`https://localhost:44380/api/propuesta`)
+            .then( res => res.json() )
+            .then( data => {
+                setData({
+                    id: data[0].IdPropuesta,
+                    img: data[0].ImgPropuesta,
+                    titulo: data[0].TituloPropuesta,
+                    texto: data[0].TextoPropuesta
+                })
             })
         }else{
-            const docRef = app.database().ref('inicio/evento')
-            docRef.on('value', (img) => {
-                const all = img.val();
-                setData(all)
+            fetch( `https://localhost:44380/api/eventos`)
+            .then( res => res.json() )
+            .then( data => {
+                setData({
+                    id: data[0].IdEventos,
+                    img: data[0].ImgEventos,
+                    titulo: data[0].TituloEvento,
+                    texto: data[0].TextoEvento
+                })
             })
         }
-
-        
-        
+        console.log(data)
     }, [])
 
 
