@@ -21,27 +21,27 @@ useEffect(()=>{
     fecthApi();
 },[])
 
-function eliminarReserva(email) {
+function eliminarReserva(email,respuesta) {
     fetch("https://localhost:44380/api/reservas/" + email, {
       method: "DELETE",
     })
       .then((response) => response.json())
       .then((data) => {
-        alert("Reserva Rechazada con Exito!!!!");
+        alert(respuesta+" Con Exito!!!");
       });
   }
 
 function rechazarReserva(servicios,nombre,fecha,hora,email){
     const respuesta="Reserva Rechazada";
     enviarEmail(servicios,respuesta,nombre,fecha,hora,email);
-    eliminarReserva(email);
+    eliminarReserva(email,respuesta);
     
 }
 
 function aceptarReserva(servicios,nombre,fecha,hora,email){
     const respuesta="Reserva Aceptada";
     enviarEmail(servicios,respuesta,nombre,fecha,hora,email);
-    alert("Reserva Aceptada Con Exito!!");
+    eliminarReserva(email,respuesta);
 }
 
 
