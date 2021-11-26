@@ -9,7 +9,7 @@ export const Recomendaciones = () => {
     const [ platos, setPlatos ] = useState([])
     
     useEffect(() => {
-        fetch( `https://localhost:44380/api/recomendaciones`)
+        fetch( `https://restaurante2021.herokuapp.com/api/recomendaciones`)
         .then( res => res.json() )
         .then( data => {
             setPlatos(data)

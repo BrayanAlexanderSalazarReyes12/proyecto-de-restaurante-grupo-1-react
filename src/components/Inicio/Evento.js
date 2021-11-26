@@ -7,7 +7,7 @@ export const Evento = () => {
     const [ da, setData ] = useState([])
 
     useEffect(() => {
-        fetch( `https://localhost:44380/api/eventos`)
+        fetch( `https://restaurante2021.herokuapp.com/api/eventos`)
         .then( res => res.json() )
         .then( data => {
             setData(data[0])

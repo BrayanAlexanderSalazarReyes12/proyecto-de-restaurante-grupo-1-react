@@ -83,7 +83,7 @@ export const ModalPropuesta = ({onAction,data,open, setOpen, path}) => {
                     };
                 }
                 
-                fetch( `https://localhost:44380/api/${child}`,{
+                fetch( `https://restaurante2021.herokuapp.com/api/${child}`,{
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json'
@@ -116,7 +116,7 @@ export const ModalPropuesta = ({onAction,data,open, setOpen, path}) => {
                     };
                 }
                 
-                fetch( `https://localhost:44380/api/${child}`,{
+                fetch( `https://restaurante2021.herokuapp.com/api/${child}`,{
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json'

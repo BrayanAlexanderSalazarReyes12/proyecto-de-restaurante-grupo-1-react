@@ -6,7 +6,7 @@ export const Propuesta = () => {
     const [state, setState] = useState([])
 
     useEffect(() => {
-        fetch(`https://localhost:44380/api/propuesta`)
+        fetch(`https://restaurante2021.herokuapp.com/api/propuesta`)
         .then( res => res.json() )
         .then( data => {
             setState(data[0])

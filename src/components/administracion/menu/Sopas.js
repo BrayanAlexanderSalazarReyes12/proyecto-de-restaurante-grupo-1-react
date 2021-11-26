@@ -22,7 +22,7 @@ export default class Sopas extends Component{
     }
 
     fetchData() {
-        fetch("https://localhost:44380/api/sopas")
+        fetch("https://restaurante2021.herokuapp.com/api/sopas")
           .then((response) => response.json())
           .then((data) => {
             this.setState({ datos: data });
@@ -118,7 +118,7 @@ export default class Sopas extends Component{
                 console.log(imgensal);
                 try {
                     const { data } = await axios.put(
-                        'https://localhost:44380/api/sopas',
+                        'https://restaurante2021.herokuapp.com/api/sopas',
                         {
                             id: id,
                             "nombre": nombreensal,
@@ -141,7 +141,7 @@ export default class Sopas extends Component{
                 const docRef = app.database().ref(carpeta).child(data.id)
                 
                 docRef.remove().then(() => {
-                    fetch("https://localhost:44380/api/sopas/" + id, {
+                    fetch("https://restaurante2021.herokuapp.com/api/sopas/" + id, {
                     method: "DELETE",
                     })
                     .then((response) => response.json())

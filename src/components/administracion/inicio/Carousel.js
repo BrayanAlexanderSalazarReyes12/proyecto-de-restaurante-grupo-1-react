@@ -43,8 +43,8 @@ export const Carousel = () => {
     }
     
     
-    useEffect(() => { // Obtener datos de la base de datos `https://localhost:44380/api/inicio`
-        fetch( `https://localhost:44380/api/inicio`)
+    useEffect(() => { // Obtener datos de la base de datos `https://restaurante2021.herokuapp.com/api/inicio`
+        fetch( `https://restaurante2021.herokuapp.com/api/inicio`)
         .then( res => res.json() )
         .then( data => {
             setSlideImg(data)

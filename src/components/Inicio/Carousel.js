@@ -8,7 +8,7 @@ export const Carousel = () => {
     const [slideImg, setSlideImg] = useState([])
 
     useEffect(() => {
-        fetch( `https://localhost:44380/api/inicio`)
+        fetch( `https://restaurante2021.herokuapp.com/api/inicio`)
         .then( res => res.json() )
         .then( data => {
             setSlideImg(data)

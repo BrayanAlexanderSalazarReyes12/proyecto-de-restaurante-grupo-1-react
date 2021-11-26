@@ -62,7 +62,7 @@ export const ModalPlatos = ({IdRecom,ImgRecom,TituloRecom,TextoRecom,open, setOp
                 TituloRecom: value.TituloRecom
             }
 
-            fetch( `https://localhost:44380/api/recomendaciones`,
+            fetch( `https://restaurante2021.herokuapp.com/api/recomendaciones`,
             {
                 method: 'PUT',
                 headers: {
@@ -86,7 +86,7 @@ export const ModalPlatos = ({IdRecom,ImgRecom,TituloRecom,TextoRecom,open, setOp
                     TituloRecom: value.TituloRecom,
                 }
 
-                fetch( `https://localhost:44380/api/recomendaciones`,
+                fetch( `https://restaurante2021.herokuapp.com/api/recomendaciones`,
             {
                 method: 'PUT',
                 headers: {

@@ -56,7 +56,7 @@ export const ModalSlide = ({open, setOpen, data }) => {
 
             if(urlImage){
 
-                Mpost('https://localhost:44380/api/inicio',{
+                Mpost('https://restaurante2021.herokuapp.com/api/inicio',{
                     "img_acordion": urlImage,
                 }).then(res => {
                     handleAction(false)
@@ -69,7 +69,7 @@ export const ModalSlide = ({open, setOpen, data }) => {
             const newUrlImage = await updateImage(data.img_acordion, FileUrl.file,'carousel')
             
             if(newUrlImage){
-                fetch( `https://localhost:44380/api/inicio`,{
+                fetch( `https://restaurante2021.herokuapp.com/api/inicio`,{
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json'
@@ -96,7 +96,7 @@ export const ModalSlide = ({open, setOpen, data }) => {
 
             await deleteImage(data.img_acordion,'carousel')
             
-            fetch( `https://localhost:44380/api/inicio`,{
+            fetch( `https://restaurante2021.herokuapp.com/api/inicio`,{
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json'

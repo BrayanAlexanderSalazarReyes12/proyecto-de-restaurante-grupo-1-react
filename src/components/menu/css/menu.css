@@ -105,3 +105,7 @@ button{
     justify-content: center;
     align-items: center;
 }
+
+div.modal{
+    word-break: break-all !important;
+}

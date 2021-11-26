@@ -234,7 +234,7 @@ export const AdminMenu = () => {
 
     const insertararchivos=async()=>{
         const precio = datos.precio;
-        fetch("https://localhost:44380/api/ensaladas/"+"ensaladas"+","+datos.nombredelplato+","+img+","+tokenimg+","+datos.descripcion+","+precio,{
+        fetch("https://restaurante2021.herokuapp.com/api/ensaladas/"+"ensaladas"+","+datos.nombredelplato+","+img+","+tokenimg+","+datos.descripcion+","+precio,{
             method:"POST",
         })
           .then((response) => response.json())
@@ -246,7 +246,7 @@ export const AdminMenu = () => {
 
     const insertararchivossopas=async()=>{
         const precio = datos.precio;
-        fetch("https://localhost:44380/api/sopas/"+"sopas"+","+datos.nombredelplato+","+img+","+tokenimg+","+datos.descripcion+","+precio,{
+        fetch("https://restaurante2021.herokuapp.com/api/sopas/"+"sopas"+","+datos.nombredelplato+","+img+","+tokenimg+","+datos.descripcion+","+precio,{
             method:"POST",
         })
           .then((response) => response.json())
@@ -260,7 +260,7 @@ export const AdminMenu = () => {
 
     const insertararchivosaperitivos=async()=>{
         const precio = datos.precio;
-        fetch("https://localhost:44380/api/aperitivos/"+"aperitivos"+","+datos.nombredelplato+","+img+","+tokenimg+","+datos.descripcion+","+precio,{
+        fetch("https://restaurante2021.herokuapp.com/api/aperitivos/"+"aperitivos"+","+datos.nombredelplato+","+img+","+tokenimg+","+datos.descripcion+","+precio,{
             method:"POST",
         })
           .then((response) => response.json())
@@ -272,7 +272,7 @@ export const AdminMenu = () => {
 
     const insertararchivosbebidas=async()=>{
         const precio = datos.precio;
-        fetch("https://localhost:44380/api/bebidas/"+"bebidas"+","+datos.nombredelplato+","+img+","+tokenimg+","+datos.descripcion+","+precio,{
+        fetch("https://restaurante2021.herokuapp.com/api/bebidas/"+"bebidas"+","+datos.nombredelplato+","+img+","+tokenimg+","+datos.descripcion+","+precio,{
             method:"POST",
         })
           .then((response) => response.json())
@@ -284,7 +284,7 @@ export const AdminMenu = () => {
     
     const insertararchivospostres=async()=>{
         const precio = datos.precio;
-        fetch("https://localhost:44380/api/postres/"+"postres"+","+datos.nombredelplato+","+img+","+tokenimg+","+datos.descripcion+","+precio,{
+        fetch("https://restaurante2021.herokuapp.com/api/postres/"+"postres"+","+datos.nombredelplato+","+img+","+tokenimg+","+datos.descripcion+","+precio,{
             method:"POST",
         })
           .then((response) => response.json())

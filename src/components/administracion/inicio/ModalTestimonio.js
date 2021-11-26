@@ -65,7 +65,7 @@ export const ModalTestimonio = ({open,setOpen,data}) => {
                 ImgTest: '',
                 TextTest: textoChange.texto
             }
-            fetch( `https://localhost:44380/api/testimonios`,{
+            fetch( `https://restaurante2021.herokuapp.com/api/testimonios`,{
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -88,7 +88,7 @@ export const ModalTestimonio = ({open,setOpen,data}) => {
                     ImgTest: urlImage,
                     TextTest: textoChange.texto
                 }
-                fetch( `https://localhost:44380/api/testimonios`,{
+                fetch( `https://restaurante2021.herokuapp.com/api/testimonios`,{
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -135,7 +135,7 @@ export const ModalTestimonio = ({open,setOpen,data}) => {
                 }
                 
                 //Actualizar testimonio con la misma imagen
-                fetch( `https://localhost:44380/api/testimonios`,{
+                fetch( `https://restaurante2021.herokuapp.com/api/testimonios`,{
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
@@ -168,7 +168,7 @@ export const ModalTestimonio = ({open,setOpen,data}) => {
                     }
                     
                     
-                   fetch( `https://localhost:44380/api/testimonios`,{
+                   fetch( `https://restaurante2021.herokuapp.com/api/testimonios`,{
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json'
@@ -201,7 +201,7 @@ export const ModalTestimonio = ({open,setOpen,data}) => {
             try {
                 await deleteImage(data.img,'testimonios')
                 
-                fetch( `https://localhost:44380/api/testimonios`,{
+                fetch( `https://restaurante2021.herokuapp.com/api/testimonios`,{
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json'

@@ -31,7 +31,7 @@ export const Testimonios = () => {
     }
 
     useEffect(() => {
-        fetch( `https://localhost:44380/api/testimonios`)
+        fetch( `https://restaurante2021.herokuapp.com/api/testimonios`)
             .then( res => res.json() )
             .then( data => {
                 setSlideImg(data)   

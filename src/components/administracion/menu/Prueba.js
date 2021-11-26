@@ -22,7 +22,7 @@ export default class Prueba extends Component{
     }
 
     fetchData() {
-        fetch("https://localhost:44380/api/postres")
+        fetch("https://restaurante2021.herokuapp.com/api/postres")
           .then((response) => response.json())
           .then((data) => {
             this.setState({ datos: data });
@@ -119,7 +119,7 @@ export default class Prueba extends Component{
                 console.log(tokenimgsol);
                 try {
                     const { data } = await axios.put(
-                        'https://localhost:44380/api/bebidas',
+                        'https://restaurante2021.herokuapp.com/api/bebidas',
                         {
                             id: id,
                             "nombre": nombreensal,
@@ -140,7 +140,7 @@ export default class Prueba extends Component{
                 const docRef = app.database().ref(carpeta).child(data.id)
                 
                 docRef.remove().then(() => {
-                    fetch("https://localhost:44380/api/bebidas/" + id, {
+                    fetch("https://restaurante2021.herokuapp.com/api/bebidas/" + id, {
                     method: "DELETE",
                     })
                     .then((response) => response.json())

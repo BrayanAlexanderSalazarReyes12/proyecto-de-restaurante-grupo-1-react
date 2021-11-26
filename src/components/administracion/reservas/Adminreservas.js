@@ -9,7 +9,7 @@ export const Adminreservas = () => {
     const form = useRef();
 
     /*GET*/
-    const url='https://localhost:44380/api/reservas'
+    const url='https://restaurante2021.herokuapp.com/api/reservas'
     const [todos,setTodos]= useState()
     const fecthApi = async () =>{
         const response = await fetch(url)
@@ -22,7 +22,7 @@ useEffect(()=>{
 },[])
 
 function eliminarReserva(email,respuesta) {
-    fetch("https://localhost:44380/api/reservas/" + email, {
+    fetch("https://restaurante2021.herokuapp.com/api/reservas/" + email, {
       method: "DELETE",
     })
       .then((response) => response.json())

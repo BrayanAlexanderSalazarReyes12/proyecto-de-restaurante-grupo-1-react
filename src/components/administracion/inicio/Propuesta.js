@@ -18,7 +18,7 @@ export const Propuesta = ({path}) => {
 
     useEffect(() => {
         if(path){
-            fetch(`https://localhost:44380/api/propuesta`)
+            fetch(`https://restaurante2021.herokuapp.com/api/propuesta`)
             .then( res => res.json() )
             .then( data => {
                 setData({
@@ -29,7 +29,7 @@ export const Propuesta = ({path}) => {
                 })
             })
         }else{
-            fetch( `https://localhost:44380/api/eventos`)
+            fetch( `https://restaurante2021.herokuapp.com/api/eventos`)
             .then( res => res.json() )
             .then( data => {
                 setData({

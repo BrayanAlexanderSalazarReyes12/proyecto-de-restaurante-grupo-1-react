@@ -22,7 +22,7 @@ export default class Aperitivos extends Component{
     }
 
     fetchData() {
-        fetch("https://localhost:44380/api/aperitivos")
+        fetch("https://restaurante2021.herokuapp.com/api/aperitivos")
           .then((response) => response.json())
           .then((data) => {
             this.setState({ datos: data });
@@ -119,7 +119,7 @@ export default class Aperitivos extends Component{
                 console.log(tokenimgsol);
                 try {
                     const { data } = await axios.put(
-                        'https://localhost:44380/api/aperitivos',
+                        'https://restaurante2021.herokuapp.com/api/aperitivos',
                         {
                             id: id,
                             "nombre": nombreensal,
@@ -140,7 +140,7 @@ export default class Aperitivos extends Component{
                 const docRef = app.database().ref(carpeta).child(data.id)
                 
                 docRef.remove().then(() => {
-                    fetch("https://localhost:44380/api/aperitivos/" + id, {
+                    fetch("https://restaurante2021.herokuapp.com/api/aperitivos/" + id, {
                     method: "DELETE",
                     })
                     .then((response) => response.json())
